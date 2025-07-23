@@ -60,7 +60,6 @@ export const CodeRunnerProvider = ({ children }: { children: ReactNode }) => {
         ],
       });
 
-      console.log(res.data.run.output);
       setOutput(res.data.run.output || "⚠️ No output received from server.");
     } catch (err) {
       const error = err as AxiosError;

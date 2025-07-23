@@ -18,4 +18,11 @@ const codeSnippets = [
     'println!("Hello World!");'
 ];
 
-export { languages, codeSnippets };
+const stats = [
+    { number: "15+", label: "Languages Supported" },
+    { number: "Free", label: "Code Editor Access" },
+    { number: "500+", label: "Coding Challenges" },
+    { number: "99.9%", label: "Uptime" }
+  ];
+
+export { languages, codeSnippets, stats };

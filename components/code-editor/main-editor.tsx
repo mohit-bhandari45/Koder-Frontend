@@ -2,11 +2,13 @@
 
 import Left from "@/components/code-editor/left";
 import Right from "@/components/code-editor/right";
-import { useCodeEditor } from "@/context/CodeEditorContext";
+import { useState } from "react";
 
-// Refactored MainEditor to use context
 const MainEditor = () => {
-  const { code, setCode, language, setLanguage, fontSize, setFontSize, theme, setTheme } = useCodeEditor();
+  const [code, setCode] = useState("//Start coding here");
+  const [language, setLanguage] = useState("javascript");
+  const [fontSize, setFontSize] = useState(14);
+  const [theme, setTheme] = useState<string>("vs-dark");
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">

@@ -20,22 +20,31 @@ const Navbar = () => {
             variant="ghost"
             className="text-white hover:text-gray-300 cursor-pointer hover:bg-white/10 transition-colors"
             onClick={() => router.push("/code-editor")}
+            data-nprogress
           >
             Editor
           </Button>
           <Button
             variant="ghost"
-            className="text-white hover:text-gray-300 hover:bg-white/10 transition-colors"
+            className="text-white hover:text-gray-300 cursor-pointer hover:bg-white/10 transition-colors"
+            onClick={() => router.push("/code-editor")}
+            data-nprogress
           >
             Challenges
           </Button>
           <Button
             variant="ghost"
-            className="text-white hover:text-gray-300 hover:bg-white/10 transition-colors"
+            data-nprogress
+            className="text-white hover:text-gray-300 cursor-pointer hover:bg-white/10 transition-colors"
+            onClick={() => router.push("/auth/login")}
           >
             Login
           </Button>
-          <Button className="bg-white text-black hover:bg-gray-200 border-none">
+          <Button
+            className="bg-white text-black hover:bg-gray-200 cursor-pointer border-none"
+            onClick={() => router.push("/auth/signup")}
+            data-nprogress
+          >
             Get Started
           </Button>
         </div>

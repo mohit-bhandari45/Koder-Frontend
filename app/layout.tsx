@@ -1,8 +1,11 @@
+import ProgressBar from "@/components/shared/progress-bar";
+import { CodeRunnerProvider } from "@/context/CodeRunnerContext";
+import { MainLoaderProvider } from "@/context/MainLoaderContext";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ProgressBar from "@/components/shared/progress-bar";
-import { CodeRunnerProvider } from "@/context/CodeRunnerContext";
+import { UserProvider } from "@/context/UserContext";
+import { CodeEditorProvider } from "@/context/CodeEditorContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +34,11 @@ export default function RootLayout({
       >
         <ProgressBar />
         <CodeRunnerProvider>
-          {children}
+          <MainLoaderProvider>
+            <UserProvider>
+              <CodeEditorProvider>{children}</CodeEditorProvider>
+            </UserProvider>
+          </MainLoaderProvider>
         </CodeRunnerProvider>
       </body>
     </html>

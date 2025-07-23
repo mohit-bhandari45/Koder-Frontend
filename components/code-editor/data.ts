@@ -105,7 +105,29 @@ export const defaultComments: Record<string, string> = {
   python: "# Start coding here",
   javascript: "// Start coding here",
   typescript: "// Start coding here",
-  java: "// Start coding here",
+  java: `import java.util.*; // You can add more imports
+
+public class Main {
+    // Define your solution here
+    public static int[] twoSum(int[] nums, int target) {
+        // Your logic here
+        return new int[]{};
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String[] parts = sc.nextLine().trim().split(" ");
+        int[] nums = new int[parts.length];
+        for (int i = 0; i < parts.length; i++) {
+            nums[i] = Integer.parseInt(parts[i]);
+        }
+        int target = Integer.parseInt(sc.nextLine().trim());
+
+        int[] result = twoSum(nums, target);
+        System.out.println(Arrays.toString(result));
+    }
+}`,
+
   cpp: "// Start coding here",
   c: "// Start coding here",
   go: "// Start coding here",
@@ -121,6 +143,7 @@ export const defaultComments: Record<string, string> = {
   lua: "-- Start coding here",
   dart: "// Start coding here",
 };
+
 
 
 export const themeOptions = [
