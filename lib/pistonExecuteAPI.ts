@@ -1,7 +1,7 @@
-export async function runJudge0(
+export async function pistonExecuteAPI(
     code: string,
     input: string,
-    language: string // use piston language name like "python3", "java", etc.
+    language: string
 ) {
     try {
         const response = await fetch("https://emkc.org/api/v2/piston/execute", {

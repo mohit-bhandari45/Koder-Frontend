@@ -11,6 +11,7 @@ export interface ITestCase {
   input: string;
   output: string;
   explanation?: string;
+  stdin: string; // Input to be passed to the code execution
 }
 
 export interface IExample {

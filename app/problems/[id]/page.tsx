@@ -4,11 +4,10 @@ import Description from "@/components/problem/description";
 import Head from "@/components/problem/head";
 import MainLoader from "@/components/shared/main-loader";
 import { useCodeEditor } from "@/context/CodeEditorContext";
-import { getProblemById } from "@/lib/api";
-import { runJudge0 } from "@/lib/judge0";
 import { languageIdMap } from "@/lib/languageIdMap";
+import { addSubmission, getProblemById } from "@/lib/requests.functions";
 import { IProblem, SubmissionResult, TestResult } from "@/types/problem";
-import { parseInputToStdin } from "@/utils/code";
+import execute from "@/utils/utils.problem";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,8 +18,7 @@ export default function ProblemDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
-  const [, setSubmissionResult] =
-    useState<SubmissionResult | null>(null);
+  const [, setSubmissionResult] = useState<SubmissionResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [executionOutput, setExecutionOutput] = useState<string>("");
@@ -43,16 +41,19 @@ export default function ProblemDetailPage() {
       setLoading(true);
       setError(null);
       try {
-        const data = await getProblemById(id as string);
-        setProblem(data.problem);
-      } catch {
-        setError("Failed to fetch problem.");
+        const response = await getProblemById(id as string);
+        setProblem(response.data);
+        setCode(response.data.starterCode || "");
+        setLanguage("javascript"); // Default language
+      } catch (err) {
+        console.error("Error fetching problem:", err);
+        setError("Failed to load problem. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
     fetchProblem();
-  }, [id]);
+  }, [id, setCode, setLanguage]);
 
   // Mock function to run code with sample test cases
   const runCode = async () => {
@@ -61,7 +62,6 @@ export default function ProblemDetailPage() {
     setActiveTab("result");
 
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       if (!problem?.examples || problem.examples.length === 0) {
@@ -75,29 +75,11 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      const results: TestResult[] = [];
-      for (const example of problem.examples.slice(0, 3)) {
-        const stdin = parseInputToStdin(example.input);
-        const res = await runJudge0(code, stdin, lang);
-        console.log(res.stderr);
-
-        const actualOutput = res.stdout?.trim() || "";
-        const expectedOutput = example.output.trim();
-        // console.log(`Running example ${example.input}:\nExpected: ${expectedOutput}\nActual: ${actualOutput}`);
-        const passed = res.status.id === 3 && actualOutput === expectedOutput;
-
-        results.push({
-          input: example.input,
-          expectedOutput: expectedOutput,
-          actualOutput: actualOutput,
-          passed: passed,
-          executionTime: res.time ? `${res.time}ms` : undefined,
-        });
-      }
-
+      // Execute the code against the first 3 test cases
+      const results: TestResult[] = await execute(problem, code, lang, false);
       setTestResults(results);
-      const passedCount = results.filter((r) => r.passed).length;
 
+      const passedCount = results.filter((r) => r.passed).length;
       if (passedCount === results.length) {
         setExecutionOutput(`✅ All ${results.length} test cases passed!`);
       } else {
@@ -133,25 +115,7 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      const results: TestResult[] = [];
-
-      for (const testCase of problem.testCases) {
-        const stdin = parseInputToStdin(testCase.input);
-        const res = await runJudge0(code, stdin, lang);
-
-        const actualOutput = res.stdout?.trim() || "";
-        const expectedOutput = testCase.output.trim();
-        const passed = res.status.id === 3 && actualOutput === expectedOutput;
-
-        results.push({
-          input: testCase.input,
-          expectedOutput,
-          actualOutput,
-          passed,
-          executionTime: res.time ? `${res.time}ms` : undefined,
-        });
-      }
-
+      const results: TestResult[] = await execute(problem, code, lang, true);
       setTestResults(results);
 
       const passedCount = results.filter((r) => r.passed).length;
@@ -162,14 +126,20 @@ export default function ProblemDetailPage() {
         accepted,
         totalTests,
         passedTests: passedCount,
-        runtime: `${Math.floor(Math.random() * 100) + 50}ms`, // optional: avg real time if you want to compute it
-        memory: `${(Math.random() * 10 + 15).toFixed(1)}MB`, // optional
+        runtime: `${Math.floor(Math.random() * 100) + 50}ms`,
+        memory: `${(Math.random() * 10 + 15).toFixed(1)}MB`,
         error: accepted ? undefined : "Wrong Answer",
       };
-
       setSubmissionResult(result);
 
       if (accepted) {
+        await addSubmission({
+          problemId: problem._id as string,
+          code,
+          language,
+          status: "Accepted",
+        });
+
         setExecutionOutput(
           `🎉 Accepted!\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}\n\nYour solution passed all ${totalTests} test cases.`
         );
@@ -179,7 +149,13 @@ export default function ProblemDetailPage() {
         );
       }
     } catch (err) {
-      console.log(err);
+      await addSubmission({
+        problemId: problem?._id as string,
+        code,
+        language,
+        status: "Rejected",
+      });
+
       setExecutionOutput(
         `Submission Error: ${
           err instanceof Error ? err.message : "Unknown error"

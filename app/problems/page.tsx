@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getProblems } from "@/lib/api";
 import { IProblem } from "@/types/problem";
 import MainLoader from "@/components/shared/main-loader";
 import Link from "next/link";
+import { getProblems } from "@/lib/requests.functions";
 
 const DIFFICULTY_COLORS: Record<IProblem["difficulty"], string> = {
   Easy: "text-green-500 bg-green-100 border-green-400",
@@ -25,7 +25,7 @@ export default function ProblemsPage() {
       setError(null);
       try {
         const data = await getProblems(page);
-        setProblems(data.problems);
+        setProblems(data.data);
         setTotalPages(data.totalPages);
       } catch {
         setError("Failed to fetch problems.");

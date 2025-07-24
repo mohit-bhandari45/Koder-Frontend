@@ -55,16 +55,10 @@ export { GET_OWN_PROFILE_ENDPOINT, ADD_USERNAME_ENDPOINT };
 
 /* PROBLEM ENDPOINTS */
 const PROBLEM_BASE = "/api/problem";
+export {PROBLEM_BASE}
+
+/* SUBMISSION ENDPOINTS */
+const SUBMISSION_BASE = "/api/submission";
+export const ADD_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/add`;
+
 export default api;
-
-
-/* Utility Functions */
-export const getProblems = async (page = 1) => {
-  const res = await api.get(`${PROBLEM_BASE}?page=${page}`);
-  return res.data;
-};
-
-export const getProblemById = async (id: string) => {
-  const res = await api.get(`${PROBLEM_BASE}/${id}`);
-  return res.data;
-};

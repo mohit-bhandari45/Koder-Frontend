@@ -43,6 +43,8 @@ const UsernameSelection = () => {
     }
   };
 
+  console.log(user);
+
   return (
     <main className="min-h-screen flex items-center justify-center bg-black">
       {loading ? (
