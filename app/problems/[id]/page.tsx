@@ -8,6 +8,7 @@ import { languageIdMap } from "@/lib/languageIdMap";
 import { addSubmission, getProblemById } from "@/lib/requests.functions";
 import { IProblem, SubmissionResult, TestResult } from "@/types/problem";
 import execute from "@/utils/utils.problem";
+import { problemWrapperMap } from "@/wrappers/problemWrapperMap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -24,7 +25,8 @@ export default function ProblemDetailPage() {
   const [activeTab, setActiveTab] = useState<"testcase" | "result">("testcase");
 
   // context
-  const { testcaseCode, setTestcaseCode, language, problem, setProblem } = useCodeEditor();
+  const { testcaseCode, setTestcaseCode, language, problem, setProblem } =
+    useCodeEditor();
 
   useEffect(() => {
     if (!id) return;
@@ -44,16 +46,15 @@ export default function ProblemDetailPage() {
         setLoading(false);
       }
     };
-    
+
     fetchProblem();
   }, [id, language, setProblem, setTestcaseCode]);
 
-  // Mock function to run code with sample test cases
   const runCode = async () => {
     setIsRunning(true);
     setExecutionOutput("");
     setActiveTab("result");
-
+    
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -62,16 +63,26 @@ export default function ProblemDetailPage() {
         return;
       }
 
+      // getting a particular lang
       const lang = languageIdMap[language.toLowerCase()];
       if (!lang) {
         setExecutionOutput("Unsupported language selected.");
         return;
       }
 
+      // wrapping code now
+      const wrapper = problemWrapperMap[problem.functionName][lang];
+      if (!wrapper) {
+        setExecutionOutput("No wrapper found for this problem and language.");
+        return;
+      }
+
+      const wrappedCode = wrapper(testcaseCode, problem.functionName);
+
       // Execute the code against the first 3 test cases
       const results: TestResult[] = await execute(
         problem,
-        testcaseCode,
+        wrappedCode,
         lang,
         false
       );
@@ -107,19 +118,29 @@ export default function ProblemDetailPage() {
         return;
       }
 
+      // getting a particular lang
       const lang = languageIdMap[language.toLowerCase()];
       if (!lang) {
         setExecutionOutput("Unsupported language selected.");
         return;
       }
 
+      // wrapping code now
+      const wrapper = problemWrapperMap[problem.functionName][lang];
+      if (!wrapper) {
+        setExecutionOutput("No wrapper found for this problem and language.");
+        return;
+      }
+
+      const wrappedCode = wrapper(testcaseCode, problem.functionName);
+
       const results: TestResult[] = await execute(
         problem,
-        testcaseCode,
+        wrappedCode,
         lang,
         true
       );
-      setTestResults(results);
+      setTestResults(results);  
 
       const passedCount = results.filter((r) => r.passed).length;
       const totalTests = problem.testCases.length;

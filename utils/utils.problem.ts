@@ -2,14 +2,18 @@ import { pistonExecuteAPI } from "@/lib/pistonExecuteAPI";
 import { IProblem, TestResult } from "@/types/problem";
 
 async function execute(problem: IProblem, code: string, lang: string, submit: boolean): Promise<TestResult[]> {
+    let setOfTestCases = [];
+
     if (!submit) {
-        problem.testCases = problem.testCases.slice(0, 3); // Limit to first 3 test cases for non-submissions
+        setOfTestCases = problem.testCases.slice(0, 3); // Limit to first 3 test cases for non-submissions
+    } else {
+        setOfTestCases = problem.testCases;
     }
 
     const results: TestResult[] = [];
 
-    for (const testCase of problem.testCases) {
-        const res = await pistonExecuteAPI(code, testCase.stdin!, lang);
+    for (const testCase of setOfTestCases) {
+        const res = await pistonExecuteAPI(code, testCase.stdin, lang);
 
         const actualOutput = res.stdout?.trim() || "";
         const expectedOutput = testCase.output.trim();

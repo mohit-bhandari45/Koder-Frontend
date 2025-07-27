@@ -17,7 +17,7 @@ export interface ITestCase {
   input: string;
   output: string;
   explanation: string;
-  stdin?: string;
+  stdin: string;
 }
 
 export interface ILanguageCodeMap {

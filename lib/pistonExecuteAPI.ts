@@ -23,6 +23,7 @@ export async function pistonExecuteAPI(
         });
 
         const result = await response.json();
+        console.log(result);
 
         return {
             stdout: result.run.stdout ?? "",

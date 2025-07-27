@@ -5,11 +5,6 @@ export const languageOptions = [
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
     },
     {
-        label: "TypeScript",
-        value: "typescript",
-        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
-    },
-    {
         label: "Python",
         value: "python",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
@@ -45,11 +40,6 @@ export const languageOptions = [
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg",
     },
     {
-        label: "PHP",
-        value: "php",
-        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
-    },
-    {
         label: "Kotlin",
         value: "kotlin",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg",
@@ -73,16 +63,6 @@ export const languageOptions = [
         label: "Haskell",
         value: "haskell",
         logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/haskell/haskell-original.svg",
-    },
-    {
-        label: "Shell (Bash)",
-        value: "bash",
-        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg",
-    },
-    {
-        label: "C#",
-        value: "csharp",
-        logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
     },
     {
         label: "R",

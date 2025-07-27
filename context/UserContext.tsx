@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api";
 import User from "@/types/userTypes";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 
 type UserContextType = {
   user: User | null;
@@ -17,6 +18,7 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
@@ -30,6 +32,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (error: unknown) {
       setUser(null);
       setError(error as AxiosError);
+      if (error instanceof AxiosError && error.response?.status === 404) {
+        router.push("/auth/login");
+      }
     } finally {
       setLoading(false);
     }

@@ -1,8 +1,6 @@
 "use client";
 
-import api, {
-    ADD_USERNAME_ENDPOINT
-} from "@/lib/api";
+import api, { ADD_USERNAME_ENDPOINT } from "@/lib/api";
 import MainLoader from "@/components/shared/main-loader";
 import { useMainLoader } from "@/context/MainLoaderContext";
 import { useUser } from "@/context/UserContext";
@@ -13,12 +11,12 @@ const UsernameSelection = () => {
   const [username, setUsername] = useState("");
   const [submitted] = useState(false);
   const router = useRouter();
-  const { setMainLoading } = useMainLoader();
+  const { mainLoading, setMainLoading } = useMainLoader();
   const [submitLoading, setSubmitLoading] = useState(false);
   const { user, loading, error } = useUser();
 
   useEffect(() => {
-    setMainLoading(loading);
+    setMainLoading(true);
     if (!loading && user && user.username) {
       router.replace(`/u/${user.username}`);
     }
@@ -45,8 +43,10 @@ const UsernameSelection = () => {
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-black">
-      {loading ? (
-        <MainLoader text="Wait a moment..." />
+      {loading || mainLoading ? (
+        <MainLoader
+          text={loading ? "Fetching details..." : "Navigating to profile..."}
+        />
       ) : (
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
           <h1 className="text-2xl font-bold text-black mb-4">
