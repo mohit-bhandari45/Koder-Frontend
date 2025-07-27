@@ -1,5 +1,5 @@
 "use client";
-import Left from "@/components/code-editor/left";
+import Editor from "@/components/code-editor/editor";
 import Description from "@/components/problem/description";
 import Head from "@/components/problem/head";
 import MainLoader from "@/components/shared/main-loader";
@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 
 export default function ProblemDetailPage() {
   const { id } = useParams();
-  const [problem, setProblem] = useState<IProblem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
@@ -24,27 +23,20 @@ export default function ProblemDetailPage() {
   const [executionOutput, setExecutionOutput] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"testcase" | "result">("testcase");
 
-  const {
-    code,
-    setCode,
-    language,
-    setLanguage,
-    fontSize,
-    setFontSize,
-    theme,
-    setTheme,
-  } = useCodeEditor();
+  // context
+  const { testcaseCode, setTestcaseCode, language, problem, setProblem } = useCodeEditor();
 
   useEffect(() => {
     if (!id) return;
+
     const fetchProblem = async () => {
       setLoading(true);
       setError(null);
       try {
         const response = await getProblemById(id as string);
-        setProblem(response.data);
-        setCode(response.data.starterCode || "");
-        setLanguage("javascript"); // Default language
+        const problem: IProblem = response.data;
+        setProblem(problem);
+        setTestcaseCode(problem.starterCode[language]);
       } catch (err) {
         console.error("Error fetching problem:", err);
         setError("Failed to load problem. Please try again later.");
@@ -52,8 +44,9 @@ export default function ProblemDetailPage() {
         setLoading(false);
       }
     };
+    
     fetchProblem();
-  }, [id, setCode, setLanguage]);
+  }, [id, language, setProblem, setTestcaseCode]);
 
   // Mock function to run code with sample test cases
   const runCode = async () => {
@@ -76,7 +69,12 @@ export default function ProblemDetailPage() {
       }
 
       // Execute the code against the first 3 test cases
-      const results: TestResult[] = await execute(problem, code, lang, false);
+      const results: TestResult[] = await execute(
+        problem,
+        testcaseCode,
+        lang,
+        false
+      );
       setTestResults(results);
 
       const passedCount = results.filter((r) => r.passed).length;
@@ -115,7 +113,12 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      const results: TestResult[] = await execute(problem, code, lang, true);
+      const results: TestResult[] = await execute(
+        problem,
+        testcaseCode,
+        lang,
+        true
+      );
       setTestResults(results);
 
       const passedCount = results.filter((r) => r.passed).length;
@@ -135,7 +138,7 @@ export default function ProblemDetailPage() {
       if (accepted) {
         await addSubmission({
           problemId: problem._id as string,
-          code,
+          testcaseCode,
           language,
           status: "Accepted",
         });
@@ -151,7 +154,7 @@ export default function ProblemDetailPage() {
     } catch (err) {
       await addSubmission({
         problemId: problem?._id as string,
-        code,
+        testcaseCode,
         language,
         status: "Rejected",
       });
@@ -263,16 +266,7 @@ export default function ProblemDetailPage() {
         <div className="w-1/2 flex flex-col">
           {/* Code Editor */}
           <div className="flex-1 border-b border-gray-700">
-            <Left
-              language={language}
-              setLanguage={setLanguage}
-              fontSize={fontSize}
-              setFontSize={setFontSize}
-              theme={theme}
-              setTheme={setTheme}
-              code={code}
-              setCode={setCode}
-            />
+            <Editor mode="testcase" />
           </div>
 
           {/* Console/Output Panel */}

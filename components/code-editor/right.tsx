@@ -1,15 +1,12 @@
 "use client";
 
+import { useCodeEditor } from "@/context/CodeEditorContext";
 import { useCodeRunner } from "@/context/CodeRunnerContext";
 import React from "react";
 
-interface RightProps {
-  code: string;
-  language: string;
-}
-
-const Right = ({ code, language }: RightProps) => {
+const Right = () => {
   const { output, isRunning, clearOutput, runCode } = useCodeRunner();
+  const { practiceCode, language } = useCodeEditor();
 
   return (
     <div className="w-full lg:max-w-md lg:w-[400px] xl:w-[450px] flex flex-col h-full min-h-[400px] md:min-h-[500px]">
@@ -18,11 +15,13 @@ const Right = ({ code, language }: RightProps) => {
         <div className="flex items-center justify-between flex-wrap gap-2 sm:gap-0">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
-            <h3 className="text-base sm:text-lg font-semibold text-white">Output</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white">
+              Output
+            </h3>
           </div>
           <div className="flex gap-1 sm:gap-2 w-full sm:w-auto justify-end">
             <button
-              onClick={() => runCode(code, language)}
+              onClick={() => runCode(practiceCode, language)}
               disabled={isRunning}
               className="px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm cursor-pointer bg-gradient-to-r from-green-600 to-green-700 text-white rounded-md hover:from-green-700 hover:to-green-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1 sm:gap-2 transition-all duration-200 shadow-lg hover:shadow-green-500/25 flex-1 sm:flex-none justify-center"
             >
@@ -83,7 +82,9 @@ const Right = ({ code, language }: RightProps) => {
               <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
               <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
             </div>
-            <span className="text-slate-400 text-xs sm:text-sm font-mono">Terminal</span>
+            <span className="text-slate-400 text-xs sm:text-sm font-mono">
+              Terminal
+            </span>
           </div>
         </div>
 
@@ -91,11 +92,11 @@ const Right = ({ code, language }: RightProps) => {
           {isRunning ? (
             <div className="space-y-1 sm:space-y-2 animate-pulse flex flex-col gap-0.5">
               {Array.from({ length: 15 }).map((_, i) => (
-                <div 
-                  key={i} 
-                  className="h-2 sm:h-3 bg-slate-700 rounded w-full" 
+                <div
+                  key={i}
+                  className="h-2 sm:h-3 bg-slate-700 rounded w-full"
                   style={{
-                    width: `${Math.random() * 40 + 60}%`
+                    width: `${Math.random() * 40 + 60}%`,
                   }}
                 />
               ))}

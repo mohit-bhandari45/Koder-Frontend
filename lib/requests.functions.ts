@@ -13,7 +13,7 @@ const getProblemById = async (id: string) => {
 
 const addSubmission = async (payload: {
     problemId: string;
-    code: string;
+    testcaseCode: string;
     language: string;
     status: "Accepted" | "Rejected" | "Pending"
 }) => {

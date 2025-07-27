@@ -9,7 +9,7 @@ async function execute(problem: IProblem, code: string, lang: string, submit: bo
     const results: TestResult[] = [];
 
     for (const testCase of problem.testCases) {
-        const res = await pistonExecuteAPI(code, testCase.stdin, lang);
+        const res = await pistonExecuteAPI(code, testCase.stdin!, lang);
 
         const actualOutput = res.stdout?.trim() || "";
         const expectedOutput = testCase.output.trim();

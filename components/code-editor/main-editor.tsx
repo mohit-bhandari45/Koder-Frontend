@@ -1,6 +1,6 @@
 "use client";
 
-import Left from "@/components/code-editor/left";
+import Left from "@/components/code-editor/editor";
 import Right from "@/components/code-editor/right";
 import { useState } from "react";
 

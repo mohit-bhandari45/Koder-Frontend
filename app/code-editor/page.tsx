@@ -1,13 +1,9 @@
 "use client";
 
-import Left from "@/components/code-editor/left";
+import Editor from "@/components/code-editor/editor";
 import Right from "@/components/code-editor/right";
-import { useCodeEditor } from "@/context/CodeEditorContext";
 
-// Refactored MainEditor to use context
-const MainEditor = () => {
-  const { code, setCode, language, setLanguage, fontSize, setFontSize, theme, setTheme } = useCodeEditor();
-
+const MainEditorPage = () => {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-800">
       {/* Header */}
@@ -27,44 +23,26 @@ const MainEditor = () => {
         <div className="flex flex-col lg:hidden h-full gap-3 sm:gap-4">
           {/* Left: Code Editor */}
           <div className="flex-1 min-h-[300px] sm:min-h-[400px]">
-            <Left
-              language={language}
-              setLanguage={setLanguage}
-              fontSize={fontSize}
-              setFontSize={setFontSize}
-              theme={theme}
-              setTheme={setTheme}
-              code={code}
-              setCode={setCode}
-            />
+            <Editor mode="practice"/>
           </div>
 
           {/* Right: Code Execution Panel */}
           <div className="flex-shrink-0 h-[250px] sm:h-[300px]">
-            <Right code={code} language={language} />
+            <Right />
           </div>
         </div>
 
         {/* Desktop Layout - Horizontal */}
         <div className="hidden lg:flex h-full gap-6">
           {/* Left: Code Editor */}
-          <Left
-            language={language}
-            setLanguage={setLanguage}
-            fontSize={fontSize}
-            setFontSize={setFontSize}
-            theme={theme}
-            setTheme={setTheme}
-            code={code}
-            setCode={setCode}
-          />
+          <Editor mode="practice"/>
 
           {/* Right: Code Execution Panel */}
-          <Right code={code} language={language} />
+          <Right />
         </div>
       </div>
     </main>
   );
 };
 
-export default MainEditor;
+export default MainEditorPage;

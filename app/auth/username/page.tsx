@@ -33,7 +33,7 @@ const UsernameSelection = () => {
     try {
       const res = await api.post(ADD_USERNAME_ENDPOINT, { username });
       if (res.status === 200) {
-        router.replace(`/u/${res.data.username}`);
+        router.replace(`/u/${res.data.data.username}`);
         setMainLoading(true);
       }
     } catch (err: unknown) {
@@ -42,8 +42,6 @@ const UsernameSelection = () => {
       setSubmitLoading(false);
     }
   };
-
-  console.log(user);
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-black">
