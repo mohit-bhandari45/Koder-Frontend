@@ -77,7 +77,7 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      const wrappedCode = wrapper(testcaseCode, problem.functionName);
+      const wrappedCode = wrapper(testcaseCode);
 
       // Execute the code against the first 3 test cases
       const results: TestResult[] = await execute(
@@ -132,7 +132,7 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      const wrappedCode = wrapper(testcaseCode, problem.functionName);
+      const wrappedCode = wrapper(testcaseCode);
 
       const results: TestResult[] = await execute(
         problem,

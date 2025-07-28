@@ -1,6 +1,15 @@
 import { indent } from "@/utils/helper";
 
-export function wrapTwoSumJavaCode(userCode: string, functionName: string): string {
+export function getFunctionName(lang: string): string {
+  const functionNameMap: Record<string, string> = {
+    rust: "two_sum",
+    elixir: "two_sum",
+  };
+  return functionNameMap[lang] ?? "twoSum";
+}
+
+export function wrapTwoSumJavaCode(userCode: string, lang: string = "java"): string {
+    const functionName = getFunctionName(lang);
     return `
             import java.util.*;
 
@@ -24,7 +33,8 @@ export function wrapTwoSumJavaCode(userCode: string, functionName: string): stri
         `.trim();
 }
 
-export function wrapTwoSumJavaScriptCode(userCode: string, functionName: string): string {
+export function wrapTwoSumJavaScriptCode(userCode: string, lang: string = "javascript"): string {
+    const functionName = getFunctionName(lang);
     return `
     ${userCode}
 
@@ -39,10 +49,10 @@ export function wrapTwoSumJavaScriptCode(userCode: string, functionName: string)
   `.trim();
 }
 
-
-export function wrapTwoSumPythonCode(userCode: string, functionName: string = "twoSum"): string {
+export function wrapTwoSumPythonCode(userCode: string, lang: string = "python"): string {
+    const functionName = getFunctionName(lang);
     return [
-        userCode.trim(), // leave user code as-is
+        userCode.trim(),
         "",
         "import sys",
         "lines = sys.stdin.read().splitlines()",
@@ -55,13 +65,16 @@ export function wrapTwoSumPythonCode(userCode: string, functionName: string = "t
     ].join("\n");
 }
 
-export function wrapTwoSumCppCode(userCode: string, functionName: string): string {
+export function wrapTwoSumCppCode(userCode: string, lang: string = "cpp"): string {
+    const functionName = getFunctionName(lang);
     return `
         #include <iostream>
         #include <vector>
         #include <sstream>
         #include <string>
         #include <unordered_map>
+        #include <algorithm> // Added for std::sort (sorting-based approach)
+
         using namespace std;
 
         ${userCode}
@@ -89,7 +102,8 @@ export function wrapTwoSumCppCode(userCode: string, functionName: string): strin
     `.trim();
 }
 
-export function wrapTwoSumCCode(userCode: string, functionName: string): string {
+export function wrapTwoSumCCode(userCode: string, lang: string = "c"): string {
+    const functionName = getFunctionName(lang);
     return `
         #include <stdio.h>
         #include <stdlib.h>
@@ -107,19 +121,24 @@ export function wrapTwoSumCCode(userCode: string, functionName: string): string 
 
             int returnSize;
             int* result = ${functionName}(nums, n, target, &returnSize);
+            
+            // ✅ Format as [3, 4]
+            printf("[");
             for (int i = 0; i < returnSize; ++i) {
-                if (i > 0) printf(" ");
+                if (i > 0) printf(", ");
                 printf("%d", result[i]);
             }
-            printf("\\n");
+            printf("]\\n");
+
             free(result);
             return 0;
         }
     `.trim();
 }
 
-export function wrapTwoSumGoCode(userCode: string, functionName: string): string {
-  return `
+export function wrapTwoSumGoCode(userCode: string, lang: string = "go"): string {
+    const functionName = getFunctionName(lang);
+    return `
     package main
 
     import (
@@ -128,6 +147,7 @@ export function wrapTwoSumGoCode(userCode: string, functionName: string): string
         "os"
         "strconv"
         "strings"
+        "sort" // Added for sort.Ints (sorting-based approach)
     )
 
     ${userCode}
@@ -160,7 +180,8 @@ export function wrapTwoSumGoCode(userCode: string, functionName: string): string
   `.trim();
 }
 
-export function wrapTwoSumRubyCode(userCode: string, functionName: string): string {
+export function wrapTwoSumRubyCode(userCode: string, lang: string = "ruby"): string {
+    const functionName = getFunctionName(lang);
     return `
         ${userCode}
 
@@ -171,7 +192,8 @@ export function wrapTwoSumRubyCode(userCode: string, functionName: string): stri
     `.trim();
 }
 
-export function wrapTwoSumRustCode(userCode: string, functionName: string): string {
+export function wrapTwoSumRustCode(userCode: string, lang: string = "rust"): string {
+    const functionName = getFunctionName(lang);
     return `
         use std::io::{self, BufRead};
         use std::collections::HashMap;
@@ -195,9 +217,11 @@ export function wrapTwoSumRustCode(userCode: string, functionName: string): stri
     `.trim();
 }
 
-export function wrapTwoSumKotlinCode(userCode: string, functionName: string): string {
+export function wrapTwoSumKotlinCode(userCode: string, lang: string = "kotlin"): string {
+    const functionName = getFunctionName(lang);
     return `
         import java.util.*
+        import kotlin.collections.*
 
         ${userCode}
 
@@ -206,12 +230,13 @@ export function wrapTwoSumKotlinCode(userCode: string, functionName: string): st
             val target = readLine()!!.toInt()
 
             val result = ${functionName}(nums, target)
-            println(result.joinToString(" "))
+            println(result.joinToString(prefix = "[", postfix = "]", separator = ", "))
         }
     `.trim();
 }
 
-export function wrapTwoSumSwiftCode(userCode: string, functionName: string): string {
+export function wrapTwoSumSwiftCode(userCode: string, lang: string = "swift"): string {
+    const functionName = getFunctionName(lang);
     return `
         import Foundation
 
@@ -224,7 +249,8 @@ export function wrapTwoSumSwiftCode(userCode: string, functionName: string): str
     `.trim();
 }
 
-export function wrapTwoSumPerlCode(userCode: string, functionName: string): string {
+export function wrapTwoSumPerlCode(userCode: string, lang: string = "perl"): string {
+    const functionName = getFunctionName(lang);
     return `
         ${userCode}
 
@@ -238,38 +264,43 @@ export function wrapTwoSumPerlCode(userCode: string, functionName: string): stri
     `.trim();
 }
 
-export function wrapTwoSumScalaCode(userCode: string, functionName: string): string {
+export function wrapTwoSumScalaCode(userCode: string, lang: string = "scala"): string {
+    const functionName = getFunctionName(lang);
     return `
-        import scala.io.StdIn._
+import scala.io.StdIn._
+import scala.collection.mutable // Added for mutable.HashMap (optimal approach)
 
-        ${userCode}
+${userCode}
 
-        object Main extends App {
-            val nums = readLine().split(" ").map(_.toInt)
-            val target = readLine().toInt
+object Main extends App {
+  val nums = readLine().split(" ").map(_.toInt)
+  val target = readLine().toInt
 
-            val result = ${functionName}(nums, target)
-            println(result.mkString(" "))
-        }
-    `.trim();
+  val result = ${functionName}(nums, target)
+  println(result.mkString("[", ", ", "]"))
+}
+  `.trim();
 }
 
-export function wrapTwoSumHaskellCode(userCode: string, functionName: string): string {
-    return `
-        import Data.List
-        import Control.Monad
+export function wrapTwoSumHaskellCode(userCode: string, lang: string = "haskell"): string {
+  const functionName = getFunctionName(lang);
+  return `
+import Data.List
+import Control.Monad
+import qualified Data.Map as Map
 
-        ${userCode}
+${userCode}
 
-        main = do
-            nums <- fmap (map read . words) getLine
-            target <- fmap read getLine
-            let result = ${functionName} nums target
-            print result
-    `.trim();
+main = do
+    nums <- fmap (map read . words) getLine
+    target <- fmap read getLine
+    let result = ${functionName} nums target
+    putStrLn ("[" ++ intercalate ", " (map show result) ++ "]")
+  `.trim();
 }
 
-export function wrapTwoSumRCode(userCode: string, functionName: string): string {
+export function wrapTwoSumRCode(userCode: string, lang: string = "r"): string {
+    const functionName = getFunctionName(lang);
     return `
         ${userCode}
 
@@ -280,7 +311,8 @@ export function wrapTwoSumRCode(userCode: string, functionName: string): string 
     `.trim();
 }
 
-export function wrapTwoSumDartCode(userCode: string, functionName: string): string {
+export function wrapTwoSumDartCode(userCode: string, lang: string = "dart"): string {
+    const functionName = getFunctionName(lang);
     return `
         import 'dart:io';
 
@@ -296,7 +328,8 @@ export function wrapTwoSumDartCode(userCode: string, functionName: string): stri
     `.trim();
 }
 
-export function wrapTwoSumElixirCode(userCode: string, functionName: string): string {
+export function wrapTwoSumElixirCode(userCode: string, lang: string = "elixir"): string {
+    const functionName = getFunctionName(lang);
     return `
         ${userCode}
 
@@ -304,7 +337,28 @@ export function wrapTwoSumElixirCode(userCode: string, functionName: string): st
         nums = String.trim(line1) |> String.split(" ") |> Enum.map(&String.to_integer/1)
         target = String.trim(line2) |> String.to_integer()
 
-        result = ${functionName}(nums, target)
+        result = Solution.${functionName}(nums, target)
         IO.inspect(result)
+    `.trim();
+}
+
+export function wrapTwoSumCSharpCode(userCode: string, lang: string = "csharp"): string {
+    const functionName = getFunctionName(lang);
+    return `
+        using System;
+        using System.Linq; // Added for LINQ and array operations (sorting-based approach)
+
+        public class Solution {
+            ${userCode}
+
+            public static void Main() {
+                string[] input = Console.ReadLine().Split(' ');
+                int[] nums = Array.ConvertAll(input, int.Parse);
+                int target = int.Parse(Console.ReadLine());
+
+                int[] result = ${functionName}(nums, target);
+                Console.WriteLine("[" + string.Join(", ", result) + "]");
+            }
+        }
     `.trim();
 }

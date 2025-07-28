@@ -19,7 +19,7 @@ import {
 
 export const problemWrapperMap: Record<
     string,
-    Record<string, (userCode: string, functionName: string) => string>
+    Record<string, (userCode: string) => string>
 > = {
     twoSum: {
         java: wrapTwoSumJavaCode,
@@ -35,7 +35,7 @@ export const problemWrapperMap: Record<
         perl: wrapTwoSumPerlCode,
         scala: wrapTwoSumScalaCode,
         haskell: wrapTwoSumHaskellCode,
-        r: wrapTwoSumRCode,
+        r: wrapTwoSumRCode, // not working 
         dart: wrapTwoSumDartCode,
         elixir: wrapTwoSumElixirCode,
     },
