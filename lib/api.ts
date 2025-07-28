@@ -60,5 +60,6 @@ export {PROBLEM_BASE}
 /* SUBMISSION ENDPOINTS */
 const SUBMISSION_BASE = "/api/submission";
 export const ADD_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/add`;
+export const GET_ALL_PROBLEM_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/problem`;
 
 export default api;

@@ -35,7 +35,7 @@ async function execute(problem: IProblem, code: string, lang: string, submit: bo
             expectedOutput,
             actualOutput,
             passed,
-            executionTime: res.time ? res.time : undefined,
+            // executionTime: res.time ? res.time : undefined,
         });
     }
 

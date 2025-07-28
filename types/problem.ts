@@ -48,14 +48,14 @@ export interface TestResult {
   actualOutput: string;
   passed: boolean;
   error?: string;
-  executionTime?: string;
+  // executionTime?: string;
 }
 
 export interface SubmissionResult {
   accepted: boolean;
   totalTests: number;
   passedTests: number;
-  runtime?: string;
-  memory?: string;
+  // runtime?: string;
+  // memory?: string;
   error?: string;
 }

@@ -1,4 +1,4 @@
-import api, { ADD_SUBMISSION_ENDPOINT, PROBLEM_BASE } from "./api";
+import api, { ADD_SUBMISSION_ENDPOINT, GET_ALL_PROBLEM_SUBMISSION_ENDPOINT, PROBLEM_BASE } from "./api";
 
 /* Utility Functions */
 const getProblems = async (page = 1) => {
@@ -13,12 +13,19 @@ const getProblemById = async (id: string) => {
 
 const addSubmission = async (payload: {
     problemId: string;
-    testcaseCode: string;
+    code: string;
     language: string;
-    status: "Accepted" | "Rejected" | "Pending"
+    status: "Accepted" | "Rejected" | "Pending",
+    // runtime: string,
+    // memory: string,
 }) => {
     const res = await api.post(ADD_SUBMISSION_ENDPOINT, payload);
     return res.data;
 };
 
-export { getProblems, getProblemById, addSubmission };
+const getSubmissionsByProblem = async (problemId: string) => {
+    const res = await api.get(`${GET_ALL_PROBLEM_SUBMISSION_ENDPOINT}/${problemId}/all`);
+    return res.data;
+};
+
+export { getProblems, getProblemById, addSubmission, getSubmissionsByProblem };

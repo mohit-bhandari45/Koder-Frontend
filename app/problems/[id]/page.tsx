@@ -2,6 +2,7 @@
 import Editor from "@/components/code-editor/editor";
 import Description from "@/components/problem/description";
 import Head from "@/components/problem/head";
+import SubmissionsTab from "@/components/problem/submission";
 import MainLoader from "@/components/shared/main-loader";
 import { useCodeEditor } from "@/context/CodeEditorContext";
 import { languageIdMap } from "@/lib/languageIdMap";
@@ -13,6 +14,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+
 export default function ProblemDetailPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
@@ -23,6 +25,7 @@ export default function ProblemDetailPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [executionOutput, setExecutionOutput] = useState<string>("");
   const [activeTab, setActiveTab] = useState<"testcase" | "result">("testcase");
+  const [mainTab, setMainTab] = useState<"problem" | "submissions">("problem");
 
   // context
   const { testcaseCode, setTestcaseCode, language, problem, setProblem } =
@@ -54,7 +57,7 @@ export default function ProblemDetailPage() {
     setIsRunning(true);
     setExecutionOutput("");
     setActiveTab("result");
-    
+
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
@@ -140,7 +143,7 @@ export default function ProblemDetailPage() {
         lang,
         true
       );
-      setTestResults(results);  
+      setTestResults(results);
 
       const passedCount = results.filter((r) => r.passed).length;
       const totalTests = problem.testCases.length;
@@ -150,8 +153,8 @@ export default function ProblemDetailPage() {
         accepted,
         totalTests,
         passedTests: passedCount,
-        runtime: `${Math.floor(Math.random() * 100) + 50}ms`,
-        memory: `${(Math.random() * 10 + 15).toFixed(1)}MB`,
+        // runtime: `${Math.floor(Math.random() * 100) + 50}ms`,
+        // memory: `${(Math.random() * 10 + 15).toFixed(1)}MB`,
         error: accepted ? undefined : "Wrong Answer",
       };
       setSubmissionResult(result);
@@ -159,27 +162,32 @@ export default function ProblemDetailPage() {
       if (accepted) {
         await addSubmission({
           problemId: problem._id as string,
-          testcaseCode,
+          code: testcaseCode,
           language,
           status: "Accepted",
+          // runtime: result.runtime!,
+          // memory: result.memory!,
         });
 
         setExecutionOutput(
-          `🎉 Accepted!\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}\n\nYour solution passed all ${totalTests} test cases.`
+          // `🎉 Accepted!\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}\n\nYour solution passed all ${totalTests} test cases.`
+          `🎉 Accepted!\n\nYour solution passed all ${totalTests} test cases.`
         );
       } else {
         setExecutionOutput(
-          `❌ ${result.error}\n\n${result.passedTests}/${result.totalTests} test cases passed\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}`
+          // `❌ ${result.error}\n\n${result.passedTests}/${result.totalTests} test cases passed\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}`
+          `❌ ${result.error}\n\n${result.passedTests}/${result.totalTests} test cases passed\n\n`
         );
+        await addSubmission({
+          problemId: problem?._id as string,
+          code: testcaseCode,
+          language,
+          status: "Rejected",
+          // runtime: result.runtime!,
+          // memory: result.memory!,
+        });
       }
     } catch (err) {
-      await addSubmission({
-        problemId: problem?._id as string,
-        testcaseCode,
-        language,
-        status: "Rejected",
-      });
-
       setExecutionOutput(
         `Submission Error: ${
           err instanceof Error ? err.message : "Unknown error"
@@ -212,74 +220,105 @@ export default function ProblemDetailPage() {
               &larr; Back to Problems
             </Link>
 
-            {/* Problem Header */}
-            <Head problem={problem} />
+            {/* Main Tabs */}
+            <div className="flex bg-gray-800 rounded-lg p-1 mb-6">
+              <button
+                onClick={() => setMainTab("problem")}
+                className={`flex-1 cursor-pointer px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  mainTab === "problem"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Problem
+              </button>
+              <button
+                onClick={() => setMainTab("submissions")}
+                className={`flex-1 cursor-pointer px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  mainTab === "submissions"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Submissions
+              </button>
+            </div>
 
-            {/* Description */}
-            <Description problem={problem} />
+            {/* Tab Content */}
+            {mainTab === "problem" ? (
+              <>
+                {/* Problem Header */}
+                <Head problem={problem} />
 
-            {/* Examples */}
-            {problem.examples && problem.examples.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Examples</h3>
-                <div className="space-y-4">
-                  {problem.examples.slice(0, 3).map((ex, i) => (
-                    <div
-                      key={i}
-                      className="bg-[#23232a] border border-gray-700 rounded-lg p-4"
-                    >
-                      <div className="font-semibold text-sm text-gray-300 mb-2">
-                        Example {i + 1}:
-                      </div>
-                      <div className="space-y-2">
-                        <div>
-                          <span className="font-bold text-gray-300">
-                            Input:
-                          </span>{" "}
-                          <code className="bg-gray-800 px-2 py-1 rounded text-sm">
-                            {ex.input}
-                          </code>
-                        </div>
-                        <div>
-                          <span className="font-bold text-gray-300">
-                            Output:
-                          </span>{" "}
-                          <code className="bg-gray-800 px-2 py-1 rounded text-sm">
-                            {ex.output}
-                          </code>
-                        </div>
-                        {ex.explanation && (
-                          <div>
-                            <span className="font-bold text-gray-300">
-                              Explanation:
-                            </span>{" "}
-                            <span className="text-gray-200">
-                              {ex.explanation}
-                            </span>
+                {/* Description */}
+                <Description problem={problem} />
+
+                {/* Examples */}
+                {problem.examples && problem.examples.length > 0 && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3">Examples</h3>
+                    <div className="space-y-4">
+                      {problem.examples.slice(0, 3).map((ex, i) => (
+                        <div
+                          key={i}
+                          className="bg-[#23232a] border border-gray-700 rounded-lg p-4"
+                        >
+                          <div className="font-semibold text-sm text-gray-300 mb-2">
+                            Example {i + 1}:
                           </div>
-                        )}
-                      </div>
+                          <div className="space-y-2">
+                            <div>
+                              <span className="font-bold text-gray-300">
+                                Input:
+                              </span>{" "}
+                              <code className="bg-gray-800 px-2 py-1 rounded text-sm">
+                                {ex.input}
+                              </code>
+                            </div>
+                            <div>
+                              <span className="font-bold text-gray-300">
+                                Output:
+                              </span>{" "}
+                              <code className="bg-gray-800 px-2 py-1 rounded text-sm">
+                                {ex.output}
+                              </code>
+                            </div>
+                            {ex.explanation && (
+                              <div>
+                                <span className="font-bold text-gray-300">
+                                  Explanation:
+                                </span>{" "}
+                                <span className="text-gray-200">
+                                  {ex.explanation}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              </div>
-            )}
+                  </div>
+                )}
 
-            {/* Constraints */}
-            {problem.constraints && (
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold mb-3">Constraints</h3>
-                <div className="bg-[#23232a] border border-gray-700 rounded-lg p-4">
-                  <ul className="text-gray-300 space-y-1">
-                    {problem.constraints.map((constraint, i) => (
-                      <li key={i} className="text-sm">
-                        • {constraint}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            )}
+                {/* Constraints */}
+                {problem.constraints && (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-semibold mb-3">Constraints</h3>
+                    <div className="bg-[#23232a] border border-gray-700 rounded-lg p-4">
+                      <ul className="text-gray-300 space-y-1">
+                        {problem.constraints.map((constraint, i) => (
+                          <li key={i} className="text-sm">
+                            • {constraint}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <SubmissionsTab problemId={problem._id as string} />
+            )}  
           </div>
         </div>
 
@@ -429,11 +468,11 @@ export default function ProblemDetailPage() {
                                 Example {index + 1}
                               </span>
                               <div className="flex items-center gap-2">
-                                {result.executionTime && (
+                                {/* {result.executionTime && (
                                   <span className="text-xs text-gray-400">
                                     {result.executionTime}ms
                                   </span>
-                                )}
+                                )} */}
                                 <span
                                   className={`text-xs px-2 py-1 rounded ${
                                     result.passed
