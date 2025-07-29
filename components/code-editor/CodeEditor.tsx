@@ -2,6 +2,7 @@ import { useCodeEditor } from "@/context/CodeEditorContext";
 import { draculaTheme } from "@/themes/dracula";
 import { solarizedDarkTheme } from "@/themes/solarized";
 import { Editor, OnMount } from "@monaco-editor/react";
+import * as monaco from "monaco-editor"; // ✅ for type support
 import { useEffect, useState } from "react";
 
 const CodeEditor = ({ mode }: { mode: "practice" | "testcase" }) => {
@@ -39,60 +40,57 @@ const CodeEditor = ({ mode }: { mode: "practice" | "testcase" }) => {
     editor.focus();
   };
 
-  // Responsive font size calculation
   const getResponsiveFontSize = () => {
     if (isMobile && fontSize > 16) {
-      return Math.max(12, fontSize - 4); // Reduce font size on mobile
+      return Math.max(12, fontSize - 4);
     }
     return fontSize;
   };
 
-  // Responsive editor options based on screen size
-  const getResponsiveOptions = () => ({
+  const getResponsiveOptions = (): monaco.editor.IStandaloneEditorConstructionOptions => ({
     fontSize: getResponsiveFontSize(),
     minimap: {
-      enabled: !isMobile, // Disable minimap on mobile
+      enabled: !isMobile,
       maxColumn: isMobile ? 0 : 120,
     },
-    wordWrap: "on" as const,
+    wordWrap: "on",
     automaticLayout: true,
     scrollBeyondLastLine: false,
     smoothScrolling: true,
-    cursorBlinking: "smooth" as const,
-    cursorSmoothCaretAnimation: "on" as const,
+    cursorBlinking: "smooth",
+    cursorSmoothCaretAnimation: "on",
     fontLigatures: true,
     lineHeight: isMobile ? 1.4 : 1.6,
     padding: {
       top: isMobile ? 8 : 16,
       bottom: isMobile ? 8 : 16,
     },
-    renderLineHighlight: "gutter" as const,
+    renderLineHighlight: "gutter",
     selectOnLineNumbers: true,
     roundedSelection: false,
     readOnly: false,
-    cursorStyle: "line" as const,
-    mouseWheelZoom: !isMobile, // Disable zoom on mobile to prevent conflicts
-    contextmenu: !isMobile, // Disable context menu on mobile
+    cursorStyle: "line",
+    mouseWheelZoom: !isMobile,
+    contextmenu: !isMobile,
     quickSuggestions: {
       other: true,
-      comments: !isMobile, // Reduce suggestions on mobile
+      comments: !isMobile,
       strings: true,
     },
     parameterHints: {
-      enabled: !isMobile, // Disable parameter hints on mobile for cleaner UI
+      enabled: !isMobile,
     },
     suggestOnTriggerCharacters: true,
-    acceptSuggestionOnEnter: "on" as const,
-    tabCompletion: "on" as const,
-    wordBasedSuggestions: "currentDocument" as const,
+    acceptSuggestionOnEnter: "on",
+    tabCompletion: "on",
+    wordBasedSuggestions: "currentDocument",
     bracketPairColorization: {
       enabled: true,
     },
     guides: {
       bracketPairs: true,
-      indentation: !isMobile, // Disable indentation guides on mobile for cleaner look
+      indentation: !isMobile,
     },
-    // Mobile-specific options
     scrollbar: {
       vertical: isMobile ? "hidden" : "auto",
       horizontal: isMobile ? "hidden" : "auto",
@@ -102,7 +100,7 @@ const CodeEditor = ({ mode }: { mode: "practice" | "testcase" }) => {
     overviewRulerLanes: isMobile ? 0 : 3,
     hideCursorInOverviewRuler: isMobile,
     overviewRulerBorder: !isMobile,
-    lineNumbers: isMobile ? ("off" as const) : ("on" as const), // Hide line numbers on very small screens
+    lineNumbers: isMobile ? "off" : "on",
     glyphMargin: !isMobile,
     folding: !isMobile,
     lineDecorationsWidth: isMobile ? 0 : 10,
@@ -117,30 +115,26 @@ const CodeEditor = ({ mode }: { mode: "practice" | "testcase" }) => {
     }
   };
 
-
   return (
     <div className="h-full w-full relative">
       <Editor
         height="100%"
         language={language}
         value={mode === "practice" ? practiceCode : testcaseCode}
-        onChange={(val) => handleCodeChange(val)}
+        onChange={handleCodeChange}
         theme={theme}
         onMount={handleEditorDidMount}
         loading={
           <div className="flex items-center justify-center h-full">
             <div className="flex items-center gap-2 text-slate-400">
               <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-slate-400 border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-xs sm:text-sm">
-                Loading Monaco Editor...
-              </span>
+              <span className="text-xs sm:text-sm">Loading Monaco Editor...</span>
             </div>
           </div>
         }
         options={getResponsiveOptions()}
       />
 
-      {/* Mobile overlay for better touch interaction */}
       {isMobile && (
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-2 right-2 bg-slate-800/80 backdrop-blur-sm rounded px-2 py-1 text-xs text-slate-300 pointer-events-none">
