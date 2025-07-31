@@ -1,17 +1,17 @@
 import { FaGithub as Github, FaLinkedin as Linkedin, FaTwitter as Twitter } from "react-icons/fa";
 
 
-function StatRow({ icon, label, value }) {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <span className="text-blue-500">{icon}</span>
-        <span className="text-gray-300 text-sm">{label}</span>
-      </div>
-      <span className="text-white font-semibold">{value}</span>
-    </div>
-  );
-}
+// function StatRow({ icon, label, value }) {
+//   return (
+//     <div className="flex items-center justify-between">
+//       <div className="flex items-center gap-2">
+//         <span className="text-blue-500">{icon}</span>
+//         <span className="text-gray-300 text-sm">{label}</span>
+//       </div>
+//       <span className="text-white font-semibold">{value}</span>
+//     </div>
+//   );
+// }
 
 function SocialLink({ href, icon: Icon }) {
   return (
@@ -63,13 +63,9 @@ export default function LeftSidebar({ user }) {
             <span>🎓</span>
             <span>{user.institute}</span>
           </div>
-          <div className="flex items-center gap-2 text-gray-300 text-sm">
-            <Github className="w-4 h-4" />
-            <span>{user.username}</span>
-          </div>
         </div>
 
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex gap-5">
           <SocialLink href={user.social.github} icon={Github} />
           <SocialLink href={user.social.linkedin} icon={Linkedin} />
           <SocialLink href={user.social.twitter} icon={Twitter} />

@@ -6,6 +6,7 @@ import {
   Search
 } from "lucide-react";
 import { useState } from "react";
+import AvatarDropdown from "./AvatarDropdown";
 
 
 function Navbar({user}) {
@@ -19,7 +20,7 @@ function Navbar({user}) {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Code className="w-8 h-8 text-orange-500" />
-              <span className="text-xl font-bold text-white">LeetCode</span>
+              <span className="text-xl font-bold text-white">CodeCraft</span>
             </div>
           </div>
 
@@ -54,9 +55,8 @@ function Navbar({user}) {
             <Search className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <Bell className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <div className="text-orange-500 font-semibold">0</div>
-            <div className="w-8 h-8 rounded-full bg-orange-500 flex items-center justify-center">
-              <img src={user.avatar} alt="avatar" className="w-8 h-8 rounded-full" />
-            </div>
+            <AvatarDropdown avatarUrl={user.avatar} username={user.username}/>
+            
             <span className="text-yellow-400 font-semibold">Premium</span>
             
             {/* Mobile menu button */}

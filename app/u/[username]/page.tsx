@@ -167,7 +167,7 @@ export default function UserProfilePage() {
   const [user] = useState(dummyUser);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black scrollbar-track">
       <Navbar user={user} />
       <div className="max-w-7xl mx-auto py-8 px-4">
         <div className="flex flex-col lg:flex-row gap-8">
