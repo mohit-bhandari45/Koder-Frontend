@@ -2,8 +2,10 @@
 
 import Social from "@/components/auth/social";
 import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
-import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Lock, Mail, UserRound } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import api,{ LOGIN_API } from "@/lib/api";  
 
 interface LoginForm {
   email: string;
@@ -16,6 +18,7 @@ interface LoginErrors {
 }
 
 export default function LoginPage() {
+  const router=useRouter();
   const loader = useRedirectIfAuthenticated("/u/:username");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -59,16 +62,39 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent): void => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-      setTimeout(() => {
-        console.log("Login submitted:", formData);
-        setIsLoading(false);
-      }, 1500);
+const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  setIsLoading(true);
+  setErrors({}); 
+
+  try {
+    const res = await api.post(LOGIN_API, {
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (res.status === 200) {
+      router.push("/u/:username"); 
     }
-  };
+  } catch (error: any) {
+    const message =
+      error?.response?.data?.message || "Something went wrong. Please try again.";
+
+    if (message.includes("Invalid email or password")) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Invalid email or password",
+        password: "Invalid email or password",
+      }));
+    } else {
+      alert(message);
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   if (loader) return loader;
 
