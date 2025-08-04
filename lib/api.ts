@@ -53,6 +53,12 @@ const GET_OWN_PROFILE_ENDPOINT = `${USER_BASE}/me`;
 const ADD_USERNAME_ENDPOINT = `${USER_BASE}/username`;
 export { GET_OWN_PROFILE_ENDPOINT, ADD_USERNAME_ENDPOINT };
 
+/* Auth APIs */
+const SIGNUP_API = `${BASE_URL}/auth/signup`;
+const LOGIN_API = `${BASE_URL}/auth/login`;
+const VERIFY_EMAIL_API = `${BASE_URL}/auth/verify`
+export { SIGNUP_API, LOGIN_API,VERIFY_EMAIL_API };
+
 /* PROBLEM ENDPOINTS */
 const PROBLEM_BASE = "/api/problem";
 export {PROBLEM_BASE}
