@@ -2,6 +2,8 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import api from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 type Props = {
   avatarUrl: string;
@@ -9,8 +11,17 @@ type Props = {
 };
 
 export default function AvatarDropdown({ avatarUrl, username }: Props) {
+  const router=useRouter();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleLogout = async ()=>{
+    const res=await api.post('http://localhost:4000/auth/logout');
+    if(res.status==201){
+      alert("Logged out successfully");
+      router.push('/auth/login')
+    }
+  }
 
   // Close on outside click
   useClickOutside(dropdownRef, () => setOpen(false));
@@ -35,7 +46,7 @@ export default function AvatarDropdown({ avatarUrl, username }: Props) {
           alt="avatar"
           width={32}
           height={32}
-          className="rounded-full"
+          className="rounded-full cursor-pointer"
         />
       </button>
 
@@ -54,10 +65,10 @@ export default function AvatarDropdown({ avatarUrl, username }: Props) {
               </div>
             </div>
           </div>
-          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition">
+          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer">
             Settings
           </button>
-          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition">
+          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={()=>handleLogout}>
             Logout
           </button>
         </div>
