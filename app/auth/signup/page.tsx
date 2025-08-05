@@ -14,8 +14,9 @@ import {
   X
 } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import api,{GET_OWN_PROFILE_ENDPOINT, SIGNUP_API} from "@/lib/api";
+import api,{SIGNUP_API} from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 export default function SignupPage() {
   const router=useRouter();
@@ -99,8 +100,9 @@ export default function SignupPage() {
     if (res.status === 201) {
      router.push(`/auth/verify-email?email=${formData.email}`); 
     } 
-  } catch (error: any) {
-    const message = error?.response?.data?.message || "Signup failed. Please try again.";
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ message: string }>;
+    const message = err?.response?.data?.message || "Signup failed. Please try again.";
     if (message.includes("User already exists")) {
       setErrors((prev) => ({
         ...prev,

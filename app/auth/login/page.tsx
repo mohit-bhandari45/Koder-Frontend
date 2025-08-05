@@ -2,10 +2,11 @@
 
 import Social from "@/components/auth/social";
 import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
-import { ArrowRight, Eye, EyeOff, Lock, Mail, UserRound } from "lucide-react";
+import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import api,{ LOGIN_API } from "@/lib/api";  
+import { AxiosError } from "axios";
 
 interface LoginForm {
   email: string;
@@ -78,9 +79,10 @@ const handleSubmit = async (e: FormEvent) => {
     if (res.status === 200) {
       router.push("/u/:username"); 
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ message: string }>;
     const message =
-      error?.response?.data?.message || "Something went wrong. Please try again.";
+      err?.response?.data?.message || "Something went wrong. Please try again.";
 
     if (message.includes("Invalid email or password")) {
       setErrors((prev) => ({
