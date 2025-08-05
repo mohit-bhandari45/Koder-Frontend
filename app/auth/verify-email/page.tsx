@@ -28,9 +28,7 @@ export default function VerifyEmailPage() {
 
       if (res.status === 200) {
         setSuccess("Email verified! Redirecting...");
-        setTimeout(() => {
-          router.push("/u/:username");
-        }, 1500);
+          router.push("/auth/username");
       }
     } catch (err: any) {
       const msg = err?.response?.data?.message || "Verification failed";
