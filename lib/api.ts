@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL = "https://fixed-hermina-mohit123-bf1cd383.koyeb.app";
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = " https://specified-peacock-mohit123-1b61bd1c.koyeb.app/";
+//const BASE_URL = "http://localhost:4000";
 
 export const api = axios.create({
     baseURL: BASE_URL,
@@ -52,6 +52,12 @@ const USER_BASE = "/api/user";
 const GET_OWN_PROFILE_ENDPOINT = `${USER_BASE}/me`;
 const ADD_USERNAME_ENDPOINT = `${USER_BASE}/username`;
 export { GET_OWN_PROFILE_ENDPOINT, ADD_USERNAME_ENDPOINT };
+
+/* Auth APIs */
+const SIGNUP_API = `${BASE_URL}/auth/signup`;
+const LOGIN_API = `${BASE_URL}/auth/login`;
+const VERIFY_EMAIL_API = `${BASE_URL}/auth/verify`
+export { SIGNUP_API, LOGIN_API,VERIFY_EMAIL_API };
 
 /* PROBLEM ENDPOINTS */
 const PROBLEM_BASE = "/api/problem";

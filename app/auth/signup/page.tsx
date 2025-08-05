@@ -14,8 +14,12 @@ import {
   X
 } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import api,{SIGNUP_API} from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 export default function SignupPage() {
+  const router=useRouter();
   const loader = useRedirectIfAuthenticated("/u/:username");
   
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -81,16 +85,37 @@ export default function SignupPage() {
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSubmit = (e: FormEvent): void => {
-    e.preventDefault();
-    if (validateForm()) {
-      setIsLoading(true);
-      setTimeout(() => {
-        console.log("Signup submitted:", formData);
-        setIsLoading(false);
-      }, 2000);
+ const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  setIsLoading(true);
+  try {
+    const res = await api.post(SIGNUP_API, {
+      fullName: formData.name,
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (res.status === 201) {
+     router.push(`/auth/verify-email?email=${formData.email}`); 
+    } 
+  } catch (error: unknown) {
+    const err = error as AxiosError<{ message: string }>;
+    const message = err?.response?.data?.message || "Signup failed. Please try again.";
+    if (message.includes("User already exists")) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "Email already registered",
+      }));
+    } else {
+      alert(message);
     }
-  };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
   
   const passwordStrength = getPasswordStrength(formData.password);
   const strengthInfo = getPasswordStrengthText(passwordStrength);
