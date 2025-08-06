@@ -8,6 +8,7 @@ import api, {
   VERIFY_RESET_OTP_ENDPOINT,
 } from "@/lib/api"; 
 import { AxiosError } from "axios";
+import ResendOtp from "@/components/auth/resendotp";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -139,6 +140,8 @@ export default function ForgotPasswordPage() {
               {success}
             </p>
           )}
+
+          {step==="otp" && <ResendOtp email={email} setError={setError} setSuccess={setSuccess}/>}
 
           {/* Submit Button */}
           <button

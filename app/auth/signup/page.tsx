@@ -97,7 +97,7 @@ export default function SignupPage() {
     });
 
     if (res.status === 201) {
-     router.push(`/auth/verify-email?email=${formData.email}`); 
+     router.push(`/auth/verify-email?email=${encodeURIComponent(formData.email)}`); 
     } 
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;
