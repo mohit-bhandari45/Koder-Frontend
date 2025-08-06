@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import api, { RESEND_OTP_ENDPOINT } from "@/lib/api";
+import { AxiosError } from "axios";
 
 interface ResendOtpProps {
   email: string;
@@ -33,7 +34,8 @@ export default function ResendOtp({
         if (setSuccess) setSuccess(" New OTP sent successfully.");
         if (setError) setError("");
       }
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
       if (setError)
         setError(err.response?.data?.message || "Failed to resend OTP");
       if (setSuccess) setSuccess("");
