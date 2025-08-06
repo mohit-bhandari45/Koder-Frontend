@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Mail, Check, X, ArrowRight } from "lucide-react";
-import api, { VERIFY_EMAIL_API } from "@/lib/api";
+import api, { VERIFY_EMAIL_ENDPOINT } from "@/lib/api";
 import { AxiosError } from "axios";
 
 
@@ -26,7 +26,7 @@ export default function VerifyEmailForm() {
       setLoading(true);
       setError("");
       try {
-        const res = await api.post(VERIFY_EMAIL_API, { email, code });
+        const res = await api.post(VERIFY_EMAIL_ENDPOINT, { email, code });
   
         if (res.status === 200) {
           setSuccess("Email verified! Redirecting...");
