@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/lib/api';
 import { Github } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -8,7 +9,7 @@ const Social = () => {
     return (
         <div className="space-y-3 mb-6">
             <button
-                onClick={() => router.push('http://localhost:4000/auth/google')}
+                onClick={() => router.push(`${BASE_URL}/auth/google`)}
                 className="w-full flex items-center cursor-pointer justify-center gap-3 bg-white/10 hover:bg-white/15 border border-white/20 rounded-lg px-4 py-3 transition-all duration-200 hover:scale-[1.02] group"
             >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -35,7 +36,7 @@ const Social = () => {
             </button>
 
             <button
-                onClick={() => router.push('http://localhost:4000/auth/github')}
+                onClick={() => router.push(`${BASE_URL}/auth/github`)}
                 className="w-full flex items-center cursor-pointer justify-center gap-3 bg-white/10 hover:bg-white/15 border border-white/20 rounded-lg px-4 py-3 transition-all duration-200 hover:scale-[1.02] group"
             >
                 <Github className="w-5 h-5" />

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = " https://specified-peacock-mohit123-1b61bd1c.koyeb.app/";
+export const BASE_URL = "https://specified-peacock-mohit123-1b61bd1c.koyeb.app/";
 //const BASE_URL = "http://localhost:4000";
 
 export const api = axios.create({
