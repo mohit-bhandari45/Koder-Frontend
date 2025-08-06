@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = " https://specified-peacock-mohit123-1b61bd1c.koyeb.app/";
-//const BASE_URL = "http://localhost:4000";
+//const BASE_URL = " https://specified-peacock-mohit123-1b61bd1c.koyeb.app/";
+const BASE_URL = "http://localhost:4000";
 
 export const api = axios.create({
     baseURL: BASE_URL,
@@ -53,11 +53,17 @@ const GET_OWN_PROFILE_ENDPOINT = `${USER_BASE}/me`;
 const ADD_USERNAME_ENDPOINT = `${USER_BASE}/username`;
 export { GET_OWN_PROFILE_ENDPOINT, ADD_USERNAME_ENDPOINT };
 
-/* Auth APIs */
-const SIGNUP_API = `${BASE_URL}/auth/signup`;
-const LOGIN_API = `${BASE_URL}/auth/login`;
-const VERIFY_EMAIL_API = `${BASE_URL}/auth/verify`
-export { SIGNUP_API, LOGIN_API,VERIFY_EMAIL_API };
+/* Auth ENDPOINTS */
+const AUTH_BASE = "/auth";
+const SIGNUP_ENDPOINT = `${AUTH_BASE}/signup`;
+const LOGIN_ENDPOINT = `${AUTH_BASE}/login`;
+const VERIFY_EMAIL_ENDPOINT = `${AUTH_BASE}/verify-email`;
+const RESEND_OTP_ENDPOINT = `${AUTH_BASE}/resend-otp`;
+/* Forgot-Password */
+const FORGOT_PASSWORD = `${AUTH_BASE}/forgot-password`;
+const VERIFY_RESET_OTP_ENDPOINT = `${AUTH_BASE}/verify-reset-otp`;
+const RESET_PASSWORD_ENDPOINT = `${AUTH_BASE}/reset-password`;
+export { SIGNUP_ENDPOINT, LOGIN_ENDPOINT, VERIFY_EMAIL_ENDPOINT,RESEND_OTP_ENDPOINT, FORGOT_PASSWORD, VERIFY_RESET_OTP_ENDPOINT, RESET_PASSWORD_ENDPOINT };
 
 /* PROBLEM ENDPOINTS */
 const PROBLEM_BASE = "/api/problem";

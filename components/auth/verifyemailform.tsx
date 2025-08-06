@@ -3,14 +3,14 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Mail, Check, X, ArrowRight } from "lucide-react";
-import api, { VERIFY_EMAIL_API } from "@/lib/api";
+import api, { VERIFY_EMAIL_ENDPOINT } from "@/lib/api";
 import { AxiosError } from "axios";
-
+import ResendOtp from "./resendotp";
 
 export default function VerifyEmailForm() {
   const router = useRouter();
     const searchParams = useSearchParams();
-    const email = searchParams.get("email");
+    const email = searchParams.get("email") as string;
   
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
@@ -26,7 +26,7 @@ export default function VerifyEmailForm() {
       setLoading(true);
       setError("");
       try {
-        const res = await api.post(VERIFY_EMAIL_API, { email, code });
+        const res = await api.post(VERIFY_EMAIL_ENDPOINT, { email, code });
   
         if (res.status === 200) {
           setSuccess("Email verified! Redirecting...");
@@ -104,7 +104,9 @@ export default function VerifyEmailForm() {
                 {success}
               </p>
             )}
-  
+
+            <ResendOtp email={email} type="verify" setError={setError} setSuccess={setSuccess} />
+            
             {/* Submit Button */}
             <button
               onClick={handleVerify}

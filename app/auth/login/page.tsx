@@ -5,7 +5,7 @@ import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import api,{ LOGIN_API } from "@/lib/api";  
+import api,{ LOGIN_ENDPOINT } from "@/lib/api";  
 import { AxiosError } from "axios";
 
 interface LoginForm {
@@ -71,7 +71,7 @@ const handleSubmit = async (e: FormEvent) => {
   setErrors({}); 
 
   try {
-    const res = await api.post(LOGIN_API, {
+    const res = await api.post(LOGIN_ENDPOINT, {
       email: formData.email,
       password: formData.password,
     });
@@ -173,8 +173,8 @@ const handleSubmit = async (e: FormEvent) => {
                   Password
                 </label>
                 <a
-                  href="#"
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                  className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
+                  onClick={()=>router.push("/auth/forgot-password")}
                 >
                   Forgot password?
                 </a>

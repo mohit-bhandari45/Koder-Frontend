@@ -14,7 +14,7 @@ import {
   X
 } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import api,{SIGNUP_API} from "@/lib/api";
+import api,{ SIGNUP_ENDPOINT } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 
@@ -23,8 +23,7 @@ export default function SignupPage() {
   const loader = useRedirectIfAuthenticated("/u/:username");
   
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-  useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -91,14 +90,14 @@ export default function SignupPage() {
 
   setIsLoading(true);
   try {
-    const res = await api.post(SIGNUP_API, {
+    const res = await api.post(SIGNUP_ENDPOINT, {
       fullName: formData.name,
       email: formData.email,
       password: formData.password,
     });
 
     if (res.status === 201) {
-     router.push(`/auth/verify-email?email=${formData.email}`); 
+     router.push(`/auth/verify-email?email=${encodeURIComponent(formData.email)}`); 
     } 
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;
