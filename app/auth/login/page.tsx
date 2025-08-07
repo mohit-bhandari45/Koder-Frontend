@@ -4,6 +4,7 @@ import Social from "@/components/auth/social";
 import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface LoginForm {
   email: string;
@@ -16,6 +17,7 @@ interface LoginErrors {
 }
 
 export default function LoginPage() {
+  const router= useRouter();
   const loader = useRedirectIfAuthenticated("/u/:username");
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -63,10 +65,7 @@ export default function LoginPage() {
     e.preventDefault();
     if (validateForm()) {
       setIsLoading(true);
-      setTimeout(() => {
-        console.log("Login submitted:", formData);
-        setIsLoading(false);
-      }, 1500);
+      router.push("/u/:username")
     }
   };
 
