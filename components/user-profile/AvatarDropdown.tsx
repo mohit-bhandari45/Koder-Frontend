@@ -17,7 +17,7 @@ export default function AvatarDropdown({ avatarUrl, username }: Props) {
 
   const handleLogout = async ()=>{
     const res=await api.post('http://localhost:4000/auth/logout');
-    if(res.status==201){
+    if(res.status==200){
       alert("Logged out successfully");
       router.push('/auth/login')
     }
