@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { api, GET_OWN_PROFILE_ENDPOINT } from "@/lib/api"; 
 import { AxiosError } from "axios";
-import { useMainLoader } from "@/context/MainLoaderContext";
 import { useRouter } from "next/navigation";
 import { AlertCircle, CheckCircle, Eye, EyeOff, Loader2, User, Lock, Trash2 } from "lucide-react";
 
@@ -26,11 +25,10 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   // Simple loading and message states
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");
   
-  const { mainLoading, setMainLoading } = useMainLoader();
   const router = useRouter();
 
   // Clear message after 3 seconds
@@ -46,7 +44,6 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
 
   useEffect(() => {
     const fetchProfile = async () => {
-      setMainLoading(true);
       try {
         const res = await api.get(GET_OWN_PROFILE_ENDPOINT);
         if (res.status === 200) {
@@ -60,16 +57,14 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
         const errorMessage = err?.response?.data?.message || "Failed to load profile. Please refresh the page.";
         setMessage(errorMessage);
         setMessageType("error");
-      } finally {
-        setMainLoading(false);
-      }    
+      } 
     };
     fetchProfile();
-  }, [setMainLoading]);
+  }, []);
 
-  const handleSubmit = async (
+  const handleSubmit = async  <T,>(
     e: React.FormEvent,
-    apiCall: () => Promise<any>,
+    apiCall: () => Promise<T>,
     successMessage: string,
     resetFields?: () => void
   ) => {
@@ -83,7 +78,8 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
       setMessage(successMessage);
       setMessageType("success");
       if (resetFields) resetFields();
-    } catch (error: any) {
+    } catch (err: unknown) {
+      const error = err as AxiosError<{ message: string }>;
       const errorMessage = error.response?.data?.message || "An error occurred. Please try again.";
       setMessage(errorMessage);
       setMessageType("error");
@@ -133,8 +129,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
       setMessage("Account deleted successfully. Redirecting...");
       setMessageType("success");
       router.push("/auth/signup");
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.message || "Error deleting account";
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
+      const errorMessage = err.response?.data?.message || "Error deleting account";
       setMessage(errorMessage);
       setMessageType("error");
     } finally {
@@ -195,8 +192,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                   disabled={loading}
                   className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
                 >
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                  {loading ? "Updating..." : "Update Username"}
+                  Update Username
                 </button>
               </form>
             </div>
@@ -235,8 +231,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                   disabled={loading}
                   className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
                 >
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                  {loading ? "Updating..." : "Update Profile"}
+                 Update Profile
                 </button>
               </form>
             </div>
@@ -327,8 +322,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                   disabled={loading}
                   className="bg-yellow-600 hover:bg-yellow-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
                 >
-                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                  {loading ? "Changing..." : "Change Password"}
+                  Change Password
                 </button>
               </form>
             </div>
