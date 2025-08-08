@@ -147,3 +147,33 @@
     @apply bg-background text-foreground;
   }
 }
+
+.scroll-hide::-webkit-scrollbar {
+  display: none;
+}
+.scroll-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Custom scrollbar for body and app-wide */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background); /* uses your light/dark theme background */
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--muted-foreground); /* light gray in dark, dark gray in light */
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--ring); /* slightly more prominent on hover */
+}
+
+/* Firefox support */
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted-foreground) var(--background);
+}
+
