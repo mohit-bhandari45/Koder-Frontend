@@ -1,5 +1,5 @@
-import { FaGithub as Github, FaLinkedin as Linkedin, FaTwitter as Twitter } from "react-icons/fa";
-
+import {Github,Twitter,Linkedin} from "lucide-react";
+import { User } from "@/app/u/[username]/page";
 
 // function StatRow({ icon, label, value }) {
 //   return (
@@ -13,7 +13,12 @@ import { FaGithub as Github, FaLinkedin as Linkedin, FaTwitter as Twitter } from
 //   );
 // }
 
-function SocialLink({ href, icon: Icon }) {
+type SocialLinkProps = {
+  href: string;
+  icon:  React.ElementType;
+};
+
+export function SocialLink({ href, icon: Icon }: SocialLinkProps) {
   return (
     <a
       href={href}
@@ -28,7 +33,8 @@ function SocialLink({ href, icon: Icon }) {
 
 
 
-export default function LeftSidebar({ user }) {
+
+export default function LeftSidebar({ user }:{ user: User}) {
   return (
     <div className="w-full lg:w-80 space-y-6">
       {/* Profile Card */}

@@ -5,8 +5,90 @@ import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
 import { useState } from "react";
 
+export type Submission = {
+  id: number;
+  title: string;
+  status: string;
+  lang: string;
+  time: string;
+};
+
+export type SolvedProblem = {
+  id: number;
+  title: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  date: string;
+};
+
+export type RecentActivity = {
+  id: number;
+  title: string;
+  status: string;
+  date: string;
+};
+
+export type Badge = {
+  id: number;
+  name: string;
+  icon: string;
+  recent?: boolean;
+};
+
+export type LanguageStat = {
+  name: string;
+  solved: number;
+  color: string;
+};
+
+export type SkillLevel = {
+  level: "Fundamental" | "Intermediate" | "Advanced";
+  topics: string[];
+};
+
+export type Stats = {
+  solved: number;
+  totalProblems: number;
+  acceptance: number;
+  ranking: number;
+  globalRanking: number;
+  streak: number;
+  maxStreak: number;
+  contestRating: number;
+  attendedContests: number;
+  topPercentage: number;
+  badges: number;
+  easy: { solved: number; total: number };
+  medium: { solved: number; total: number };
+  hard: { solved: number; total: number };
+};
+
+export type SocialLinks = {
+  github: string;
+  linkedin: string;
+  twitter: string;
+};
+
+export type User = {
+  username: string;
+  fullname: string;
+  avatar: string;
+  bio: string;
+  location: string;
+  institute: string;
+  social: SocialLinks;
+  submissions: Submission[];
+  stats: Stats;
+  badges: Badge[];
+  recentActivity: RecentActivity[];
+  solvedProblems: SolvedProblem[];
+  about: string;
+  languages: LanguageStat[];
+  skills: SkillLevel[];
+};
+
+
 // Dummy data
-const dummyUser = {
+const dummyUser : User = {
   username: "PriyanshuRawat0000",
   fullname: "Priyanshu Rawat",
   avatar: "https://i.pravatar.cc/150?img=3",

@@ -1,4 +1,8 @@
-export default function MainContent({ user }) {
+"use client"
+
+import { User } from "@/app/u/[username]/page";
+
+export default function MainContent({ user }:{user:User}) {
   return (
     <div className="flex-1 space-y-6">
       
@@ -31,7 +35,7 @@ export default function MainContent({ user }) {
                   <div className="text-gray-400 text-sm">/{user.stats.totalProblems}</div>
                   <div className="text-gray-300 text-sm mt-1">Solved</div>
                   <div className="text-sm text-green-500 mt-1">
-                    Acceptance: {user.stats.acceptanceRate}%
+                    Acceptance: {user.stats.acceptance}%
                   </div>
                 </div>
               </div>
@@ -58,15 +62,15 @@ export default function MainContent({ user }) {
               <div className="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center"><span className="text-2xl">🥉</span></div>
             </div>
 
-            <div className="text-sm text-gray-400 mb-2">Most Recent</div>
-            <div className="text-white font-semibold">{user.stats.latestBadge}</div>
+            {/* <div className="text-sm text-gray-400 mb-2">Most Recent</div>
+            <div className="text-white font-semibold">{user.stats.latestBadge}</div> */}
           </div>
       </div>
 
      
 
       {/* Submission Heatmap */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+      {/* <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-white font-semibold text-lg">Submission Heatmap</h3>
           <div className="flex items-center gap-4 text-sm text-gray-400">
@@ -96,7 +100,7 @@ export default function MainContent({ user }) {
           <span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span>
           <span>Dec</span><span>Jan</span><span>Jul</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Recent Submissions */}
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
@@ -121,7 +125,7 @@ export default function MainContent({ user }) {
   );
 }
 
-function DifficultyBar({ label, solved, total, color }) {
+function DifficultyBar({ label, solved, total, color }:{label:string,solved:number,total:number,color:string}) {
   const percentage = (solved / total) * 100;
 
   return (

@@ -1,4 +1,4 @@
-
+"use client"
 import {
   Bell,
   Code,
@@ -7,9 +7,10 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
+import { User } from "@/app/u/[username]/page";
 
 
-function Navbar({user}) {
+function Navbar({ user }: { user: User }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
