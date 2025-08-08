@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import api from "@/lib/api";
+import api,{LOGOUT_ENDPOINT} from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 type Props = {
@@ -17,7 +17,7 @@ export default function AvatarDropdown({ avatarUrl, username }: Props) {
 
   const handleLogout = async ()=>{
     console.log("logged out")
-    const res=await api.post('http://localhost:4000/auth/logout');
+    const res=await api.post(LOGOUT_ENDPOINT);
     if(res.status==200){
       alert("Logged out successfully");
       router.push('/auth/login')

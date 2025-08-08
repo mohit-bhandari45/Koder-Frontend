@@ -56,7 +56,7 @@ function Navbar({ user }: { user: User }) {
             <Search className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <Bell className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <div className="text-orange-500 font-semibold">0</div>
-            <AvatarDropdown avatarUrl={user.avatar} username={user.username}/>
+            <AvatarDropdown avatarUrl={user.avatar} username={user.username} />
             
             <span className="text-yellow-400 font-semibold">Premium</span>
             
