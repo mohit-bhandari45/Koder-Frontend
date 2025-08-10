@@ -11,3 +11,12 @@ type User =  {
   }
 
   export default User;
+
+  type DashboardState = {
+  progress: any;
+  languages: any;
+  skills: any;
+  submissions: any;
+};
+
+export type {DashboardState};

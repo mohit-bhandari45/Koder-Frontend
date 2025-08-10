@@ -21,7 +21,7 @@ function Navbar({ user }: { user: User }) {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Code className="w-8 h-8 text-orange-500" />
-              <span className="text-xl font-bold text-white">CodeCraft</span>
+              <span className="text-xl font-bold text-white">Koder</span>
             </div>
           </div>
 
