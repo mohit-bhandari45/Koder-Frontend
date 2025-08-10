@@ -6,11 +6,11 @@ import api,{LOGOUT_ENDPOINT} from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 type Props = {
-  avatarUrl: string;
+  profilepicture?: string ;
   username: string;
 };
 
-export default function AvatarDropdown({ avatarUrl, username }: Props) {
+export default function AvatarDropdown({ profilepicture, username }: Props) {
   const router=useRouter();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export default function AvatarDropdown({ avatarUrl, username }: Props) {
         className="flex items-center gap-2 focus:outline-none"
       >
         <img
-          src={avatarUrl}
+          src={profilepicture}
           alt="avatar"
           width={32}
           height={32}
@@ -55,7 +55,7 @@ export default function AvatarDropdown({ avatarUrl, username }: Props) {
         <div className="absolute right-0 mt-2 w-64 bg-neutral-900 border border-neutral-700 rounded-xl shadow-lg z-50 overflow-hidden">
           <div className="flex items-center gap-3 p-4 border-b border-neutral-800">
             <img
-              src={avatarUrl}
+              src={profilepicture}
               alt="avatar"
               className="w-10 h-10 rounded-full"
             />

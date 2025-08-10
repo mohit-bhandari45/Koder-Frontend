@@ -33,9 +33,9 @@ export function SocialLink({ href, icon: Icon }: SocialLinkProps) {
 
 export default function LeftSidebar({ user,dashboard }:{ user: User,dashboard:DashboardState}) {
   return (
-    <div className="w-full lg:w-80 space-y-6">
+    <div className="w-full lg:w-80 space-y-6 ">
       {/* Profile Card */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
         <div className="flex items-start gap-4">
           <div className="relative">
             <img
@@ -49,7 +49,7 @@ export default function LeftSidebar({ user,dashboard }:{ user: User,dashboard:Da
           </div>
           
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-white mb-1">{user.fullname}</h1>
+            <h1 className="text-xl font-bold text-white mb-1">{user.fullName}</h1>
             <p className="text-gray-400 text-sm mb-2">{user.username}</p>
             {/* <div className="text-sm text-gray-300 mb-3">
               Rank <span className="font-semibold text-white">{user.stats.ranking.toLocaleString()}</span>
@@ -87,24 +87,28 @@ export default function LeftSidebar({ user,dashboard }:{ user: User,dashboard:Da
       </div> */}
 
       {/* Languages */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
         <h3 className="text-lg font-semibold text-white mb-4">Languages</h3>
         <div className="space-y-3">
-          {dashboard.languages.map((lang:any) => (
-            <div key={lang.name} className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <span className="text-gray-300">{lang.name}</span>
+          {Array.isArray(dashboard.languages) && dashboard.languages.length > 0 ? (
+            dashboard.languages.map((lang: any) => (
+              <div key={lang.name} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-300">{lang.name}</span>
+                </div>
+                <span className="text-gray-400 text-sm">{lang.solvedCount} problems solved</span>
               </div>
-              <span className="text-gray-400 text-sm">{lang.solvedCount} problems solved</span>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p className="text-gray-500 italic">No language stats available yet</p>
+          )}
         </div>
       </div>
 
       {/* Skills */}
-    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
     <h3 className="text-lg font-semibold text-white mb-4">Skills</h3>
-    <div className="space-y-4">
+    {/* <div className="space-y-4">
         {dashboard.skills.map((skillGroup) => (
         <div key={skillGroup.level}>
             <div className="text-gray-200 font-medium mb-1">{skillGroup.level}</div>
@@ -120,6 +124,22 @@ export default function LeftSidebar({ user,dashboard }:{ user: User,dashboard:Da
             </div>
         </div>
         ))}
+    </div> */}
+    <div className="space-y-4">
+      {dashboard.skills.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          {dashboard.skills.map((skill:any) => (
+            <span
+              key={skill}
+              className="text-sm text-gray-300 bg-gray-800 border border-gray-700 px-2 py-1 rounded-md"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500 italic">No skills listed yet</p>
+      )}
     </div>
     </div>
 

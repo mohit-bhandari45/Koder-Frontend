@@ -1,7 +1,7 @@
 // Interface for User document
 type User =  {
     _id: string;
-    fullname: string;
+    fullName: string;
     username: string;
     email: string;
     password: string;

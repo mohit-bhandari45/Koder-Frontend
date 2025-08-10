@@ -7,8 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
-import { User } from "@/app/u/[username]/page";
-
+import User from "@/types/userTypes";
 
 function Navbar({ user }: { user: User }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -56,7 +55,7 @@ function Navbar({ user }: { user: User }) {
             <Search className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <Bell className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <div className="text-orange-500 font-semibold">0</div>
-            <AvatarDropdown avatarUrl={user.avatar} username={user.username} />
+            <AvatarDropdown profilepicture={user.profilepicture} username={user.username} />
             
             <span className="text-yellow-400 font-semibold">Premium</span>
             
