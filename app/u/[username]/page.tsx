@@ -76,9 +76,8 @@ export default function UserProfilePage() {
 
   return (
     <div className="min-h-screen bg-black scrollbar-track">
-      
-      {user && dashboard && (
-        <>
+      {!loading && !error ? (
+        <>{ user && dashboard && (<>
           <Navbar user={user} />
           <div className="max-w-7xl mx-auto py-8 px-4">
             <div className="flex flex-col lg:flex-row gap-8">
@@ -86,8 +85,9 @@ export default function UserProfilePage() {
               <MainContent dashboard={dashboard} />
             </div>
           </div>
+        </>)}
         </>
-      )}
+      ): <MainLoader/>}
     </div>
   );
 }

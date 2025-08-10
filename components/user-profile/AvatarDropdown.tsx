@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import api,{LOGOUT_ENDPOINT} from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { User } from "lucide-react";
 
 type Props = {
   profilepicture?: string ;
@@ -27,28 +28,24 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
   // Close on outside click
   useClickOutside(dropdownRef, () => setOpen(false));
 
-  // Close on Escape
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
-
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="flex items-center gap-2 focus:outline-none"
       >
-        <img
-          src={profilepicture}
-          alt="avatar"
-          width={32}
-          height={32}
-          className="rounded-full cursor-pointer"
-        />
+        {profilepicture ? (
+          <img
+            src={profilepicture}
+            alt= "profilepicture"
+            width={32}
+            height={32}
+            className="rounded-full cursor-pointer"
+          />
+        ) : (
+          <User className="text-white"/>
+        )}
       </button>
 
       {open && (

@@ -16,8 +16,6 @@ const menuItems = [
   { label: "General Settings", icon: Settings }
 ];
 
-
-
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ content, setContent }) => {
   const router=useRouter();
 
