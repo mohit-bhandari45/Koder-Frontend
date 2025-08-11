@@ -1,7 +1,7 @@
 "use client";
 
-import { DashboardState } from "@/types/user.types";
-import { formatRelativeTime } from "@/lib/utils";
+import DashboardState from "@/types/dashboard.types";
+import { formatRelativeTime } from "@/utils/helper.utils";
 import ProblemsSolvedCard from "./ProblemSolvedCard";
 
 export default function MainContent({

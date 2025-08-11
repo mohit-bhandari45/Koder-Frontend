@@ -33,7 +33,7 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex items-center gap-2 focus:outline-none"
+        className="flex items-center gap-2 focus:outline-none "
       >
         {profilepicture ? (
           <img
@@ -41,7 +41,7 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
             alt= "profilepicture"
             width={32}
             height={32}
-            className="rounded-full cursor-pointer"
+            className="aspect-square w-[32px] rounded-full object-cover cursor-pointer"
           />
         ) : (
           <User className="text-white"/>

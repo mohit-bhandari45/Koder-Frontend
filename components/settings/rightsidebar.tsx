@@ -13,6 +13,7 @@ import {
   User,
   Lock,
   Trash2,
+  Camera,
 } from "lucide-react";
 
 interface RightSidebarProps {
@@ -74,6 +75,48 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
     };
     fetchProfile();
   }, []);
+
+  const handleFileChange = async ( event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    // Validate image
+    if (!file.type.startsWith("image/")) {
+      setMessage("Please select a valid image file.");
+      setMessageType("error");
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setMessage("Image size must be less than 2MB.");
+      setMessageType("error");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      setLoading(true);
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=2fe8ec49801ba50d1cbc6ffbaee0f524`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const data = await res.json();
+      if (data.success) {
+        setProfilePicture(data.data.url);
+      } else {
+        setMessage("Image upload failed.");
+        setMessageType("error");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Error uploading image.");
+      setMessageType("error");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSubmit = async <T,>(
     e: React.FormEvent,
@@ -180,7 +223,8 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
       router.push("/auth/signup");
     } catch (error: unknown) {
       const err = error as AxiosError<{ message: string }>;
-      const errorMessage =  err.response?.data?.message || "Error deleting account";
+      const errorMessage =
+        err.response?.data?.message || "Error deleting account";
       setMessage(errorMessage);
       setMessageType("error");
     } finally {
@@ -220,7 +264,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
           <div className="space-y-8">
             {/* Update Username */}
             <div className="bg-gray-800/50 p-6 rounded-lg">
-              <h3 className="text-lg font-medium text-white mb-4">Update Username</h3>
+              <h3 className="text-lg font-medium text-white mb-4">
+                Update Username
+              </h3>
               <form onSubmit={handleUpdateUsername} className="space-y-4">
                 <div>
                   <label className="block text-gray-300 text-sm font-medium mb-2">
@@ -247,53 +293,56 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 </button>
               </form>
             </div>
-
             {/* Update Profile */}
             <div className="bg-gray-800/50 p-6 rounded-lg">
               <h3 className="text-lg font-medium text-white mb-4">
                 Update Profile
               </h3>
               <form onSubmit={handleUpdateProfile} className="space-y-4">
-                {/* Profile Picture Preview */}
+                {/* Profile Picture with overlay icon */}
                 <div className="flex items-center gap-4">
-                  {profilePicture?.trim() ? (
-                    <img
-                      src={profilePicture}
-                      alt="Profile Preview"
-                      className="w-25 h-25 rounded-full border border-gray-700 object-cover"
-                    />
-                  ) : (
-                    <div className="w-25 h-25 rounded-full bg-gray-700 border border-gray-600 flex items-center justify-center">
-                      <User className="w-8 h-8 text-gray-400" />
-                    </div>
-                  )}
-                  <div className="flex-1">
-                    <label className="block text-gray-300 text-sm font-medium mb-2">
-                      Profile Picture URL
+                  <div className="relative">
+                    {profilePicture?.trim() ? (
+                      <img
+                        src={profilePicture}
+                        alt="Profile"
+                        className="w-24 h-24 rounded-full border border-gray-700 object-cover"
+                      />
+                    ) : (
+                      <div className="w-24 h-24 rounded-full bg-gray-700 border border-gray-600 flex items-center justify-center">
+                        <User className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
+
+                    {/* Add icon */}
+                    <label
+                      htmlFor="profile-upload"
+                      className="absolute bottom-0 right-0 bg-gray-900 p-2 rounded-full cursor-pointer hover:bg-gray-700 transition"
+                    >
+                      <Camera className="w-5 h-5 text-white" />
                     </label>
                     <input
-                      type="url"
-                      value={profilePicture}
-                      onChange={(e) => setProfilePicture(e.target.value)}
-                      className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                      placeholder="Enter profile image URL to edit"
+                      id="profile-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileChange}
                     />
                   </div>
-                </div>
 
-                {/* Full Name */}
-                <div>
-                  <label className="block text-gray-300 text-sm font-medium mb-2">
-                    Full Name <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
-                    placeholder="Enter full name"
-                    required
-                  />
+                  <div className="flex-1">
+                    <label className="block text-gray-300 text-sm font-medium mb-2">
+                      Full Name <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      placeholder="Enter full name"
+                      required
+                    />
+                  </div>
                 </div>
 
                 {/* Submit */}
@@ -302,10 +351,11 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                   disabled={loading}
                   className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
                 >
-                  Update Profile
+                  {loading ? "Uploading..." : "Update Profile"}
                 </button>
               </form>
             </div>
+            );
           </div>
         )}
 
@@ -317,26 +367,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 <h3 className="text-lg font-medium text-white mb-4">
                   Set Password
                 </h3>
-                <form
-                  onSubmit={(e) => {
-                    if (newPassword !== confirmPassword) {
-                      setMessage("Passwords don't match");
-                      setMessageType("error");
-                      return;
-                    }
-                    handleSubmit(
-                      e,
-                      () => api.post("/api/user/add-password", { newPassword }),
-                      "Password set successfully!",
-                      () => {
-                        setNewPassword("");
-                        setConfirmPassword("");
-                        setHasPassword(true); // Switch UI to Change Password after success
-                      }
-                    );
-                  }}
-                  className="space-y-4"
-                >
+                <form onSubmit={handleSetPassword} className="space-y-4">
                   {/* New Password */}
                   <div>
                     <label className="block text-gray-300 text-sm font-medium mb-2">
