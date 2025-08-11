@@ -1,4 +1,4 @@
-import api, { ADD_SUBMISSION_ENDPOINT, GET_ALL_PROBLEM_SUBMISSION_ENDPOINT, PROBLEM_BASE } from "./api";
+import api, { ADD_SUBMISSION_ENDPOINT, GET_ALL_PROBLEM_SUBMISSION_ENDPOINT, PROBLEM_BASE } from "./api.lib";
 
 /* Utility Functions */
 const getProblems = async (page = 1) => {

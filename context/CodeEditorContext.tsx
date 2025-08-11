@@ -1,6 +1,6 @@
 "use client";
 
-import { IProblem } from "@/types/problem";
+import { IProblem } from "@/types/problem.types";
 import {
   createContext,
   Dispatch,

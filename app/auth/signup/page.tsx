@@ -14,7 +14,7 @@ import {
   X
 } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import api,{ SIGNUP_ENDPOINT } from "@/lib/api";
+import api,{ SIGNUP_ENDPOINT } from "@/lib/api.lib";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
 

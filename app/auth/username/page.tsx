@@ -1,6 +1,6 @@
 "use client";
 
-import api, { ADD_USERNAME_ENDPOINT } from "@/lib/api";
+import api, { ADD_USERNAME_ENDPOINT } from "@/lib/api.lib";
 import MainLoader from "@/components/shared/main-loader";
 import { useMainLoader } from "@/context/MainLoaderContext";
 import { useUser } from "@/context/UserContext";

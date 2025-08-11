@@ -3,7 +3,7 @@
 import { Settings, Shield, User, LogOut } from 'lucide-react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import api,{LOGOUT_ENDPOINT} from '@/lib/api';
+import api,{LOGOUT_ENDPOINT} from '@/lib/api.lib';
 
 interface LeftSidebarProps {
   content: string;

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Eye, EyeOff, Lock, Check, X } from "lucide-react";
-import api, { RESET_PASSWORD_ENDPOINT } from "@/lib/api";
+import api, { RESET_PASSWORD_ENDPOINT } from "@/lib/api.lib";
 import {
   getPasswordStrength,
   getPasswordStrengthText,

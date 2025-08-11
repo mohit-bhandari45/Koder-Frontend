@@ -6,7 +6,7 @@ import { Mail, Check, X, ArrowRight } from "lucide-react";
 import api, {
   FORGOT_PASSWORD,
   VERIFY_RESET_OTP_ENDPOINT,
-} from "@/lib/api"; 
+} from "@/lib/api.lib"; 
 import { AxiosError } from "axios";
 import ResendOtp from "@/components/auth/resendotp";
 

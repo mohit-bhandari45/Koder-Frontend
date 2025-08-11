@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import api, { RESEND_OTP_ENDPOINT } from "@/lib/api";
+import api, { RESEND_OTP_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 
 interface ResendOtpProps {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import api from "./api";
+import api from "./api.lib";
 
 export const DASHBOARD_URL = "http://localhost:5000";
 

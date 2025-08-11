@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
-import User from "@/types/userTypes";
+import User from "@/types/user.types";
 
 function Navbar({ user }: { user: User }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

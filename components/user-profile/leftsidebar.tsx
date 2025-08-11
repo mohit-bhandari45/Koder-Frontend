@@ -1,5 +1,5 @@
 import {Github,Twitter,Linkedin} from "lucide-react";
-import User,{DashboardState} from "@/types/userTypes";
+import User,{DashboardState} from "@/types/user.types";
 // function StatRow({ icon, label, value }) {
 //   return (
 //     <div className="flex items-center justify-between">

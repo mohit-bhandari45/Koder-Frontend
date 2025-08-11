@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { api, GET_OWN_PROFILE_ENDPOINT } from "@/lib/api";
+import { api, GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import {

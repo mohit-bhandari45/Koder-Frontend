@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import api,{LOGOUT_ENDPOINT} from "@/lib/api";
+import api,{LOGOUT_ENDPOINT} from "@/lib/api.lib";
 import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 

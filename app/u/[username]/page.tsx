@@ -4,15 +4,15 @@ import Navbar from "@/components/user-profile/navbar";
 import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
 import { useEffect, useState } from "react";
-import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api";
+import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import api2, {
   GET_LANGUAGE_STATS,
   GET_PROGRESS_SUMMARY,
   GET_RECENT_SUBMISSIONS,
   GET_SKILL_STATS,
-} from "@/lib/dashboardAPI";
-import User from "@/types/userTypes";
+} from "@/lib/dashboardAPI.lib";
+import User from "@/types/user.types";
 import { useMainLoader } from "@/context/MainLoaderContext";
 import MainLoader from "@/components/shared/main-loader";
 

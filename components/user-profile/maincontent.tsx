@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardState } from "@/types/userTypes";
+import { DashboardState } from "@/types/user.types";
 import { formatRelativeTime } from "@/lib/utils";
 import ProblemsSolvedCard from "./ProblemSolvedCard";
 

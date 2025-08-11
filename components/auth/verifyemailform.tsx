@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Mail, Check, X, ArrowRight } from "lucide-react";
-import api, { VERIFY_EMAIL_ENDPOINT } from "@/lib/api";
+import api, { VERIFY_EMAIL_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import ResendOtp from "./resendotp";
 
