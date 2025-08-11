@@ -8,9 +8,11 @@ import {
 import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
 import User from "@/types/user.types";
+import { useRouter } from "next/navigation";
 
 function Navbar({ user }: { user: User }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router=useRouter();
 
   return (
     <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
@@ -29,7 +31,7 @@ function Navbar({ user }: { user: User }) {
             <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
               Explore
             </a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
+            <a className="text-gray-300 hover:text-white transition-colors font-medium cursor-pointer" onClick={()=>router.push("/problems")}>
               Problems
             </a>
             <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">

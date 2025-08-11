@@ -76,7 +76,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
     fetchProfile();
   }, []);
 
-  const handleFileChange = async ( event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
     // Validate image
@@ -244,11 +244,10 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
         {/* Message Display */}
         {message && (
           <div
-            className={`flex items-center gap-2 p-3 rounded-lg text-sm mb-6 ${
-              messageType === "success"
+            className={`flex items-center gap-2 p-3 rounded-lg text-sm mb-6 ${messageType === "success"
                 ? "bg-green-900/30 border border-green-700/30 text-green-300"
                 : "bg-red-900/30 border border-red-700/30 text-red-300"
-            }`}
+              }`}
           >
             {messageType === "success" ? (
               <CheckCircle className="w-4 h-4 flex-shrink-0" />
@@ -294,32 +293,33 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
               </form>
             </div>
             {/* Update Profile */}
-            <div className="bg-gray-800/50 p-6 rounded-lg">
-              <h3 className="text-lg font-medium text-white mb-4">
+            <div className="bg-gray-800/50 p-8 rounded-lg">
+              <h3 className="text-xl font-semibold text-white mb-6">
                 Update Profile
               </h3>
-              <form onSubmit={handleUpdateProfile} className="space-y-4">
+
+              <form onSubmit={handleUpdateProfile} className="space-y-6">
                 {/* Profile Picture with overlay icon */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                   <div className="relative">
                     {profilePicture?.trim() ? (
                       <img
                         src={profilePicture}
                         alt="Profile"
-                        className="w-24 h-24 rounded-full border border-gray-700 object-cover"
+                        className="w-32 h-32 rounded-full border border-gray-700 object-cover"
                       />
                     ) : (
-                      <div className="w-24 h-24 rounded-full bg-gray-700 border border-gray-600 flex items-center justify-center">
-                        <User className="w-8 h-8 text-gray-400" />
+                      <div className="w-32 h-32 rounded-full bg-gray-700 border border-gray-600 flex items-center justify-center">
+                        <User className="w-10 h-10 text-gray-400" />
                       </div>
                     )}
 
                     {/* Add icon */}
                     <label
                       htmlFor="profile-upload"
-                      className="absolute bottom-0 right-0 bg-gray-900 p-2 rounded-full cursor-pointer hover:bg-gray-700 transition"
+                      className="absolute bottom-2 right-2 bg-gray-900 p-2.5 rounded-full cursor-pointer hover:bg-gray-700 transition"
                     >
-                      <Camera className="w-5 h-5 text-white" />
+                      <Camera className="w-6 h-6 text-white" />
                     </label>
                     <input
                       id="profile-upload"
@@ -338,7 +338,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                       type="text"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
-                      className="w-full p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full p-3.5 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                       placeholder="Enter full name"
                       required
                     />
@@ -349,12 +349,13 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
+                  className="bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-8 py-3.5 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
                 >
                   {loading ? "Uploading..." : "Update Profile"}
                 </button>
               </form>
             </div>
+
             );
           </div>
         )}
