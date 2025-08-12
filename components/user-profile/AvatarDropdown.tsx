@@ -20,7 +20,6 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
     console.log("logged out")
     const res=await api.post(LOGOUT_ENDPOINT);
     if(res.status==200){
-      alert("Logged out successfully");
       router.push('/auth/login')
     }
   }
@@ -51,11 +50,15 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
       {open && (
         <div className="absolute right-0 mt-2 w-64 bg-neutral-900 border border-neutral-700 rounded-xl shadow-lg z-50 overflow-hidden">
           <div className="flex items-center gap-3 p-4 border-b border-neutral-800">
-            <img
+            {profilepicture ? (
+              <img
               src={profilepicture}
               alt="avatar"
               className="w-10 h-10 rounded-full"
             />
+            ):(
+              <User className="w-10 h-10 text-white bg-gray-800 rounded-full p-2" />
+            )}
             <div className="flex-1">
               <div className="text-white font-medium">{username}</div>
               <div className="text-sm text-gray-400 cursor-pointer hover:underline">

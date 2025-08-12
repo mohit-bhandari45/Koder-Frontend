@@ -1,7 +1,8 @@
 import axios from "axios";
 import api from "./api.lib";
 
-export const DASHBOARD_URL = "http://localhost:5000";
+export const DASHBOARD_URL = "https://koder-dashboard.onrender.com";
+//export const DASHBOARD_URL = "http://localhost:5000";
 
 export const api2 = axios.create({
     baseURL: DASHBOARD_URL,

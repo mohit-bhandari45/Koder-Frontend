@@ -23,7 +23,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ content, setContent }) => {
       console.log("logged out")
       const res=await api.post(LOGOUT_ENDPOINT);
       if(res.status==200){
-        alert("Logged out successfully");
         router.push('/auth/login')
       }
     }

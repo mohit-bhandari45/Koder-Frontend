@@ -13,22 +13,25 @@ import api2, {
   GET_SKILL_STATS,
 } from "@/lib/dashboardAPI.lib";
 import User from "@/types/user.types";
-import { useMainLoader } from "@/context/MainLoaderContext";
 import MainLoader from "@/components/shared/main-loader";
-
-type DashboardState = {
-  progress: any;
-  languages: any;
-  skills: any;
-  submissions: any;
-};
+import DashboardState from "@/types/dashboard.types";
+import { useRouter,useParams } from "next/navigation";
 
 export default function UserProfilePage() {
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
-  const { mainLoading, setMainLoading } = useMainLoader();
   const [dashboard, setDashboard] = useState<DashboardState | null>(null);
   const [user, setUser] = useState<User | null>(null);
+
+  const router=useRouter();
+  const params=useParams();
+
+  useEffect(()=>{
+    if(user?.username && params.username !== user.username){
+      router.replace(`/u/${user.username}`);
+    }
+  },[user?.username,params.username])
 
   const fetchUser = async () => {
     setLoading(true);
@@ -60,10 +63,6 @@ export default function UserProfilePage() {
         skills: skillRes.data.data,
         submissions: submissionRes.data.data,
       });
-      console.log(progressRes.data.data)
-      console.log(languageRes.data.data)
-      console.log(skillRes.data.data)
-      console.log(submissionRes.data.data)
       setError(null);
     } catch (error: unknown) {
       setDashboard(null);
@@ -81,7 +80,8 @@ export default function UserProfilePage() {
   return (
     <div className="min-h-screen bg-black scrollbar-track">
       {!loading && !error ? (
-        <>{ user && dashboard && (<>
+        <>{ user && dashboard && (
+        <>
           <Navbar user={user} />
           <div className="max-w-7xl mx-auto py-8 px-4">
             <div className="flex flex-col lg:flex-row gap-8">

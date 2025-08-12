@@ -85,7 +85,7 @@ export default function MainContent({
         {
         dashboard.submissions.length > 0 ? (
           <div className="space-y-2 max-h-64 overflow-y-auto pr-2 scroll-hide">
-            {dashboard.submissions.map((sub: any) => (
+            {dashboard.submissions.map((sub) => (
               <div
                 key={sub._id}
                 className="flex justify-between items-center text-sm text-gray-300 bg-gray-800 p-2 rounded-md"
@@ -118,32 +118,32 @@ export default function MainContent({
   );
 }
 
-function DifficultyBar({
-  label,
-  solved,
-  total,
-  color,
-}: {
-  label: string;
-  solved: number;
-  total?: number;
-  color: string;
-}) {
-  // const percentage = (solved / total) * 100;
+// function DifficultyBar({
+//   label,
+//   solved,
+//   total,
+//   color,
+// }: {
+//   label: string;
+//   solved: number;
+//   total?: number;
+//   color: string;
+// }) {
+//    const percentage = (solved / total) * 100;
 
-  return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3 flex-1">
-        <span className="text-gray-300 text-sm w-10">{label}</span>
-        <div className="text-white font-semibold">{solved}</div>
-        {/* <span className="text-gray-400">/{total}</span> */}
-      </div>
-      <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
-        {/* <div
-          className={`h-full ${color} rounded-full`}
-          style={{ width: `${percentage}%` }}
-        ></div> */}
-      </div>
-    </div>
-  );
-}
+//   return (
+//     <div className="flex items-center justify-between">
+//       <div className="flex items-center gap-3 flex-1">
+//         <span className="text-gray-300 text-sm w-10">{label}</span>
+//         <div className="text-white font-semibold">{solved}</div>
+//         <span className="text-gray-400">/{total}</span>
+//       </div>
+//       <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
+//         <div
+//           className={`h-full ${color} rounded-full`}
+//           style={{ width: `${percentage}%` }}
+//         ></div>
+//       </div>
+//     </div>
+//   );
+// }

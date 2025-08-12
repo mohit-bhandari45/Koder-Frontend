@@ -13,9 +13,9 @@ export {indent};
 
 dayjs.extend(relativeTime);
 
-export function formatRelativeTime(dateString: string): string {
+export function formatRelativeTime(date: Date): string {
   const now = dayjs();
-  const target = dayjs(dateString);
+  const target = dayjs(date);
 
   const diffInSeconds = now.diff(target, "second");
 

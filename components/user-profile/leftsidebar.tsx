@@ -1,6 +1,6 @@
-import { Github, Twitter, Linkedin } from "lucide-react";
 import User from "@/types/user.types";
 import DashboardState from "@/types/dashboard.types";
+import { User2 } from "lucide-react";
 
 // function StatRow({ icon, label, value }) {
 //   return (
@@ -14,23 +14,23 @@ import DashboardState from "@/types/dashboard.types";
 //   );
 // }
 
-type SocialLinkProps = {
-  href: string;
-  icon: React.ElementType;
-};
+// type SocialLinkProps = {
+//   href: string;
+//   icon: React.ElementType;
+// };
 
-function SocialLink({ href, icon: Icon }: SocialLinkProps) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors border border-gray-700 hover:border-gray-600"
-    >
-      <Icon className="w-4 h-4 text-gray-300" />
-    </a>
-  );
-}
+// function SocialLink({ href, icon: Icon }: SocialLinkProps) {
+//   return (
+//     <a
+//       href={href}
+//       target="_blank"
+//       rel="noopener noreferrer"
+//       className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors border border-gray-700 hover:border-gray-600"
+//     >
+//       <Icon className="w-4 h-4 text-gray-300" />
+//     </a>
+//   );
+// }
 
 
 export default function LeftSidebar({ user, dashboard }: { user: User, dashboard: DashboardState }) {
@@ -42,16 +42,21 @@ console.log(dashboard.languages)
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
         <div className="flex items-start gap-4">
           <div className="relative">
-            <img
-              src={user.profilepicture}
-              alt="profilepicture"
-              className="w-16 h-16 rounded-full border-2 border-gray-700"
-            />
-            <div className="absolute -bottom-1 -right-1 bg-blue-500 w-5 h-5 rounded-full border-2 border-gray-900 flex items-center justify-center">
-              <div className="w-2 h-2 bg-white rounded-full"></div>
-            </div>
-          </div>
-
+              {user.profilepicture ? (
+                <img
+                  src={user.profilepicture}
+                  alt="Profile picture"
+                  className="w-16 h-16 rounded-full border-2 border-gray-700 object-cover"
+                />
+              ) : (
+                <User2
+                  className="w-16 h-16 rounded-full border-2 border-gray-700 text-white p-2 bg-gray-800"
+                />
+              )}
+              <div className="absolute -bottom-1 -right-1 bg-blue-500 w-5 h-5 rounded-full border-2 border-gray-900 flex items-center justify-center">
+                <div className="w-2 h-2 bg-white rounded-full"></div>
+              </div>
+           </div>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-white mb-1">{user.fullName}</h1>
             <p className="text-gray-400 text-sm mb-2">{user.username}</p>
