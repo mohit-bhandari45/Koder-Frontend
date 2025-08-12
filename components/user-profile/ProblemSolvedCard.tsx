@@ -1,9 +1,9 @@
 "use client";
 
 type ProgressType = {
-  solved: number;
+  totalSolved: number;
   totalProblems: number;
-  acceptance?: number;
+  acceptanceRate?: number;
 };
 
 export default function ProblemsSolvedCard({ progress }: { progress?: ProgressType }) {
@@ -16,7 +16,7 @@ export default function ProblemsSolvedCard({ progress }: { progress?: ProgressTy
     );
   }
 
-  const solved = Math.max(0, Math.min(progress.solved, progress.totalProblems));
+  const solved = Math.max(0, Math.min(progress.totalSolved, progress.totalProblems));
   const total = progress.totalProblems;
   const percentage = (solved / total) * 100;
   const circumference = 2 * Math.PI * 45; // r=45
@@ -64,9 +64,9 @@ export default function ProblemsSolvedCard({ progress }: { progress?: ProgressTy
             <div className="text-3xl font-bold text-white">{solved}</div>
             <div className="text-gray-400 text-sm">/{total}</div>
             <div className="text-gray-300 text-sm mt-1">Solved</div>
-            {progress.acceptance !== undefined && (
+            {progress.acceptanceRate !== undefined && (
               <div className="text-sm text-green-500 mt-1">
-                Acceptance: {progress.acceptance}%
+                Acceptance: {progress.acceptanceRate}%
               </div>
             )}
           </div>

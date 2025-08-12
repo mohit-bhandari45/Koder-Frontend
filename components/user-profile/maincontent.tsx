@@ -19,9 +19,9 @@ export default function MainContent({
           </h3>
           <ProblemsSolvedCard progress={dashboard.progress}/>
           {/* <div className="mt-6 space-y-3">
-              <DifficultyBar label="Easy" solved={dashboard.progress.easy.solved} total={dashboard.progress.easy.total} color="bg-green-500" />
-              <DifficultyBar label="Med." solved={dashboard.progress.medium.solved} total={dashboard.progress.medium.total} color="bg-yellow-500" />
-              <DifficultyBar label="Hard" solved={dashboard.progress.hard.solved} total={dashboard.progress.hard.total} color="bg-red-500" />
+              <DifficultyBar label="Easy" solved={dashboard.progress.byDifficulty.easy} color="bg-green-500" />
+              <DifficultyBar label="Med." solved={dashboard.progress.byDifficulty.medium}  color="bg-yellow-500" />
+              <DifficultyBar label="Hard" solved={dashboard.progress.byDifficulty.hard} color="bg-red-500" />
             </div> */}
         </div>
 
@@ -82,7 +82,7 @@ export default function MainContent({
         <h3 className="text-lg font-semibold text-white mb-4">
           Recent Submissions
         </h3>
-        {Array.isArray(dashboard.submissions) &&
+        {
         dashboard.submissions.length > 0 ? (
           <div className="space-y-2 max-h-64 overflow-y-auto pr-2 scroll-hide">
             {dashboard.submissions.map((sub: any) => (
@@ -93,7 +93,7 @@ export default function MainContent({
                 <div>
                   <div className="font-medium text-white">{sub.title}</div>
                   <div className="text-xs text-gray-400">
-                    {sub.lang} • {formatRelativeTime(sub.createdAt)}
+                    {sub.language} • {formatRelativeTime(sub.createdAt)}
                   </div>
                 </div>
                 <span
@@ -126,23 +126,23 @@ function DifficultyBar({
 }: {
   label: string;
   solved: number;
-  total: number;
+  total?: number;
   color: string;
 }) {
-  const percentage = (solved / total) * 100;
+  // const percentage = (solved / total) * 100;
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-3 flex-1">
         <span className="text-gray-300 text-sm w-10">{label}</span>
         <div className="text-white font-semibold">{solved}</div>
-        <span className="text-gray-400">/{total}</span>
+        {/* <span className="text-gray-400">/{total}</span> */}
       </div>
       <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
-        <div
+        {/* <div
           className={`h-full ${color} rounded-full`}
           style={{ width: `${percentage}%` }}
-        ></div>
+        ></div> */}
       </div>
     </div>
   );

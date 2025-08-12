@@ -34,6 +34,8 @@ function SocialLink({ href, icon: Icon }: SocialLinkProps) {
 
 
 export default function LeftSidebar({ user, dashboard }: { user: User, dashboard: DashboardState }) {
+ 
+console.log(dashboard.languages)
   return (
     <div className="w-full lg:w-80 space-y-6 ">
       {/* Profile Card */}
@@ -92,8 +94,8 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
       <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
         <h3 className="text-lg font-semibold text-white mb-4">Languages</h3>
         <div className="space-y-3">
-          {Array.isArray(dashboard.languages) && dashboard.languages.length > 0 ? (
-            dashboard.languages.map((lang: any) => (
+          {dashboard.languages.length > 0 ? (
+            dashboard.languages.map(lang => (
               <div key={lang.language} className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-gray-300">{lang.language}</span>
@@ -121,7 +123,7 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
                       key={skill}
                       className="text-sm text-gray-300 bg-gray-800 border border-gray-700 px-2 py-1 rounded-md"
                     >
-                      {skill}{count}
+                      {skill} <span className="ml-2">{count}</span>
                     </span>
                   ))}
                 </div>

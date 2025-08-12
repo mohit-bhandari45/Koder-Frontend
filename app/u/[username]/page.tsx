@@ -56,10 +56,14 @@ export default function UserProfilePage() {
         ]);
       setDashboard({
         progress: progressRes.data.data,
-        languages: languageRes.data.data,
+        languages: languageRes.data.data.languages,
         skills: skillRes.data.data,
         submissions: submissionRes.data.data,
       });
+      console.log(progressRes.data.data)
+      console.log(languageRes.data.data)
+      console.log(skillRes.data.data)
+      console.log(submissionRes.data.data)
       setError(null);
     } catch (error: unknown) {
       setDashboard(null);

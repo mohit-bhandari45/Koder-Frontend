@@ -20,17 +20,13 @@ type ProgressType = {
   }
 }
 
-type LanguageType = {
-  [languages:string]: Language[]; 
-}
-
 type SkillsByLevel = {
   [level: string]: Skill[];
 };
 
 type DashboardState = {
   progress: ProgressType;
-  languages: LanguageType;
+  languages: Language[];
   skills: SkillsByLevel;
   submissions: any;
 };
