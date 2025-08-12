@@ -1,4 +1,4 @@
-import { IProblem } from '@/types/problem'
+import { IProblem } from '@/types/problem.types'
 import React from 'react'
 
 const Description = ({ problem }: { problem: IProblem }) => {

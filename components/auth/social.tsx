@@ -1,4 +1,4 @@
-import { BASE_URL } from '@/lib/api';
+import { BASE_URL } from '@/lib/api.lib';
 import { Github } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React from 'react'

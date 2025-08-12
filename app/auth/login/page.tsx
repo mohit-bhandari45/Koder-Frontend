@@ -5,7 +5,7 @@ import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import api,{ LOGIN_ENDPOINT } from "@/lib/api";  
+import api,{ LOGIN_ENDPOINT } from "@/lib/api.lib";  
 import { AxiosError } from "axios";
 
 interface LoginForm {
@@ -75,9 +75,8 @@ const handleSubmit = async (e: FormEvent) => {
       email: formData.email,
       password: formData.password,
     });
-
     if (res.status === 200) {
-      router.push("/u/:username"); 
+      router.replace(`/u/${res.data.data.username}`);
     }
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;

@@ -3,7 +3,7 @@
 import { Settings, Shield, User, LogOut } from 'lucide-react';
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import api,{LOGOUT_ENDPOINT} from '@/lib/api';
+import api,{LOGOUT_ENDPOINT} from '@/lib/api.lib';
 
 interface LeftSidebarProps {
   content: string;
@@ -16,8 +16,6 @@ const menuItems = [
   { label: "General Settings", icon: Settings }
 ];
 
-
-
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ content, setContent }) => {
   const router=useRouter();
 
@@ -25,7 +23,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ content, setContent }) => {
       console.log("logged out")
       const res=await api.post(LOGOUT_ENDPOINT);
       if(res.status==200){
-        alert("Logged out successfully");
         router.push('/auth/login')
       }
     }

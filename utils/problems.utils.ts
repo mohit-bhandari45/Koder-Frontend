@@ -1,5 +1,5 @@
-import { pistonExecuteAPI } from "@/lib/pistonExecuteAPI";
-import { IProblem, TestResult } from "@/types/problem";
+import { pistonExecuteAPI } from "@/lib/pistonExecuteAPI.lib";
+import { IProblem, TestResult } from "@/types/problem.types";
 
 async function execute(problem: IProblem, code: string, lang: string, submit: boolean): Promise<TestResult[]> {
     let setOfTestCases = [];

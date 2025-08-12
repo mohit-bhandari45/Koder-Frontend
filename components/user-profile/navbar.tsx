@@ -7,11 +7,12 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
-import { User } from "@/app/u/[username]/page";
-
+import User from "@/types/user.types";
+import { useRouter } from "next/navigation";
 
 function Navbar({ user }: { user: User }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router=useRouter();
 
   return (
     <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
@@ -21,7 +22,7 @@ function Navbar({ user }: { user: User }) {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Code className="w-8 h-8 text-orange-500" />
-              <span className="text-xl font-bold text-white">CodeCraft</span>
+              <span className="text-xl font-bold text-white">Koder</span>
             </div>
           </div>
 
@@ -30,7 +31,7 @@ function Navbar({ user }: { user: User }) {
             <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
               Explore
             </a>
-            <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
+            <a className="text-gray-300 hover:text-white transition-colors font-medium cursor-pointer" onClick={()=>router.push("/problems")}>
               Problems
             </a>
             <a href="#" className="text-gray-300 hover:text-white transition-colors font-medium">
@@ -56,7 +57,7 @@ function Navbar({ user }: { user: User }) {
             <Search className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <Bell className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
             <div className="text-orange-500 font-semibold">0</div>
-            <AvatarDropdown avatarUrl={user.avatar} username={user.username} />
+            <AvatarDropdown profilepicture={user.profilepicture} username={user.username} />
             
             <span className="text-yellow-400 font-semibold">Premium</span>
             

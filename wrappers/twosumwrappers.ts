@@ -1,4 +1,4 @@
-import { indent } from "@/utils/helper";
+import { indent } from "@/utils/helper.utils";
 
 export function getFunctionName(lang: string): string {
   const functionNameMap: Record<string, string> = {

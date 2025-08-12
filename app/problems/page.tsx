@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-import { IProblem } from "@/types/problem";
+import { IProblem } from "@/types/problem.types";
 import MainLoader from "@/components/shared/main-loader";
 import Link from "next/link";
-import { getProblems } from "@/lib/requests.functions";
+import { getProblems } from "@/lib/requests.functions.lib";
 
 const DIFFICULTY_COLORS: Record<IProblem["difficulty"], string> = {
   Easy: "text-green-500 bg-green-100 border-green-400",

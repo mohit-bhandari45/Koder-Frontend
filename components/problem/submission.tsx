@@ -1,5 +1,5 @@
 "use client";
-import { getSubmissionsByProblem } from "@/lib/requests.functions";
+import { getSubmissionsByProblem } from "@/lib/requests.functions.lib";
 import { useEffect, useState } from "react";
 
 // Submission interface

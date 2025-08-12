@@ -1,6 +1,6 @@
 import { useCodeEditor } from "@/context/CodeEditorContext";
-import { draculaTheme } from "@/themes/dracula";
-import { solarizedDarkTheme } from "@/themes/solarized";
+import { draculaTheme } from "@/themes/dracula.themes";
+import { solarizedDarkTheme } from "@/themes/solarized.themes";
 import { Editor, OnMount } from "@monaco-editor/react";
 import * as monaco from "monaco-editor"; // ✅ for type support
 import { useEffect, useState } from "react";
