@@ -14,17 +14,23 @@ type ProgressType = {
   totalSolved: number;
   acceptanceRate: number;
   byDifficulty:{
-    easy:number;
-    medium:number;
-    hard:number
+    easy:{solved:number,total:number};
+    medium:{solved:number,total:number};
+    hard:{solved:number,total:number};
   }
+}
+
+type ProblemType = {
+  title:string;
+  _id:string;
+  difficulty:string;
 }
 
 type SubmissionType = {
     _id: string;
     title?:string;
     userId: string;
-    problemId: string;
+    problemId: ProblemType;
     code: string;
     language: string;
     status: "Pending" | "Accepted" | "Rejected";

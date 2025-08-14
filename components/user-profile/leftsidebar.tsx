@@ -35,7 +35,6 @@ import { User2 } from "lucide-react";
 
 export default function LeftSidebar({ user, dashboard }: { user: User, dashboard: DashboardState }) {
  
-console.log(dashboard.languages)
   return (
     <div className="w-full lg:w-80 space-y-6 ">
       {/* Profile Card */}
