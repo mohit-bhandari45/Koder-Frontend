@@ -18,11 +18,11 @@ export default function MainContent({
             Total Problems Solved
           </h3>
           <ProblemsSolvedCard progress={dashboard.progress}/>
-          {/* <div className="mt-6 space-y-3">
-              <DifficultyBar label="Easy" solved={dashboard.progress.byDifficulty.easy} color="bg-green-500" />
-              <DifficultyBar label="Med." solved={dashboard.progress.byDifficulty.medium}  color="bg-yellow-500" />
-              <DifficultyBar label="Hard" solved={dashboard.progress.byDifficulty.hard} color="bg-red-500" />
-            </div> */}
+          <div className="mt-6 space-y-3">
+              <DifficultyBar label="Easy" solved={dashboard.progress.byDifficulty.easy.solved} total={dashboard.progress.byDifficulty.easy.total} color="bg-green-500" />
+              <DifficultyBar label="Med." solved={dashboard.progress.byDifficulty.medium.solved} total={dashboard.progress.byDifficulty.medium.total} color="bg-yellow-500" />
+              <DifficultyBar label="Hard" solved={dashboard.progress.byDifficulty.hard.solved} total={dashboard.progress.byDifficulty.hard.total} color="bg-red-500" />
+            </div>
         </div>
 
         {/* Rank & Achievements */}
@@ -91,20 +91,11 @@ export default function MainContent({
                 className="flex justify-between items-center text-sm text-gray-300 bg-gray-800 p-2 rounded-md"
               >
                 <div>
-                  <div className="font-medium text-white">{sub.title}</div>
+                  <div className="font-medium text-white">{sub.problemId.title}</div>
                   <div className="text-xs text-gray-400">
-                    {sub.language} • {formatRelativeTime(sub.createdAt)}
+                    {sub.language} • {formatRelativeTime(sub.createdAt)} • {sub.problemId.difficulty}
                   </div>
                 </div>
-                <span
-                  className={`text-xs font-semibold ${
-                    sub.status === "Accepted"
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  {sub.status}
-                </span>
               </div>
             ))}
           </div>
@@ -118,32 +109,32 @@ export default function MainContent({
   );
 }
 
-// function DifficultyBar({
-//   label,
-//   solved,
-//   total,
-//   color,
-// }: {
-//   label: string;
-//   solved: number;
-//   total?: number;
-//   color: string;
-// }) {
-//    const percentage = (solved / total) * 100;
+function DifficultyBar({
+  label,
+  solved,
+  total,
+  color,
+}: {
+  label: string;
+  solved: number;
+  total: number;
+  color: string;
+}) {
+   const percentage = (solved / total) * 100;
 
-//   return (
-//     <div className="flex items-center justify-between">
-//       <div className="flex items-center gap-3 flex-1">
-//         <span className="text-gray-300 text-sm w-10">{label}</span>
-//         <div className="text-white font-semibold">{solved}</div>
-//         <span className="text-gray-400">/{total}</span>
-//       </div>
-//       <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
-//         <div
-//           className={`h-full ${color} rounded-full`}
-//           style={{ width: `${percentage}%` }}
-//         ></div>
-//       </div>
-//     </div>
-//   );
-// }
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3 flex-1">
+        <span className="text-gray-300 text-sm w-10">{label}</span>
+        <div className="text-white font-semibold">{solved}</div>
+        <span className="text-gray-400">/{total}</span>
+      </div>
+      <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
+        <div
+          className={`h-full ${color} rounded-full`}
+          style={{ width: `${percentage}%` }}
+        ></div>
+      </div>
+    </div>
+  );
+}
