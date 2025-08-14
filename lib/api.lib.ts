@@ -75,4 +75,13 @@ const SUBMISSION_BASE = "/api/submission";
 export const ADD_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/add`;
 export const GET_ALL_PROBLEM_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/problem`;
 
+/* DASHBOARD ENDPOINTS */
+const DASHBOARD_BASE = "/api/dashboard";
+const GET_PROGRESS_SUMMARY = `${DASHBOARD_BASE}/progress-summary`;
+const GET_LANGUAGE_STATS = `${DASHBOARD_BASE}/language-stats`;
+const GET_SKILL_STATS = `${DASHBOARD_BASE}/skill-stats`;
+const GET_RECENT_SUBMISSIONS = `${DASHBOARD_BASE}/recent-submissions`;
+
+export {GET_PROGRESS_SUMMARY, GET_LANGUAGE_STATS, GET_SKILL_STATS, GET_RECENT_SUBMISSIONS};
+
 export default api;
