@@ -11,7 +11,7 @@ import api2, {
   GET_PROGRESS_SUMMARY,
   GET_RECENT_SUBMISSIONS,
   GET_SKILL_STATS,
-} from "@/lib/dashboardAPI.lib";
+} from "@/lib/api.lib";
 import User from "@/types/user.types";
 import MainLoader from "@/components/shared/main-loader";
 import DashboardState from "@/types/dashboard.types";
