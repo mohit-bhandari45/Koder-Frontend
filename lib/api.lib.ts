@@ -16,32 +16,36 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        // Prevent infinite loop
+
+        // Handle token expiration (refresh token logic)
         if (
             error.response &&
             error.response.status === 401 &&
             !originalRequest._retry &&
-            !originalRequest.url.includes("/auth/refresh") // <-- Prevent infinite loop
+            !originalRequest.url.includes("/auth/refresh")
         ) {
             originalRequest._retry = true;
             try {
-                // Attempt to refresh token
                 console.log("Refreshing token");
                 await api.post("/auth/refresh");
-                // Retry original request
                 return api(originalRequest);
             } catch (refreshError) {
-                // Redirect to login if refresh fails
                 console.log("Refresh token failed");
+
+                // Redirect to login with next param
                 if (typeof window !== "undefined") {
                     const publicPaths = ["/", "/auth/login", "/auth/signup"];
+                    const currentPath = window.location.pathname + window.location.search;
+
                     if (!publicPaths.includes(window.location.pathname)) {
-                        window.location.href = "/auth/login";
+                        window.location.href = `/auth/login?next=${encodeURIComponent(currentPath)}`;
                     }
                 }
+
                 return Promise.reject(refreshError);
             }
         }
+
         return Promise.reject(error);
     }
 );
