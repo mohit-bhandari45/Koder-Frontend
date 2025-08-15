@@ -6,6 +6,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
 import { CodeEditorProvider } from "@/context/CodeEditorContext";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,43 @@ export default function RootLayout({
         <CodeRunnerProvider>
           <MainLoaderProvider>
             <UserProvider>
-              <CodeEditorProvider>{children}</CodeEditorProvider>
+              <CodeEditorProvider>
+                {children}
+                <Toaster
+                  position="top-center"
+                  reverseOrder={false}
+                  toastOptions={{
+                    style: {
+                      background: "var(--card)",
+                      color: "var(--card-foreground)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-sm)",
+                      padding: "12px 16px",
+                      fontSize: "0.875rem",
+                      fontWeight: 500,
+                      boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                    },
+                    success: {
+                      iconTheme: {
+                        primary: "var(--primary)",
+                        secondary: "var(--primary-foreground)",
+                      },
+                    },
+                    error: {
+                      style: {
+                        background: "var(--primary)",
+                        color: "var(--primary-foreground)",
+                        border: "none",
+                      },
+                      iconTheme: {
+                        primary: "var(--primary-foreground)",
+                        secondary: "var(--destructive)",
+                      },
+                    },
+                  }}
+                />
+
+              </CodeEditorProvider>
             </UserProvider>
           </MainLoaderProvider>
         </CodeRunnerProvider>

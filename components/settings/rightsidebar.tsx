@@ -15,6 +15,7 @@ import {
   Trash2,
   Camera,
 } from "lucide-react";
+import {DeleteAccountModal} from "./confirmDelete";
 
 interface RightSidebarProps {
   content: string;
@@ -28,6 +29,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // UI states
   const [hasPassword, setHasPassword] = useState<boolean>(true);
@@ -202,19 +204,6 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
   };
 
   const handleDeleteAccount = async () => {
-    if (
-      !confirm(
-        "Are you absolutely sure you want to delete your account? This action cannot be undone."
-      )
-    ) {
-      return;
-    }
-    const finalConfirm = prompt("Type 'DELETE' to confirm account deletion:");
-    if (finalConfirm !== "DELETE") {
-      setMessage("Account deletion cancelled");
-      setMessageType("error");
-      return;
-    }
     setLoading(true);
     try {
       await api.delete("/api/user/me");
@@ -223,12 +212,12 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
       router.push("/auth/signup");
     } catch (error: unknown) {
       const err = error as AxiosError<{ message: string }>;
-      const errorMessage =
-        err.response?.data?.message || "Error deleting account";
+      const errorMessage = err.response?.data?.message || "Error deleting account";
       setMessage(errorMessage);
       setMessageType("error");
     } finally {
       setLoading(false);
+      setShowDeleteModal(false);
     }
   };
 
@@ -525,7 +514,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 certain.
               </p>
               <button
-                onClick={handleDeleteAccount}
+                onClick={()=>setShowDeleteModal(true)}
                 disabled={loading}
                 className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
               >
@@ -536,6 +525,12 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 )}
                 {loading ? "Deleting..." : "Delete Account"}
               </button>
+              <DeleteAccountModal
+                isOpen={showDeleteModal}
+                onClose={()=>setShowDeleteModal(false)}
+                onConfirm={handleDeleteAccount}
+                loading={loading}
+              />
             </div>
           </div>
         )}

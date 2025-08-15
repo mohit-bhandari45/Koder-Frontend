@@ -17,6 +17,7 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import api,{ SIGNUP_ENDPOINT } from "@/lib/api.lib";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const router=useRouter();
@@ -108,7 +109,7 @@ export default function SignupPage() {
         email: "Email already registered",
       }));
     } else {
-      alert(message);
+      toast.error(message);
     }
   } finally {
     setIsLoading(false);
