@@ -38,14 +38,14 @@ export function wrapTwoSumJavaScriptCode(userCode: string, lang: string = "javas
     return `
     ${userCode}
 
-    const fs = require('fs');
-    const input = fs.readFileSync(0, 'utf-8').split('\\n');
+const fs = require('fs');
+const input = fs.readFileSync(0, 'utf-8').split('\\n');
 
-    const nums = input[0].split(" ").map(Number);
-    const target = parseInt(input[1]);
+const nums = input[0].split(" ").map(Number);
+const target = parseInt(input[1]);
 
-    const result = ${functionName}(nums, target);
-    console.log(JSON.stringify(result).replace(",", ", "));
+const result = ${functionName}(nums, target);
+console.log(JSON.stringify(result).replace(",", ", "));
   `.trim();
 }
 

@@ -14,13 +14,11 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
 export default function ProblemDetailPage() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
-  const [, setSubmissionResult] = useState<SubmissionResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [executionOutput, setExecutionOutput] = useState<string>("");
@@ -57,6 +55,7 @@ export default function ProblemDetailPage() {
     setIsRunning(true);
     setExecutionOutput("");
     setActiveTab("result");
+    setTestResults([]);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -114,6 +113,7 @@ export default function ProblemDetailPage() {
     setIsSubmitting(true);
     setExecutionOutput("");
     setActiveTab("result");
+    setTestResults([]);
 
     try {
       if (!problem?.testCases || problem.testCases.length === 0) {
@@ -121,14 +121,12 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      // getting a particular lang
       const lang = languageIdMap[language.toLowerCase()];
       if (!lang) {
         setExecutionOutput("Unsupported language selected.");
         return;
       }
 
-      // wrapping code now
       const wrapper = problemWrapperMap[problem.functionName][lang];
       if (!wrapper) {
         setExecutionOutput("No wrapper found for this problem and language.");
@@ -136,64 +134,61 @@ export default function ProblemDetailPage() {
       }
 
       const wrappedCode = wrapper(testcaseCode);
+      let passedCount = 0;
 
+      // Execute all test cases with progress callback
       const results: TestResult[] = await execute(
         problem,
         wrappedCode,
         lang,
-        true
+        true,
+        (testIndex, passed) => {
+          passedCount += passed ? 1 : 0;
+          setExecutionOutput(
+            `Running Test ${testIndex}/${problem.testCases.length}... Passed: ${passedCount}`
+          );
+        }
       );
+
       setTestResults(results);
 
-      const passedCount = results.filter((r) => r.passed).length;
       const totalTests = problem.testCases.length;
       const accepted = passedCount === totalTests;
+
+      // Total runtime & memory
+      const totalRuntime = results.reduce((sum, r) => sum + r.executionTime, 0);
+      const totalMemory = results.reduce((sum, r) => sum + (r.memory ?? 0), 0);
 
       const result: SubmissionResult = {
         accepted,
         totalTests,
         passedTests: passedCount,
-        // runtime: `${Math.floor(Math.random() * 100) + 50}ms`,
-        // memory: `${(Math.random() * 10 + 15).toFixed(1)}MB`,
+        runtime: totalRuntime,
+        memory: totalMemory,
         error: accepted ? undefined : "Wrong Answer",
       };
-      setSubmissionResult(result);
 
-      if (accepted) {
-        await addSubmission({
-          problemId: problem._id as string,
-          code: testcaseCode,
-          language,
-          status: "Accepted",
-          // runtime: result.runtime!,
-          // memory: result.memory!,
-        });
+      // Store submission
+      await addSubmission({
+        problemId: problem._id as string,
+        code: testcaseCode,
+        language,
+        status: accepted ? "Accepted" : "Rejected",
+        runtime: result.runtime,
+        memory: result.memory,
+      });
 
-        setExecutionOutput(
-          // `🎉 Accepted!\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}\n\nYour solution passed all ${totalTests} test cases.`
-          `🎉 Accepted!\n\nYour solution passed all ${totalTests} test cases.`
-        );
-      } else {
-        setExecutionOutput(
-          // `❌ ${result.error}\n\n${result.passedTests}/${result.totalTests} test cases passed\n\nRuntime: ${result.runtime}\nMemory: ${result.memory}`
-          `❌ ${result.error}\n\n${result.passedTests}/${result.totalTests} test cases passed\n\n`
-        );
-        await addSubmission({
-          problemId: problem?._id as string,
-          code: testcaseCode,
-          language,
-          status: "Rejected",
-          // runtime: result.runtime!,
-          // memory: result.memory!,
-        });
-      }
+      setExecutionOutput(
+        accepted
+          ? `🎉 Accepted!\n\nRuntime: ${result.runtime}ms\nMemory: ${result.memory}mb\n\nYour solution passed all ${totalTests} test cases.`
+          : `❌ ${result.error}\n\n${passedCount}/${totalTests} test cases passed\n\nRuntime: ${result.runtime}ms\nMemory: ${result.memory}MB`
+      );
     } catch (err) {
       setExecutionOutput(
         `Submission Error: ${
           err instanceof Error ? err.message : "Unknown error"
         }`
       );
-      setSubmissionResult(null);
     } finally {
       setIsSubmitting(false);
     }
@@ -318,7 +313,7 @@ export default function ProblemDetailPage() {
               </>
             ) : (
               <SubmissionsTab problemId={problem._id as string} />
-            )}  
+            )}
           </div>
         </div>
 
@@ -468,11 +463,12 @@ export default function ProblemDetailPage() {
                                 Example {index + 1}
                               </span>
                               <div className="flex items-center gap-2">
-                                {/* {result.executionTime && (
+                                {result.executionTime && (
                                   <span className="text-xs text-gray-400">
-                                    {result.executionTime}ms
+                                    {result.executionTime &&
+                                      result.executionTime + "ms"}
                                   </span>
-                                )} */}
+                                )}
                                 <span
                                   className={`text-xs px-2 py-1 rounded ${
                                     result.passed

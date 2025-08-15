@@ -16,11 +16,15 @@ const addSubmission = async (payload: {
     code: string;
     language: string;
     status: "Accepted" | "Rejected" | "Pending",
-    // runtime: string,
-    // memory: string,
+    runtime: number,
+    memory: number,
 }) => {
-    const res = await api.post(ADD_SUBMISSION_ENDPOINT, payload);
-    return res.data;
+    try {
+        const res = await api.post(ADD_SUBMISSION_ENDPOINT, payload);
+        return res.data;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 const getSubmissionsByProblem = async (problemId: string) => {

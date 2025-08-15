@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const UNPROTECTED_PATHS = ["/", "/auth/login", "/auth/signup", "code-editor"];
+export const UNPROTECTED_PATHS = ["/", "/auth/login", "/auth/signup", "code-editor"];
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;

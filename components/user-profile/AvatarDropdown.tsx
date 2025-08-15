@@ -17,7 +17,6 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async ()=>{
-    console.log("logged out")
     const res=await api.post(LOGOUT_ENDPOINT);
     if(res.status==200){
       router.push('/auth/login')

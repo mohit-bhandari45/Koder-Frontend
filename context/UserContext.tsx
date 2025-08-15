@@ -1,10 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
 import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
+import { UNPROTECTED_PATHS } from "@/middleware";
 import User from "@/types/user.types";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 type UserContextType = {
   user: User | null;
@@ -22,6 +23,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
+  const pathname = usePathname();
 
   const fetchUser = async () => {
     setLoading(true);
@@ -33,7 +35,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       setUser(null);
       setError(error as AxiosError);
       if (error instanceof AxiosError && error.response?.status === 404) {
-        router.push("/auth/login");
+        if (!UNPROTECTED_PATHS.some((path) => pathname.startsWith(path))) {
+          router.push("/auth/login");
+        }
       }
     } finally {
       setLoading(false);
