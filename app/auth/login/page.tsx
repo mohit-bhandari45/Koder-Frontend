@@ -4,7 +4,7 @@ import Social from "@/components/auth/social";
 import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter,useSearchParams } from "next/navigation";
 import api,{ LOGIN_ENDPOINT } from "@/lib/api.lib";  
 import { AxiosError } from "axios";
 
@@ -20,7 +20,10 @@ interface LoginErrors {
 
 export default function LoginPage() {
   const router=useRouter();
+  const searchParams = useSearchParams();
   const loader = useRedirectIfAuthenticated("/u/:username");
+
+    const nextParam = searchParams.get("next") || null;
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<LoginForm>({
@@ -76,7 +79,12 @@ const handleSubmit = async (e: FormEvent) => {
       password: formData.password,
     });
     if (res.status === 200) {
-      router.replace(`/u/${res.data.data.username}`);
+      if(nextParam && nextParam.startsWith("/")){
+        router.replace(nextParam);
+      }else{
+        router.replace(`/u/${res.data.data.username}`);
+      }
+      
     }
   } catch (error: unknown) {
     const err = error as AxiosError<{ message: string }>;
