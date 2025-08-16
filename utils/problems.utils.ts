@@ -1,5 +1,4 @@
 import { judge0ExecuteAPI } from "@/lib/judge0API.lib";
-// import { pistonExecuteAPI } from "@/lib/pistonExecuteAPI.lib";
 import { IProblem, TestResult } from "@/types/problem.types";
 
 async function execute(
@@ -13,7 +12,6 @@ async function execute(
     const results: TestResult[] = [];
 
     for (let i = 0; i < setOfTestCases.length; i++) {
-        // const res = await pistonExecuteAPI(code, testCase.stdin, lang);
         const testCase = setOfTestCases[i];
         const res = await judge0ExecuteAPI(code, testCase.stdin, lang);
 
@@ -28,7 +26,20 @@ async function execute(
             possibleOutputs = [expectedOutput];
         }
 
-        const passed = res.status.id === 3 && possibleOutputs.includes(actualOutput);
+        const passed = res.status.id === 3 && possibleOutputs.some((o) => {
+            try {
+                const expectedArr = JSON.parse(o);
+                const actualArr = JSON.parse(actualOutput);
+
+                if (Array.isArray(expectedArr) && Array.isArray(actualArr)) {
+                    return expectedArr.slice().sort().toString() === actualArr.slice().sort().toString();
+                }
+
+                return o.trim() === actualOutput.trim();
+            } catch {
+                return o.trim() === actualOutput.trim();
+            }
+        });
 
         const testResult: TestResult = {
             input: testCase.input,
@@ -41,8 +52,12 @@ async function execute(
 
         results.push(testResult);
 
-        // Call progress callback
         if (onTestComplete) onTestComplete(i + 1, passed);
+
+        // STOP if a test fails
+        if (!passed) {
+            break;
+        }
     }
 
     return results;

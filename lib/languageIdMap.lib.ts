@@ -1,27 +1,5 @@
 // lib/languageIdMap.ts
 
-export const languageIdMap: Record<string, string> = {
-  javascript: "javascript",
-  python: "python3",
-  java: "java",
-  cpp: "cpp",
-  c: "c",
-  go: "go",
-  ruby: "ruby",
-  rust: "rust",
-  kotlin: "kotlin",
-  swift: "swift",
-  perl: "perl",
-  scala: "scala",
-  haskell: "haskell",
-  csharp: "csharp",
-  r: "r",
-  dart: "dart",
-  elixir: "elixir",
-};
-
-// lib/languageIdMap.ts
-
 export const languageIdMapJudge: Record<string, number> = {
   javascript: 63, // Node.js 18.x
   python: 71,     // Python 3.11

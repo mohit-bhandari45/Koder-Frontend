@@ -5,11 +5,9 @@ import Head from "@/components/problem/head";
 import SubmissionsTab from "@/components/problem/submission";
 import MainLoader from "@/components/shared/main-loader";
 import { useCodeEditor } from "@/context/CodeEditorContext";
-import { languageIdMap } from "@/lib/languageIdMap.lib";
 import { addSubmission, getProblemById } from "@/lib/requests.functions.lib";
 import { IProblem, SubmissionResult, TestResult } from "@/types/problem.types";
 import execute from "@/utils/problems.utils";
-import { problemWrapperMap } from "@/wrappers/problemWrapperMap";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -65,27 +63,16 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      // getting a particular lang
-      const lang = languageIdMap[language.toLowerCase()];
-      if (!lang) {
+      if (!language) {
         setExecutionOutput("Unsupported language selected.");
         return;
       }
 
-      // wrapping code now
-      const wrapper = problemWrapperMap[problem.functionName][lang];
-      if (!wrapper) {
-        setExecutionOutput("No wrapper found for this problem and language.");
-        return;
-      }
-
-      const wrappedCode = wrapper(testcaseCode);
-
       // Execute the code against the first 3 test cases
       const results: TestResult[] = await execute(
         problem,
-        wrappedCode,
-        lang,
+        testcaseCode,
+        language,
         false
       );
       setTestResults(results);
@@ -121,26 +108,18 @@ export default function ProblemDetailPage() {
         return;
       }
 
-      const lang = languageIdMap[language.toLowerCase()];
-      if (!lang) {
+      if (!language) {
         setExecutionOutput("Unsupported language selected.");
         return;
       }
 
-      const wrapper = problemWrapperMap[problem.functionName][lang];
-      if (!wrapper) {
-        setExecutionOutput("No wrapper found for this problem and language.");
-        return;
-      }
-
-      const wrappedCode = wrapper(testcaseCode);
       let passedCount = 0;
 
       // Execute all test cases with progress callback
       const results: TestResult[] = await execute(
         problem,
-        wrappedCode,
-        lang,
+        testcaseCode,
+        language,
         true,
         (testIndex, passed) => {
           passedCount += passed ? 1 : 0;
