@@ -4,14 +4,8 @@ import Navbar from "@/components/user-profile/navbar";
 import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
 import { useEffect, useState } from "react";
-import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
+import api, { GET_LANGUAGE_STATS, GET_OWN_PROFILE_ENDPOINT, GET_PROGRESS_SUMMARY, GET_RECENT_SUBMISSIONS, GET_SKILL_STATS } from "@/lib/api.lib";
 import { AxiosError } from "axios";
-import api2, {
-  GET_LANGUAGE_STATS,
-  GET_PROGRESS_SUMMARY,
-  GET_RECENT_SUBMISSIONS,
-  GET_SKILL_STATS,
-} from "@/lib/api.lib";
 import User from "@/types/user.types";
 import MainLoader from "@/components/shared/main-loader";
 import DashboardState from "@/types/dashboard.types";
@@ -52,10 +46,10 @@ export default function UserProfilePage() {
     try {
       const [progressRes, languageRes, skillRes, submissionRes] =
         await Promise.all([
-          api2.get(GET_PROGRESS_SUMMARY),
-          api2.get(GET_LANGUAGE_STATS),
-          api2.get(GET_SKILL_STATS),
-          api2.get(GET_RECENT_SUBMISSIONS),
+          api.get(GET_PROGRESS_SUMMARY),
+          api.get(GET_LANGUAGE_STATS),
+          api.get(GET_SKILL_STATS),
+          api.get(GET_RECENT_SUBMISSIONS),
         ]);
       setDashboard({
         progress: progressRes.data.data,
