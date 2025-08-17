@@ -65,7 +65,7 @@ export default function ProblemsSolvedCard({ progress }: { progress?: ProgressTy
         <div className="absolute inset-0 flex items-center justify-center">
           {/* Solved state */}
           <div
-            className={`flex flex-col items-center justify-center text-center transform transition-all duration-500 ${
+            className={`flex flex-col items-center justify-center text-center transform transition-all duration-400 ${
               hover ? "opacity-0 scale-90" : "opacity-100 scale-100"
             }`}
           >

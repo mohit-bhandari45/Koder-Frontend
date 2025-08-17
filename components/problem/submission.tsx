@@ -1,6 +1,6 @@
 "use client";
 import { getSubmissionsByProblem } from "@/lib/requests.functions.lib";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 // Submission interface
 interface ISubmission {
@@ -20,6 +20,8 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
   const [loading, setLoading] = useState(true);
   const [selectedSubmission, setSelectedSubmission] = useState<ISubmission | null>(null);
 
+  const codeRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     const fetchSubmissions = async () => {
       try {
@@ -38,6 +40,16 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
       fetchSubmissions();
     }
   }, [problemId]);
+
+  useEffect(()=>{
+    if(selectedSubmission && codeRef.current){
+      codeRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+  },[selectedSubmission]);
+
 
   if (loading) {
     return (
@@ -108,7 +120,7 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
 
       {/* Selected Submission Code */}
       {selectedSubmission && (
-        <div className="mt-6">
+        <div className="mt-6" ref={codeRef}>
           <div className="flex items-center justify-between mb-3">
             <h4 className="text-lg font-semibold">Code</h4>
             <div className="flex items-center space-x-2">
