@@ -1,13 +1,14 @@
 "use client";
 
 import Social from "@/components/auth/social";
-import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
-import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { useRouter,useSearchParams } from "next/navigation";
-import api,{ LOGIN_ENDPOINT } from "@/lib/api.lib";  
+import { useMainLoader } from "@/context/MainLoaderContext";
+import api, { LOGIN_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
+import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
+import MainLoader from "../shared/main-loader";
 
 interface LoginForm {
   email: string;
@@ -20,11 +21,11 @@ interface LoginErrors {
 }
 
 export default function LoginComponent() {
-  const router=useRouter();
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const loader = useRedirectIfAuthenticated("/u/:username");
+  const { mainLoading } = useMainLoader();
 
-    const nextParam = searchParams.get("next") || null;
+  const nextParam = searchParams.get("next") || null;
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<LoginForm>({
@@ -67,46 +68,48 @@ export default function LoginComponent() {
     return Object.keys(newErrors).length === 0;
   };
 
-const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-  if (!validateForm()) return;
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-  setIsLoading(true);
-  setErrors({}); 
+    setIsLoading(true);
+    setErrors({});
 
-  try {
-    const res = await api.post(LOGIN_ENDPOINT, {
-      email: formData.email,
-      password: formData.password,
-    });
-    if (res.status === 200) {
-      if(nextParam && nextParam.startsWith("/")){
-        router.replace(nextParam);
-      }else{
-        router.replace(`/u/${res.data.data.username}`);
+    try {
+      const res = await api.post(LOGIN_ENDPOINT, {
+        email: formData.email,
+        password: formData.password,
+      });
+      if (res.status === 200) {
+        if (nextParam && nextParam.startsWith("/")) {
+          router.replace(nextParam);
+        } else {
+          router.replace(`/u/${res.data.data.username}`);
+        }
       }
-      
-    }
-  } catch (error: unknown) {
-    const err = error as AxiosError<{ message: string }>;
-    const message =
-      err?.response?.data?.message || "Something went wrong. Please try again.";
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
+      const message =
+        err?.response?.data?.message ||
+        "Something went wrong. Please try again.";
 
-    if (message.includes("Invalid email or password")) {
-      setErrors((prev) => ({
-        ...prev,
-        email: "Invalid email or password",
-        password: "Invalid email or password",
-      }));
-    } else {
-      toast.error(message);
+      if (message.includes("Invalid email or password")) {
+        setErrors((prev) => ({
+          ...prev,
+          email: "Invalid email or password",
+          password: "Invalid email or password",
+        }));
+      } else {
+        toast.error(message);
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } finally {
-    setIsLoading(false);
+  };
+
+  if (mainLoading) {
+    return <MainLoader text="Wait a min..." />;
   }
-};
-
-  if (loader) return loader;
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center overflow-hidden">
@@ -182,7 +185,7 @@ const handleSubmit = async (e: FormEvent) => {
                 </label>
                 <a
                   className="text-sm text-gray-400 hover:text-white transition-colors cursor-pointer"
-                  onClick={()=>router.push("/auth/forgot-password")}
+                  onClick={() => router.push("/auth/forgot-password")}
                 >
                   Forgot password?
                 </a>

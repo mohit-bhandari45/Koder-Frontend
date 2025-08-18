@@ -4,10 +4,10 @@ type User = {
   fullName: string;
   username: string;
   email: string;
+  isVerified: boolean
   password: string;
   profilepicture?: string;
   createdAt: Date;
   updatedAt: Date;
 };
-
 export default User;

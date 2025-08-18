@@ -17,11 +17,12 @@ const UsernameSelection = () => {
 
   useEffect(() => {
     setMainLoading(true);
-    if (!loading && user && user.username) {
-      router.replace(`/u/${user.username}`);
-    }
-    if (!loading && error) {
-      setMainLoading(false);
+    if (!loading) {
+      if (!!error && !!user && !!user.username) {
+        router.replace(`/u/${user.username}`);
+      } else {
+        setMainLoading(false);
+      }
     }
   }, [error, loading, router, setMainLoading, user]);
 

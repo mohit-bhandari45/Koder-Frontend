@@ -1,8 +1,16 @@
 "use client";
 
 import Social from "@/components/auth/social";
-import { FormData, FormErrors, getPasswordStrength, getPasswordStrengthText } from "@/components/signup/data";
-import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
+import MainLoader from "@/components/shared/main-loader";
+import {
+  FormData,
+  FormErrors,
+  getPasswordStrength,
+  getPasswordStrengthText,
+} from "@/components/signup/data";
+import { useMainLoader } from "@/context/MainLoaderContext";
+import api, { SIGNUP_ENDPOINT } from "@/lib/api.lib";
+import { AxiosError } from "axios";
 import {
   ArrowRight,
   Check,
@@ -11,20 +19,19 @@ import {
   Lock,
   Mail,
   User,
-  X
+  X,
 } from "lucide-react";
-import { ChangeEvent, FormEvent, useState } from "react";
-import api,{ SIGNUP_ENDPOINT } from "@/lib/api.lib";
 import { useRouter } from "next/navigation";
-import { AxiosError } from "axios";
+import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function SignupPage() {
-  const router=useRouter();
-  const loader = useRedirectIfAuthenticated("/u/:username");
-  
+  const router = useRouter();
+  const { mainLoading } = useMainLoader();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -34,14 +41,14 @@ export default function SignupPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
-  
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    
+
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({
         ...prev,
@@ -49,78 +56,82 @@ export default function SignupPage() {
       }));
     }
   };
-  
+
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = "Full name is required";
     } else if (formData.name.trim().length < 2) {
       newErrors.name = "Name must be at least 2 characters";
     }
-    
+
     if (!formData.email) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
-    
+
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     }
-    
+
     if (!formData.confirmPassword) {
       newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = "Passwords do not match";
     }
-    
+
     if (!acceptTerms) {
       newErrors.terms = "Please accept the terms and conditions";
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
- const handleSubmit = async (e: FormEvent) => {
-  e.preventDefault();
-  if (!validateForm()) return;
 
-  setIsLoading(true);
-  try {
-    const res = await api.post(SIGNUP_ENDPOINT, {
-      fullName: formData.name,
-      email: formData.email,
-      password: formData.password,
-    });
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
-    if (res.status === 201) {
-     router.push(`/auth/verify-email?email=${encodeURIComponent(formData.email)}`); 
-    } 
-  } catch (error: unknown) {
-    const err = error as AxiosError<{ message: string }>;
-    const message = err?.response?.data?.message || "Signup failed. Please try again.";
-    if (message.includes("User already exists")) {
-      setErrors((prev) => ({
-        ...prev,
-        email: "Email already registered",
-      }));
-    } else {
-      toast.error(message);
+    setIsLoading(true);
+    try {
+      const res = await api.post(SIGNUP_ENDPOINT, {
+        fullName: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (res.status === 201) {
+        router.push(
+          `/auth/verify-email?email=${encodeURIComponent(formData.email)}`
+        );
+      }
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
+      const message =
+        err?.response?.data?.message || "Signup failed. Please try again.";
+      if (message.includes("User already exists")) {
+        setErrors((prev) => ({
+          ...prev,
+          email: "Email already registered",
+        }));
+      } else {
+        toast.error(message);
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
 
-  
+  if (mainLoading) {
+    return <MainLoader text="Wait a min..." />;
+  }
+
   const passwordStrength = getPasswordStrength(formData.password);
   const strengthInfo = getPasswordStrengthText(passwordStrength);
-  
-  if (loader) return loader;
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center overflow-hidden">
@@ -151,7 +162,7 @@ export default function SignupPage() {
           </div>
 
           {/* OAuth Buttons */}
-          <Social/>
+          <Social />
 
           {/* Divider */}
           <div className="flex items-center mb-6">

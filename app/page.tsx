@@ -6,12 +6,8 @@ import Footer from "@/components/landingpage/footer";
 import Hero from "@/components/landingpage/hero";
 import Stats from "@/components/landingpage/stats";
 import Navbar from "@/components/shared/navbar";
-import { useRedirectIfAuthenticated } from "@/hooks/useRedirectIfAuthenticated";
 
 export default function LandingPage() {
-  const loader = useRedirectIfAuthenticated("/u/:username");
-  if (loader) return loader;
-
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Animated Background Elements */}

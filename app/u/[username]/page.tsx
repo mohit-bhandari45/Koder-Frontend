@@ -4,28 +4,33 @@ import Navbar from "@/components/user-profile/navbar";
 import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
 import { useEffect, useState } from "react";
-import api, { GET_LANGUAGE_STATS, GET_OWN_PROFILE_ENDPOINT, GET_PROGRESS_SUMMARY, GET_RECENT_SUBMISSIONS, GET_SKILL_STATS } from "@/lib/api.lib";
+import api, {
+  GET_LANGUAGE_STATS,
+  GET_OWN_PROFILE_ENDPOINT,
+  GET_PROGRESS_SUMMARY,
+  GET_RECENT_SUBMISSIONS,
+  GET_SKILL_STATS,
+} from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import User from "@/types/user.types";
 import MainLoader from "@/components/shared/main-loader";
 import DashboardState from "@/types/dashboard.types";
-import { useRouter,useParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 export default function UserProfilePage() {
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
   const [dashboard, setDashboard] = useState<DashboardState | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
-  const router=useRouter();
-  const params=useParams();
+  const router = useRouter();
+  const params = useParams();
 
-  useEffect(()=>{
-    if(user?.username && params.username !== user.username){
+  useEffect(() => {
+    if (user?.username && params.username !== user.username) {
       router.replace(`/u/${user.username}`);
     }
-  },[user?.username,params.username])
+  }, [user?.username, params.username, router]);
 
   const fetchUser = async () => {
     setLoading(true);
@@ -74,18 +79,22 @@ export default function UserProfilePage() {
   return (
     <div className="min-h-screen bg-black scrollbar-track">
       {!loading && !error ? (
-        <>{ user && dashboard && (
         <>
-          <Navbar user={user} />
-          <div className="max-w-7xl mx-auto py-8 px-4">
-            <div className="flex flex-col lg:flex-row gap-8">
-              <LeftSidebar user={user} dashboard={dashboard} />
-              <MainContent dashboard={dashboard} />
-            </div>
-          </div>
-        </>)}
+          {user && dashboard && (
+            <>
+              <Navbar user={user} />
+              <div className="max-w-7xl mx-auto py-8 px-4">
+                <div className="flex flex-col lg:flex-row gap-8">
+                  <LeftSidebar user={user} dashboard={dashboard} />
+                  <MainContent dashboard={dashboard} />
+                </div>
+              </div>
+            </>
+          )}
         </>
-      ): <MainLoader/>}
+      ) : (
+        <MainLoader />
+      )}
     </div>
   );
 }

@@ -9,7 +9,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 /* nprogress.css */
 #nprogress {
   pointer-events: none;

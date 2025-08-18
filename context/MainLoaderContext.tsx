@@ -10,7 +10,7 @@ type MainLoaderContextType = {
 const MainLoaderContext = createContext<MainLoaderContextType | undefined>(undefined);
 
 export const MainLoaderProvider = ({ children }: { children: React.ReactNode }) => {
-    const [mainLoading, setMainLoading] = useState(false);
+    const [mainLoading, setMainLoading] = useState(true);
 
     return (
         <MainLoaderContext.Provider value={{ mainLoading, setMainLoading }}>

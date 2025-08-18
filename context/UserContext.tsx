@@ -5,7 +5,14 @@ import { UNPROTECTED_PATHS } from "@/middleware";
 import User from "@/types/user.types";
 import { AxiosError } from "axios";
 import { usePathname, useRouter } from "next/navigation";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { useMainLoader } from "./MainLoaderContext";
 
 type UserContextType = {
   user: User | null;
@@ -24,17 +31,41 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
   const pathname = usePathname();
+  const { setMainLoading } = useMainLoader();
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     setLoading(true);
     try {
       const res = await api.get(GET_OWN_PROFILE_ENDPOINT);
-      setUser(res.data.data);
+      const currUser: User = res.data.data;
+      setUser(currUser);
+
+      if (!currUser.isVerified) {
+        router.replace(`/auth/verify-email?email=${currUser.email}`);
+      }
+
+      if (!currUser.username || currUser.username === undefined) {
+        router.replace(`/auth/username`);
+      }
+
+      if (
+        UNPROTECTED_PATHS.some(
+          (path) =>
+            path === pathname || (path !== "/" && pathname.startsWith(path))
+        )
+      ) {
+        router.replace(`/u/${currUser.username}`);
+      }
+
       setError(null);
     } catch (error: unknown) {
+      setMainLoading(false);
       setUser(null);
       setError(error as AxiosError);
-      if (error instanceof AxiosError && error.response?.status === 404) {
+      if (
+        error instanceof AxiosError &&
+        (error.response?.status === 404 || error.response?.status === 401)
+      ) {
         if (!UNPROTECTED_PATHS.some((path) => pathname.startsWith(path))) {
           router.push("/auth/login");
         }
@@ -42,11 +73,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [pathname, router, setMainLoading]);
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [fetchUser]);
 
   return (
     <UserContext.Provider
