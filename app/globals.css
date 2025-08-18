@@ -156,24 +156,29 @@
   scrollbar-width: none;     /* Firefox */
 }
 
-/* Custom scrollbar for body and app-wide */
+/* Slim dark scrollbar for the whole app */
+
+/* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;   /* slim vertical scrollbar */
+  height: 6px;  /* slim horizontal scrollbar */
 }
+
 ::-webkit-scrollbar-track {
-  background: var(--background); /* uses your light/dark theme background */
+  background: transparent; /* keep track invisible */
 }
+
 ::-webkit-scrollbar-thumb {
-  background-color: var(--muted-foreground); /* light gray in dark, dark gray in light */
-  border-radius: 6px;
+  background-color: #3f3f46; /* dark gray thumb */
+  border-radius: 9999px;     /* fully rounded */
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--ring); /* slightly more prominent on hover */
+  background-color: #52525b; /* lighter gray on hover */
 }
 
-/* Firefox support */
-body {
-  scrollbar-width: thin;
-  scrollbar-color: var(--muted-foreground) var(--background);
+/* Firefox */
+* {
+  scrollbar-width: thin;                  /* makes scrollbar slim */
+  scrollbar-color: #3f3f46 transparent;   /* thumb color | track color */
 }
-

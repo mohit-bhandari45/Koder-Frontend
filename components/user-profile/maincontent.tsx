@@ -109,7 +109,6 @@ export default function MainContent({
     </div>
   );
 }
-
 function DifficultyBar({
   label,
   solved,
@@ -121,21 +120,23 @@ function DifficultyBar({
   total: number;
   color: string;
 }) {
-   const percentage = (solved / total) * 100;
+  const percentage = total > 0 ? (solved / total) * 100 : 0;
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3 flex-1">
-        <span className="text-gray-300 text-sm w-10">{label}</span>
-        <div className="text-white font-semibold">{solved}</div>
-        <span className="text-gray-400">/{total}</span>
+    <div>
+      <div className="flex justify-between text-sm mb-1">
+        <span className="text-gray-300">{label}</span>
+        <span className="text-gray-400">
+          {solved}/{total} ({percentage.toFixed(1)}%)
+        </span>
       </div>
-      <div className="w-20 h-2 bg-gray-700 rounded-full overflow-hidden">
+      <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
         <div
-          className={`h-full ${color} rounded-full`}
+          className={`${color} h-2 rounded-full transition-all`}
           style={{ width: `${percentage}%` }}
-        ></div>
+        />
       </div>
     </div>
   );
 }
+
