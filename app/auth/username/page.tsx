@@ -18,7 +18,7 @@ const UsernameSelection = () => {
   useEffect(() => {
     setMainLoading(true);
     if (!loading) {
-      if (!!error && !!user && !!user.username) {
+      if (!error && !!user && !!user.username) {
         router.replace(`/u/${user.username}`);
       } else {
         setMainLoading(false);

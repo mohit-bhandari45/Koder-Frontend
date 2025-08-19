@@ -28,10 +28,8 @@ import toast from "react-hot-toast";
 export default function SignupPage() {
   const router = useRouter();
   const { mainLoading } = useMainLoader();
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -95,7 +93,6 @@ export default function SignupPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     setIsLoading(true);
     try {
       const res = await api.post(SIGNUP_ENDPOINT, {
@@ -105,8 +102,9 @@ export default function SignupPage() {
       });
 
       if (res.status === 201) {
+        localStorage.setItem("email",formData.email);
         router.push(
-          `/auth/verify-email?email=${encodeURIComponent(formData.email)}`
+          "/auth/verify-email"
         );
       }
     } catch (error: unknown) {

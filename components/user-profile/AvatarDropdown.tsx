@@ -42,7 +42,7 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
             className="aspect-square w-[32px] rounded-full object-cover cursor-pointer"
           />
         ) : (
-          <User className="text-white"/>
+          <User className="text-white cursor-pointer"/>
         )}
       </button>
 

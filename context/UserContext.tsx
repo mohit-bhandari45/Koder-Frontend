@@ -1,7 +1,6 @@
 "use client";
 
 import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
-import { UNPROTECTED_PATHS } from "@/middleware";
 import User from "@/types/user.types";
 import { AxiosError } from "axios";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,6 +12,7 @@ import React, {
   useState,
 } from "react";
 import { useMainLoader } from "./MainLoaderContext";
+import { UNPROTECTED_PATHS } from "@/utils/unprotectedpaths.util";
 
 type UserContextType = {
   user: User | null;
@@ -39,13 +39,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       const res = await api.get(GET_OWN_PROFILE_ENDPOINT);
       const currUser: User = res.data.data;
       setUser(currUser);
-
+     
       if (!currUser.isVerified) {
-        router.replace(`/auth/verify-email?email=${currUser.email}`);
+        router.replace(`/auth/verify-email`);
+        return;
       }
 
-      if (!currUser.username || currUser.username === undefined) {
+      if (!currUser.username) {
         router.replace(`/auth/username`);
+        return;
       }
 
       if (
@@ -55,8 +57,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         )
       ) {
         router.replace(`/u/${currUser.username}`);
+        return;
       }
-
+      
       setError(null);
     } catch (error: unknown) {
       setMainLoading(false);
