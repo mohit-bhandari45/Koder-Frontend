@@ -16,17 +16,20 @@ import User from "@/types/user.types";
 import MainLoader from "@/components/shared/main-loader";
 import DashboardState from "@/types/dashboard.types";
 import { useRouter, useParams } from "next/navigation";
+import { useMainLoader } from "@/context/MainLoaderContext";
 
 export default function UserProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
   const [dashboard, setDashboard] = useState<DashboardState | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const { mainLoading, setMainLoading } = useMainLoader();
 
   const router = useRouter();
   const params = useParams();
 
   useEffect(() => {
+    setMainLoading(true);
     if (user?.username && params.username !== user.username) {
       router.replace(`/u/${user.username}`);
     }
@@ -68,6 +71,7 @@ export default function UserProfilePage() {
       setError(error as AxiosError);
     } finally {
       setLoading(false);
+      setMainLoading(false);
     }
   };
 
@@ -75,6 +79,10 @@ export default function UserProfilePage() {
     fetchUser();
     fetchDashboardDetails();
   }, []);
+
+  if (mainLoading) {
+    return <MainLoader text="Wait a min...." />;
+  }
 
   return (
     <div className="min-h-screen bg-black scrollbar-track">
