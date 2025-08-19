@@ -1,11 +1,13 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Lock, Check, X } from "lucide-react";
 import api, { RESET_PASSWORD_ENDPOINT } from "@/lib/api.lib";
 import { getPasswordStrength, getPasswordStrengthText } from "@/components/signup/data";
 import { AxiosError } from "axios";
+import { useMainLoader } from "@/context/MainLoaderContext";
+import MainLoader from "@/components/shared/main-loader";
 
 export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,12 +20,19 @@ export default function ResetPasswordPage() {
     password: "",
     confirmPassword: "",
   });
+  const [email,setEmail] = useState<string |null>(null);
+  const {mainLoading} = useMainLoader();
 
   const router = useRouter();
-  const email = localStorage.getItem("email");
-
   const passwordStrength = getPasswordStrength(formData.password);
   const strengthInfo = getPasswordStrengthText(passwordStrength);
+
+  useEffect(()=>{
+    setEmail(localStorage.getItem("email"));
+    if(!email){
+      router.push("auth/forgot-password");
+    }
+  },[router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -73,6 +82,10 @@ export default function ResetPasswordPage() {
       setIsLoading(false);
     }
   };
+
+  if(mainLoading){
+    return <MainLoader text="Wait a min..."/>
+  }
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center relative overflow-hidden">

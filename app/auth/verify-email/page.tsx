@@ -1,19 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Check, X, ArrowRight } from "lucide-react";
 import api, { VERIFY_EMAIL_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import ResendOtp from "@/components/auth/resendotp";
+import { useMainLoader } from "@/context/MainLoaderContext";
+import MainLoader from "@/components/shared/main-loader";
 
 export default function VerifyEmailPage() {
+
     const router = useRouter();
-    const email = localStorage.getItem("email")!;
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [loading, setLoading] = useState(false);
+    const [email,setEmail] = useState<string | null>(null);
+    const {mainLoading} = useMainLoader();
+
+    useEffect(()=>{
+      setEmail(localStorage.getItem("email"));
+      if(!email){
+        router.push("/auth/signup");
+      }
+    },[router]);
   
     const handleVerify = async () => {
       if (!email) {
@@ -38,6 +49,10 @@ export default function VerifyEmailPage() {
         setLoading(false);
       }
     };
+
+    if(mainLoading){
+       return <MainLoader text="Wait a min..."/>
+    }
   
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center overflow-hidden">
@@ -103,7 +118,7 @@ export default function VerifyEmailPage() {
               </p>
             )}
 
-            <ResendOtp email={email} type="verify" setError={setError} setSuccess={setSuccess} />
+            <ResendOtp email={email!} type="verify" setError={setError} setSuccess={setSuccess} />
             
             {/* Submit Button */}
             <button

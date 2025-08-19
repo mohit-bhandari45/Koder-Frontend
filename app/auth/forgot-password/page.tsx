@@ -9,16 +9,19 @@ import api, {
 } from "@/lib/api.lib"; 
 import { AxiosError } from "axios";
 import ResendOtp from "@/components/auth/resendotp";
+import { useMainLoader } from "@/context/MainLoaderContext";
+import MainLoader from "@/components/shared/main-loader";
 
 export default function ForgotPasswordPage() {
-  const router = useRouter();
 
+  const router = useRouter();
   const [step, setStep] = useState<"email" | "otp">("email");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const {mainLoading} = useMainLoader();
 
   const handleSendOTP = async () => {
     setLoading(true);
@@ -59,6 +62,10 @@ export default function ForgotPasswordPage() {
       setLoading(false);
     }
   };
+
+  if(mainLoading){
+    return <MainLoader text="Wait a min..."/>
+  }
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center overflow-hidden">
