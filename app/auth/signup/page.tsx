@@ -105,8 +105,9 @@ export default function SignupPage() {
       });
 
       if (res.status === 201) {
+        localStorage.setItem("email",formData.email);
         router.push(
-          `/auth/verify-email?email=${encodeURIComponent(formData.email)}`
+          "/auth/verify-email"
         );
       }
     } catch (error: unknown) {

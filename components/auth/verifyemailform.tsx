@@ -9,9 +9,12 @@ import ResendOtp from "./resendotp";
 
 export default function VerifyEmailForm() {
   const router = useRouter();
-    const searchParams = useSearchParams();
-    const email = searchParams.get("email") as string;
-  
+    // const searchParams = useSearchParams();
+    // const email = searchParams.get("email") as string;
+    localStorage.setItem("email","9760583434akash26@gmail.com")
+    const email = localStorage.getItem("email")!;
+  console.log("inside vf")
+  console.log(email)
     const [code, setCode] = useState("");
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -26,10 +29,11 @@ export default function VerifyEmailForm() {
       setLoading(true);
       setError("");
       try {
+        console.log(email)
         const res = await api.post(VERIFY_EMAIL_ENDPOINT, { email, code });
-  
+        
         if (res.status === 200) {
-          setSuccess("Email verified! Redirecting...");
+           setSuccess("Email verified! Redirecting...");
             router.push("/auth/username");
         }
       } catch (error: unknown) {

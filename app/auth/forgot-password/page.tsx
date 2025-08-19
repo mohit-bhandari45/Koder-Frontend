@@ -49,7 +49,8 @@ export default function ForgotPasswordPage() {
 
       if (res.status === 200) {
         setSuccess("OTP verified. Redirecting...");
-        router.push(`/auth/reset-password?email=${encodeURIComponent(email)}`);
+        localStorage.setItem("email",email);
+        router.push(`/auth/reset-password`);
       }
     } catch (error: unknown) {
       const err = error as AxiosError<{ message: string }>;

@@ -9,7 +9,6 @@ export default function MainContent({
 }: {
   dashboard: DashboardState;
 }) {
-  console.log(dashboard);
   return (
     <div className="flex-1 space-y-6">
       <div className="flex space-x-5 w-full">

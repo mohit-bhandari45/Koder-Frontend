@@ -1,3 +1,4 @@
+import { UNPROTECTED_PATHS } from "@/utils/unprotectedpaths.util";
 import axios from "axios";
 
 export const BASE_URL = "https://specified-peacock-mohit123-1b61bd1c.koyeb.app";
@@ -34,10 +35,8 @@ api.interceptors.response.use(
 
                 // Redirect to login with next param
                 if (typeof window !== "undefined") {
-                    const publicPaths = ["/", "/auth/login", "/auth/signup"];
                     const currentPath = window.location.pathname + window.location.search;
-
-                    if (!publicPaths.includes(window.location.pathname)) {
+                    if (!UNPROTECTED_PATHS.includes(window.location.pathname)) {
                         window.location.href = `/auth/login?next=${encodeURIComponent(currentPath)}`;
                     }
                 }
