@@ -19,12 +19,15 @@ export default function VerifyEmailPage() {
     const [email,setEmail] = useState<string | null>(null);
     const {mainLoading} = useMainLoader();
 
-    useEffect(()=>{
-      setEmail(localStorage.getItem("email"));
-      if(!email){
-        router.push("/auth/signup");
+    useEffect(() => {
+      const storedEmail = localStorage.getItem("email");
+      if (!storedEmail) {
+        router.replace("/auth/signup"); 
+      } else {
+        setEmail(storedEmail);
       }
-    },[router]);
+    }, [router]);
+
   
     const handleVerify = async () => {
       if (!email) {

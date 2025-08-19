@@ -28,10 +28,12 @@ export default function ResetPasswordPage() {
   const strengthInfo = getPasswordStrengthText(passwordStrength);
 
   useEffect(()=>{
-    setEmail(localStorage.getItem("email"));
-    if(!email){
-      router.push("auth/forgot-password");
-    }
+    const storedEmail = localStorage.getItem("email");
+      if (!storedEmail) {
+        router.replace("/auth/forgot-password"); 
+      } else {
+        setEmail(storedEmail);
+      }
   },[router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
