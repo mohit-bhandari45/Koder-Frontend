@@ -9,6 +9,7 @@ import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
 import User from "@/types/user.types";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function Navbar({ user }: { user: User }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,10 +21,10 @@ function Navbar({ user }: { user: User }) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+            <Link href={"/"} className="flex items-center gap-2">
               <Code className="w-8 h-8 text-orange-500" />
               <span className="text-xl font-bold text-white">Koder</span>
-            </div>
+            </Link>
           </div>
 
           {/* Navigation Links */}
@@ -77,7 +78,7 @@ function Navbar({ user }: { user: User }) {
         <div className="md:hidden bg-gray-800 border-t border-gray-700">
           <div className="px-4 py-2 space-y-2">
             <a href="#" className="block text-gray-300 hover:text-white py-2">Explore</a>
-            <a href="#" className="block text-gray-300 hover:text-white py-2">Problems</a>
+            <a onClick={()=>router.push("/problems")} className="block cursor-pointer text-gray-300 hover:text-white py-2">Problems</a>
             <a href="#" className="block text-gray-300 hover:text-white py-2">Contest</a>
             <a href="#" className="block text-gray-300 hover:text-white py-2">Discuss</a>
             <a href="#" className="block text-gray-300 hover:text-white py-2">Interview</a>
