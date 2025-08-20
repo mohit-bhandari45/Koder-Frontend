@@ -5,9 +5,23 @@ import Features from "@/components/landingpage/features";
 import Footer from "@/components/landingpage/footer";
 import Hero from "@/components/landingpage/hero";
 import Stats from "@/components/landingpage/stats";
+import MainLoader from "@/components/shared/main-loader";
 import Navbar from "@/components/shared/navbar";
+import { useMainLoader } from "@/context/MainLoaderContext";
+import { useEffect } from "react";
 
 export default function LandingPage() {
+
+  const {mainLoading,setMainLoading} = useMainLoader();
+
+  useEffect(()=>{
+    setMainLoading(true);
+  },[]);
+
+  if(mainLoading){
+    return <MainLoader text="Wait a min..."/>
+  }
+
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Animated Background Elements */}

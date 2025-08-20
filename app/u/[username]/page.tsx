@@ -101,7 +101,7 @@ export default function UserProfilePage() {
           )}
         </>
       ) : (
-        <MainLoader />
+        <MainLoader text="Fetching details..."/>
       )}
     </div>
   );
