@@ -8,6 +8,7 @@ async function execute(
     submit: boolean,
     onTestComplete?: (index: number, passed: boolean) => void
 ): Promise<TestResult[]> {
+
     const setOfTestCases = submit ? problem.testCases : problem.testCases.slice(0, 3);
     const results: TestResult[] = [];
 
@@ -15,31 +16,30 @@ async function execute(
         const testCase = setOfTestCases[i];
         const res = await judge0ExecuteAPI(code, testCase.stdin, lang);
 
-        const actualOutput = res.stdout?.trim() || "";
+        const actualOutput = (res.stdout || "").trim();
         const expectedOutput = testCase.output.trim();
-        let possibleOutputs: string[] = [];
+        let passed = false;
 
         try {
-            const parsed = JSON.parse(expectedOutput);
-            if (Array.isArray(parsed)) possibleOutputs = parsed.map((o: string) => o.trim());
+            // Try parsing as JSON
+            const expectedParsed = JSON.parse(expectedOutput);
+            const actualParsed = JSON.parse(actualOutput);
+
+            // Both arrays -> compare after sorting
+            if (Array.isArray(expectedParsed) && Array.isArray(actualParsed)) {
+                passed = expectedParsed.slice().sort().toString() === actualParsed.slice().sort().toString();
+            } else {
+                // For boolean, object, or any primitive -> direct comparison
+                passed = expectedParsed === actualParsed;
+            }
+
         } catch {
-            possibleOutputs = [expectedOutput];
+            // If not JSON -> compare as string (covers boolean outputs like "true"/"false")
+            passed = actualOutput === expectedOutput;
         }
 
-        const passed = res.status.id === 3 && possibleOutputs.some((o) => {
-            try {
-                const expectedArr = JSON.parse(o);
-                const actualArr = JSON.parse(actualOutput);
-
-                if (Array.isArray(expectedArr) && Array.isArray(actualArr)) {
-                    return expectedArr.slice().sort().toString() === actualArr.slice().sort().toString();
-                }
-
-                return o.trim() === actualOutput.trim();
-            } catch {
-                return o.trim() === actualOutput.trim();
-            }
-        });
+        // Only pass if judge0 status is OK
+        passed = passed && res.status.id === 3;
 
         const testResult: TestResult = {
             input: testCase.input,
@@ -55,9 +55,7 @@ async function execute(
         if (onTestComplete) onTestComplete(i + 1, passed);
 
         // STOP if a test fails
-        if (!passed) {
-            break;
-        }
+        if (!passed) break;
     }
 
     return results;

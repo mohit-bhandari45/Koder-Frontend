@@ -61,8 +61,6 @@ export default function ProblemDetailPage() {
     setTestResults([]);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
       if (!problem?.examples || problem.examples.length === 0) {
         setExecutionOutput("No examples available to test");
         return;
