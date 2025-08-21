@@ -13,11 +13,20 @@ export interface IExample {
   explanation?: string;
 }
 
-export interface ITestCase {
-  input: string;
-  output: string;
-  explanation: string;
-  stdin: string;
+export type TestOutput =
+  | string                 // simple string output
+  | number                 // simple number output
+  | boolean                // simple boolean output
+  | Array<string | number | boolean>        // 1D array
+  | Array<Array<string | number | boolean>> // 2D array
+  | Array<TestOutput>;     // multiple possible outputs
+
+export interface ITestCase extends Document {
+  input: string;        // Human-readable input for explanation / UI
+  output: string;       // Human-readable expected output for explanation / UI
+  explanation: string;  // Optional explanation of the test case
+  stdin: string;        // Compiler-specific input (what your program will actually read)
+  stdout: TestOutput;   // Compiler-specific expected output (what you compare program output against)
 }
 
 export interface ILanguageCodeMap {

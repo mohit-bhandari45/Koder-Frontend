@@ -30,7 +30,7 @@ export default function ProblemDetailPage() {
 
   // context
   const { testcaseCode, setTestcaseCode, language, problem, setProblem } =
-    useCodeEditor();
+    useCodeEditor();  
 
   useEffect(() => {
     if (!id) return;
@@ -173,6 +173,7 @@ export default function ProblemDetailPage() {
       );
     } finally {
       setIsSubmitting(false);
+      setProblem(problem);
     }
   };
 

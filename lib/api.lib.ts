@@ -1,8 +1,8 @@
 import { UNPROTECTED_PATHS } from "@/utils/unprotectedpaths.util";
 import axios from "axios";
 
-export const BASE_URL = "https://specified-peacock-mohit123-1b61bd1c.koyeb.app";
-// export const BASE_URL = "http://localhost:4000";
+// export const BASE_URL = "https://specified-peacock-mohit123-1b61bd1c.koyeb.app";
+export const BASE_URL = "http://localhost:4000";
 
 export const api = axios.create({
     baseURL: BASE_URL,

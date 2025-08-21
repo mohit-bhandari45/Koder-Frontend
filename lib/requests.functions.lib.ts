@@ -29,7 +29,7 @@ const addSubmission = async (payload: {
 
 const getSubmissionsByProblem = async (problemId: string) => {
     const res = await api.get(`${GET_ALL_PROBLEM_SUBMISSION_ENDPOINT}/${problemId}/all`);
-    return res.data;
+    return res.data.data;
 };
 
 export { getProblems, getProblemById, addSubmission, getSubmissionsByProblem };

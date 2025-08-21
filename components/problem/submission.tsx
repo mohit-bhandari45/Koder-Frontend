@@ -18,7 +18,8 @@ interface ISubmission {
 const SubmissionsTab = ({ problemId }: { problemId: string }) => {
   const [submissions, setSubmissions] = useState<ISubmission[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedSubmission, setSelectedSubmission] = useState<ISubmission | null>(null);
+  const [selectedSubmission, setSelectedSubmission] =
+    useState<ISubmission | null>(null);
 
   const codeRef = useRef<HTMLDivElement | null>(null);
 
@@ -41,15 +42,14 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
     }
   }, [problemId]);
 
-  useEffect(()=>{
-    if(selectedSubmission && codeRef.current){
+  useEffect(() => {
+    if (selectedSubmission && codeRef.current) {
       codeRef.current.scrollIntoView({
         behavior: "smooth",
-        block: "start"
+        block: "start",
       });
     }
-  },[selectedSubmission]);
-
+  }, [selectedSubmission]);
 
   if (loading) {
     return (
@@ -69,6 +69,24 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
         </div>
       </div>
     );
+  }
+
+  function timeAgo(dateString: string): string {
+    const createdAt = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - createdAt.getTime(); // difference in milliseconds
+
+    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+    if (diffHours > 0)
+      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+    if (diffMinutes > 0)
+      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
+    return "just now";
   }
 
   return (
@@ -104,8 +122,7 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
                 </div>
               </div>
               <div className="text-sm text-gray-400">
-                {new Date(submission.createdAt).toLocaleDateString()} at{" "}
-                {new Date(submission.createdAt).toLocaleTimeString()}
+                {timeAgo(submission.createdAt)}
               </div>
             </div>
             {submission.runtime && submission.memory && (

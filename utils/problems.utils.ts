@@ -6,7 +6,7 @@ async function execute(
     code: string,
     lang: string,
     submit: boolean,
-    onTestComplete?: (index: number, passed: boolean) => void
+    onTestComplete?: (index: number, passed: boolean) => void,
 ): Promise<TestResult[]> {
 
     const setOfTestCases = submit ? problem.testCases : problem.testCases.slice(0, 3);
@@ -16,26 +16,26 @@ async function execute(
         const testCase = setOfTestCases[i];
         const res = await judge0ExecuteAPI(code, testCase.stdin, lang);
 
-        const actualOutput = (res.stdout || "").trim();
-        const expectedOutput = testCase.output.trim();
+        const actualOutput = (res.stdout || "").trim();  // will always return string, parse accordingly
+        let expectedOutput = testCase.stdout;
         let passed = false;
 
         try {
             // Try parsing as JSON
-            const expectedParsed = JSON.parse(expectedOutput);
-            const actualParsed = JSON.parse(actualOutput);
-
-            // Both arrays -> compare after sorting
-            if (Array.isArray(expectedParsed) && Array.isArray(actualParsed)) {
-                passed = expectedParsed.slice().sort().toString() === actualParsed.slice().sort().toString();
-            } else {
-                // For boolean, object, or any primitive -> direct comparison
-                passed = expectedParsed === actualParsed;
+            if (Array.isArray(expectedOutput)) {
+                const solution = expectedOutput.filter((expected) => {
+                    return JSON.stringify(expected) === actualOutput;
+                })
+                if (solution.length > 0) {
+                    passed = true;
+                }
+                expectedOutput = expectedOutput[0];
+            } else if (typeof expectedOutput === "boolean") {
+                passed = expectedOutput === JSON.parse(actualOutput);
             }
-
         } catch {
             // If not JSON -> compare as string (covers boolean outputs like "true"/"false")
-            passed = actualOutput === expectedOutput;
+            passed = expectedOutput === expectedOutput;
         }
 
         // Only pass if judge0 status is OK
@@ -43,7 +43,7 @@ async function execute(
 
         const testResult: TestResult = {
             input: testCase.input,
-            expectedOutput,
+            expectedOutput: JSON.stringify(expectedOutput),
             actualOutput,
             passed,
             executionTime: res.time,
