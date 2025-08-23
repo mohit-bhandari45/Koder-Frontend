@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useRef, useState } from "react";
 import { IProblem } from "@/types/problem.types";
 import MainLoader from "@/components/shared/main-loader";
 import Link from "next/link";
-import { getProblems } from "@/lib/requests.functions.lib";
+import { getProblems, searchProblems } from "@/lib/requests.functions.lib";
 
 const DIFFICULTY_COLORS: Record<IProblem["difficulty"], string> = {
   Easy: "text-green-500 bg-green-100 border-green-400",
@@ -12,34 +13,62 @@ const DIFFICULTY_COLORS: Record<IProblem["difficulty"], string> = {
 };
 
 export default function ProblemsPage() {
+
   const [problems, setProblems] = useState<IProblem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
+  const [filteredProblems, setFilteredProblems] = useState<IProblem[]>([]);
+
+  const fetchProblems = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await getProblems(page);
+      setProblems(data.data);
+      setPage(data.currentPage)
+      setTotalPages(data.totalPages);
+    } catch {
+      setError("Failed to fetch problems.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProblems = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getProblems(page);
-        setProblems(data.data);
-        setPage(data.currentPage)
-        setTotalPages(data.totalPages);
-      } catch {
-        setError("Failed to fetch problems.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProblems();
+    if (!search) {
+      fetchProblems(); // only fetch when no search
+    }
   }, [page]);
 
-  const filteredProblems = problems.filter((problem) =>
-    problem.title.toLowerCase().includes(search.toLowerCase())
-  );
+  useEffect(() => {
+    if (!search.trim()) {
+      setFilteredProblems([]);
+      return;
+    }
+    setPage(1);
+    debounceSearch();
+  }, [search]);
+
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+
+  const debounceSearch = () => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      handleSearch(search, page);
+    }, 500);
+  }
+
+  const handleSearch = async (search: string, page: number) => {
+    const res = await searchProblems(search, page);
+    setFilteredProblems(res.data.results);
+    setPage(res.data.currentPage);
+    setTotalPages(res.data.totalPages);
+  };
+
+  const displayProblems = search ? filteredProblems : problems;
 
   if (loading) return <MainLoader text="Loading Problems..." />;
   if (error) return <div className="text-red-500 text-center mt-10">{error}</div>;
@@ -69,12 +98,12 @@ export default function ProblemsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {filteredProblems.length === 0 ? (
+              {displayProblems.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="text-center py-8 text-gray-400">No problems found.</td>
                 </tr>
               ) : (
-                filteredProblems.map((problem, idx) => (
+                displayProblems.map((problem, idx) => (
                   <tr
                     key={problem._id}
                     className="hover:bg-[#28283a] transition cursor-pointer group"

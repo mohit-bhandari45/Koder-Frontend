@@ -1,4 +1,4 @@
-import api, { ADD_SUBMISSION_ENDPOINT, GET_ALL_PROBLEM_SUBMISSION_ENDPOINT, PROBLEM_BASE } from "./api.lib";
+import api, { ADD_SUBMISSION_ENDPOINT, BASE_URL, GET_ALL_PROBLEM_SUBMISSION_ENDPOINT, PROBLEM_BASE } from "./api.lib";
 
 /* Utility Functions */
 const getProblems = async (page = 1) => {
@@ -32,4 +32,10 @@ const getSubmissionsByProblem = async (problemId: string) => {
     return res.data.data;
 };
 
-export { getProblems, getProblemById, addSubmission, getSubmissionsByProblem };
+const searchProblems = async (query: string, page: number = 1) => {
+    const res = await api.get(`${BASE_URL}/api/search?q=${encodeURIComponent(query)}&page=${page}&limit=30`);
+    return res.data;
+}
+
+
+export { getProblems, getProblemById, addSubmission, getSubmissionsByProblem, searchProblems };
