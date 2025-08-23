@@ -81,6 +81,8 @@ export default function LoginComponent() {
         password: formData.password,
       });
       if (res.status === 200) {
+        localStorage.setItem("accessToken",res.data.data.accessToken);
+        localStorage.setItem("refreshToken",res.data.data.refreshToken);
         if (nextParam && nextParam.startsWith("/")) {
           router.replace(nextParam);
         } else {

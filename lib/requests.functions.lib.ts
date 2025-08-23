@@ -3,7 +3,7 @@ import api, { ADD_SUBMISSION_ENDPOINT, GET_ALL_PROBLEM_SUBMISSION_ENDPOINT, PROB
 /* Utility Functions */
 const getProblems = async (page = 1) => {
     const res = await api.get(`${PROBLEM_BASE}?page=${page}`);
-    return res.data;
+    return res.data.data;
 };
 
 const getProblemById = async (id: string) => {

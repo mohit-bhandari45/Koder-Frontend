@@ -1,9 +1,10 @@
 "use client";
 
 import { Settings, Shield, User, LogOut } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import api,{LOGOUT_ENDPOINT} from '@/lib/api.lib';
+import toast from 'react-hot-toast';
 
 interface LeftSidebarProps {
   content: string;
@@ -17,15 +18,14 @@ const menuItems = [
 ];
 
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ content, setContent }) => {
-  const router=useRouter();
 
-   const handleLogout = async ()=>{
-      console.log("logged out")
-      const res=await api.post(LOGOUT_ENDPOINT);
-      if(res.status==200){
-        router.push('/auth/login')
-      }
-    }
+
+  const handleLogout = async ()=>{
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
+    toast.success("Logged out successfully")
+    window.location.reload();
+  }
 
   return (
     <div className="w-full lg:w-80 flex-shrink-0">

@@ -102,6 +102,8 @@ export default function SignupPage() {
       });
 
       if (res.status === 201) {
+        localStorage.setItem("accessToken",res.data.data.accessToken);
+        localStorage.setItem("refreshToken",res.data.data.refreshToken);
         localStorage.setItem("email",formData.email);
         router.push(
           "/auth/verify-email"

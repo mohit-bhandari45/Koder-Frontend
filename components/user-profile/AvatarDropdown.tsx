@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import api,{LOGOUT_ENDPOINT} from "@/lib/api.lib";
 import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
+import toast from "react-hot-toast";
 
 type Props = {
   profilepicture?: string ;
@@ -17,10 +18,10 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = async ()=>{
-    const res=await api.post(LOGOUT_ENDPOINT);
-    if(res.status==200){
-      router.push('/auth/login')
-    }
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessToken");
+    toast.success("Logged out successfully")
+    window.location.reload();
   }
 
   // Close on outside click
@@ -67,6 +68,9 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
           </div>
           <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={()=>router.push("/settings")}>
             Settings
+          </button>
+          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={()=>router.push("/submissions")}>
+            View Submissions
           </button>
           <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={handleLogout}>
             Logout

@@ -74,6 +74,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       }
     } finally {
+      setMainLoading(false);
       setLoading(false);
     }
   }, [pathname, router, setMainLoading]);

@@ -12,6 +12,18 @@ export const api = axios.create({
     withCredentials: true,
 });
 
+// Attach JWT token if present
+api.interceptors.request.use(
+    (config) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
 // Add response interceptor for refresh token logic
 api.interceptors.response.use(
     (response) => response,
@@ -28,7 +40,10 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 console.log("Refreshing token");
-                await api.post("/auth/refresh");
+                const refreshToken =  localStorage.getItem("refreshToken");
+                const res = await api.post("/auth/refresh", { refreshToken });
+                const accessToken = res.data.data;
+                localStorage.setItem("accessToken", accessToken);
                 return api(originalRequest);
             } catch (refreshError) {
                 console.log("Refresh token failed");
@@ -67,17 +82,17 @@ const LOGOUT_ENDPOINT = `${AUTH_BASE}/logout`;
 const FORGOT_PASSWORD = `${AUTH_BASE}/forgot-password`;
 const VERIFY_RESET_OTP_ENDPOINT = `${AUTH_BASE}/verify-reset-otp`;
 const RESET_PASSWORD_ENDPOINT = `${AUTH_BASE}/reset-password`;
-export { SIGNUP_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, VERIFY_EMAIL_ENDPOINT,RESEND_OTP_ENDPOINT, FORGOT_PASSWORD, VERIFY_RESET_OTP_ENDPOINT, RESET_PASSWORD_ENDPOINT };
+export { SIGNUP_ENDPOINT, LOGIN_ENDPOINT, LOGOUT_ENDPOINT, VERIFY_EMAIL_ENDPOINT, RESEND_OTP_ENDPOINT, FORGOT_PASSWORD, VERIFY_RESET_OTP_ENDPOINT, RESET_PASSWORD_ENDPOINT };
 
 /* PROBLEM ENDPOINTS */
 const PROBLEM_BASE = "/api/problem";
-export {PROBLEM_BASE}
+export { PROBLEM_BASE }
 
 /* SUBMISSION ENDPOINTS */
-const SUBMISSION_BASE = "/api/submission";
+export const SUBMISSION_BASE = "/api/submission";
 export const ADD_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/add`;
 export const GET_ALL_PROBLEM_SUBMISSION_ENDPOINT = `${SUBMISSION_BASE}/problem`;
-
+export const GET_ALL_SUBMISSIONS_ENDPOINT =  `${SUBMISSION_BASE}/all`;
 /* DASHBOARD ENDPOINTS */
 const DASHBOARD_BASE = "/api/dashboard";
 const GET_PROGRESS_SUMMARY = `${DASHBOARD_BASE}/progress-summary`;
@@ -85,6 +100,6 @@ const GET_LANGUAGE_STATS = `${DASHBOARD_BASE}/language-stats`;
 const GET_SKILL_STATS = `${DASHBOARD_BASE}/skill-stats`;
 const GET_RECENT_SUBMISSIONS = `${DASHBOARD_BASE}/recent-submissions`;
 
-export {GET_PROGRESS_SUMMARY, GET_LANGUAGE_STATS, GET_SKILL_STATS, GET_RECENT_SUBMISSIONS};
+export { GET_PROGRESS_SUMMARY, GET_LANGUAGE_STATS, GET_SKILL_STATS, GET_RECENT_SUBMISSIONS };
 
 export default api;

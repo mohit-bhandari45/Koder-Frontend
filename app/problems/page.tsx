@@ -26,6 +26,7 @@ export default function ProblemsPage() {
       try {
         const data = await getProblems(page);
         setProblems(data.data);
+        setPage(data.currentPage)
         setTotalPages(data.totalPages);
       } catch {
         setError("Failed to fetch problems.");
