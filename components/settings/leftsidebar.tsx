@@ -1,9 +1,7 @@
 "use client";
 
 import { Settings, Shield, User, LogOut } from 'lucide-react';
-import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import api,{LOGOUT_ENDPOINT} from '@/lib/api.lib';
+import React from 'react';
 import toast from 'react-hot-toast';
 
 interface LeftSidebarProps {

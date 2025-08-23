@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import api,{LOGOUT_ENDPOINT} from "@/lib/api.lib";
 import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 import toast from "react-hot-toast";
