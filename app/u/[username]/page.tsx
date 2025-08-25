@@ -90,7 +90,7 @@ export default function UserProfilePage() {
         <>
           {user && dashboard && (
             <>
-              <Navbar user={user} />
+              <Navbar />
               <div className="max-w-7xl mx-auto py-8 px-4">
                 <div className="flex flex-col lg:flex-row gap-8">
                   <LeftSidebar user={user} dashboard={dashboard} />

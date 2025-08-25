@@ -5,18 +5,19 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 type Props = {
-  profilepicture?: string ;
+  profilepicture?: string;
   username: string;
 };
 
 export default function AvatarDropdown({ profilepicture, username }: Props) {
-  const router=useRouter();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleLogout = async ()=>{
+  const handleLogout = async () => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
     toast.success("Logged out successfully")
@@ -36,13 +37,13 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
         {profilepicture ? (
           <img
             src={profilepicture}
-            alt= "profilepicture"
+            alt="profilepicture"
             width={32}
             height={32}
             className="aspect-square w-[32px] rounded-full object-cover cursor-pointer"
           />
         ) : (
-          <User className="text-white cursor-pointer"/>
+          <User className="text-white cursor-pointer" />
         )}
       </button>
 
@@ -51,11 +52,11 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
           <div className="flex items-center gap-3 p-4 border-b border-neutral-800">
             {profilepicture ? (
               <img
-              src={profilepicture}
-              alt="avatar"
-              className="w-10 h-10 rounded-full"
-            />
-            ):(
+                src={profilepicture}
+                alt="avatar"
+                className="w-10 h-10 rounded-full"
+              />
+            ) : (
               <User className="w-10 h-10 text-white bg-gray-800 rounded-full p-2" />
             )}
             <div className="flex-1">
@@ -65,12 +66,13 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
               </div>
             </div>
           </div>
-          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={()=>router.push("/settings")}>
+          <Link className=" block text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" href={"/settings"}>
             Settings
-          </button>
-          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={()=>router.push("/submissions")}>
+          </Link>
+
+          <Link className=" block text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" href={"/submissions"}>
             View Submissions
-          </button>
+          </Link>
           <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={handleLogout}>
             Logout
           </button>
