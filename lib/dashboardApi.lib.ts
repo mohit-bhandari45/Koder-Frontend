@@ -2,7 +2,7 @@ import axios from "axios";
 import api from "./api.lib";
 import { UNPROTECTED_PATHS } from "@/utils/unprotectedpaths.util";
 
-export const DASHBOARD_URL = "https://koder-dashboard-main.onrender.com";
+export const DASHBOARD_URL = "https://koder-dashboard.onrender.com";
 // export const DASHBOARD_URL = "http://localhost:8000";
 
 export const dashboardAPI = axios.create({
