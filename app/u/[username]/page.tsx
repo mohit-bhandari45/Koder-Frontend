@@ -1,56 +1,44 @@
 "use client";
 
-import Navbar from "@/components/user-profile/navbar";
+import MainLoader from "@/components/shared/main-loader";
 import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
-import { useEffect, useState } from "react";
+import Navbar from "@/components/user-profile/navbar";
+import { useMainLoader } from "@/context/MainLoaderContext";
+import { useUser } from "@/context/UserContext";
 import dashboardAPI, {
   GET_LANGUAGE_STATS,
   GET_PROGRESS_SUMMARY,
   GET_RECENT_SUBMISSIONS,
   GET_SKILL_STATS,
 } from "@/lib/dashboardApi.lib";
-import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
-import { AxiosError } from "axios";
-import User from "@/types/user.types";
-import MainLoader from "@/components/shared/main-loader";
 import DashboardState from "@/types/dashboard.types";
-import { useRouter, useParams } from "next/navigation";
-import { useMainLoader } from "@/context/MainLoaderContext";
+import { AxiosError } from "axios";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function UserProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
   const [dashboard, setDashboard] = useState<DashboardState | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const {user} = useUser();
   const { mainLoading, setMainLoading } = useMainLoader();
 
   const router = useRouter();
   const params = useParams();
 
   useEffect(() => {
+    setLoading(true);
     setMainLoading(true);
+  }, []);
+
+  useEffect(() => {
     if (user?.username && params.username !== user.username) {
       router.replace(`/u/${user.username}`);
     }
   }, [user?.username, params.username, router]);
 
-  const fetchUser = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get(GET_OWN_PROFILE_ENDPOINT);
-      setUser(res.data.data);
-      setError(null);
-    } catch (error: unknown) {
-      setUser(null);
-      setError(error as AxiosError);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const fetchDashboardDetails = async () => {
-    setLoading(true);
     try {
       const [progressRes, languageRes, skillRes, submissionRes] =
         await Promise.all([
@@ -75,11 +63,10 @@ export default function UserProfilePage() {
   };
 
   useEffect(() => {
-    fetchUser();
     fetchDashboardDetails();
   }, []);
 
-  if (mainLoading) {
+  if (mainLoading || loading) {
     return <MainLoader text="Wait a min...." />;
   }
 
