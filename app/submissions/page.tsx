@@ -6,6 +6,7 @@ import { formatRelativeTime } from "@/utils/helper.utils";
 import Link from "next/link";
 import { IProblem } from "@/types/problem.types";
 import MainLoader from "@/components/shared/main-loader";
+import Navbar from "@/components/user-profile/navbar";
 
 const STATUS_COLORS: Record<"Accepted" | "Pending" | "Rejected", string> = {
     Accepted: "text-green-500",
@@ -62,13 +63,13 @@ export default function SubmissionsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#18181b] text-white py-12 px-2 md:px-8">
-            <div className="max-w-5xl mx-auto">
+        <div className="min-h-screen bg-black/95 text-white ">
+            <Navbar />
+            <div className="max-w-5xl mx-auto py-12 px-2 md:px-8">
                 <h1 className="text-3xl font-bold mb-6 text-center">
                     My Submissions
                 </h1>
-
-                <div className="overflow-x-auto rounded-lg shadow-lg bg-[#23232a] border border-gray-800">
+                <div className="overflow-x-auto rounded-lg shadow-lg bg-black/60 border-1  border-gray-600">
                     <table className="min-w-full divide-y divide-gray-700 text-sm">
                         <thead className="bg-[#20202a] sticky top-0 z-10">
                             <tr>

@@ -4,13 +4,13 @@ import Navbar from "@/components/user-profile/navbar";
 import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
 import { useEffect, useState } from "react";
-import api, {
+import dashboardAPI, {
   GET_LANGUAGE_STATS,
-  GET_OWN_PROFILE_ENDPOINT,
   GET_PROGRESS_SUMMARY,
   GET_RECENT_SUBMISSIONS,
   GET_SKILL_STATS,
-} from "@/lib/api.lib";
+} from "@/lib/dashboardApi.lib";
+import api, { GET_OWN_PROFILE_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import User from "@/types/user.types";
 import MainLoader from "@/components/shared/main-loader";
@@ -54,10 +54,10 @@ export default function UserProfilePage() {
     try {
       const [progressRes, languageRes, skillRes, submissionRes] =
         await Promise.all([
-          api.get(GET_PROGRESS_SUMMARY),
-          api.get(GET_LANGUAGE_STATS),
-          api.get(GET_SKILL_STATS),
-          api.get(GET_RECENT_SUBMISSIONS),
+          dashboardAPI.get(GET_PROGRESS_SUMMARY),
+          dashboardAPI.get(GET_LANGUAGE_STATS),
+          dashboardAPI.get(GET_SKILL_STATS),
+          dashboardAPI.get(GET_RECENT_SUBMISSIONS),
         ]);
       setDashboard({
         progress: progressRes.data.data,
@@ -71,7 +71,6 @@ export default function UserProfilePage() {
       setError(error as AxiosError);
     } finally {
       setLoading(false);
-      setMainLoading(false);
     }
   };
 
@@ -85,12 +84,12 @@ export default function UserProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black scrollbar-track">
+    <div className="min-h-screen bg-gray-950 scrollbar-track">
       {!loading && !error ? (
         <>
           {user && dashboard && (
             <>
-              <Navbar user={user} />
+              <Navbar />
               <div className="max-w-7xl mx-auto py-8 px-4">
                 <div className="flex flex-col lg:flex-row gap-8">
                   <LeftSidebar user={user} dashboard={dashboard} />
@@ -101,7 +100,7 @@ export default function UserProfilePage() {
           )}
         </>
       ) : (
-        <MainLoader text="Fetching details..."/>
+        <MainLoader text="Fetching details..." />
       )}
     </div>
   );

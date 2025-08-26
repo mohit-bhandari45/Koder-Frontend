@@ -30,9 +30,12 @@ const CTA = () => {
             <Button
               size="lg"
               variant="outline"
-              className="border-white/20 text-white hover:bg-white/10 px-8 py-6 text-lg"
+              className="bg-white text-black cursor-pointer hover:bg-gray-200 border-none px-8 py-6 text-lg"
+              onClick={()=>{
+                router.push("/signup")
+              }}
             >
-              Explore Challenges
+              Get Started
             </Button>
           </div>
         </div>

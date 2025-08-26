@@ -6,7 +6,6 @@ export const UNPROTECTED_PATHS = [
   "/auth/forgot-password",
   "/auth/reset-password",
   "/auth/verify-email",
-  "/code-editor",
 ];
 
 

@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Check, X, ArrowRight } from "lucide-react";
 import api, {
   FORGOT_PASSWORD,
   VERIFY_RESET_OTP_ENDPOINT,
-} from "@/lib/api.lib"; 
+} from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import ResendOtp from "@/components/auth/resendotp";
 import { useMainLoader } from "@/context/MainLoaderContext";
 import MainLoader from "@/components/shared/main-loader";
+import { useUser } from "@/context/UserContext";
 
 export default function ForgotPasswordPage() {
 
@@ -21,7 +22,12 @@ export default function ForgotPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const {mainLoading} = useMainLoader();
+  const { mainLoading, setMainLoading } = useMainLoader();
+  const { user } = useUser();
+
+  useEffect(() => {
+    setMainLoading(true)
+  }, [])
 
   const handleSendOTP = async () => {
     setLoading(true);
@@ -52,7 +58,7 @@ export default function ForgotPasswordPage() {
 
       if (res.status === 200) {
         setSuccess("OTP verified. Redirecting...");
-        localStorage.setItem("email",email);
+        localStorage.setItem("email", email);
         router.push(`/auth/reset-password`);
       }
     } catch (error: unknown) {
@@ -63,8 +69,8 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  if(mainLoading){
-    return <MainLoader text="Wait a min..."/>
+  if (mainLoading || user) {
+    return <MainLoader text="Wait a min..." />
   }
 
   return (
@@ -149,7 +155,7 @@ export default function ForgotPasswordPage() {
             </p>
           )}
 
-          {step==="otp" && <ResendOtp email={email} setError={setError} setSuccess={setSuccess}/>}
+          {step === "otp" && <ResendOtp email={email} setError={setError} setSuccess={setSuccess} />}
 
           {/* Submit Button */}
           <button

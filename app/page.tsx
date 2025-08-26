@@ -9,17 +9,18 @@ import MainLoader from "@/components/shared/main-loader";
 import Navbar from "@/components/shared/navbar";
 import { useMainLoader } from "@/context/MainLoaderContext";
 import { useEffect } from "react";
+import { useUser } from "@/context/UserContext";
 
 export default function LandingPage() {
+  const { mainLoading, setMainLoading } = useMainLoader();
+  const { user } = useUser();
 
-  const {mainLoading,setMainLoading} = useMainLoader();
-
-  useEffect(()=>{
+  useEffect(() => {
     setMainLoading(true);
-  },[]);
+  }, []);
 
-  if(mainLoading){
-    return <MainLoader text="Wait a min..."/>
+  if (mainLoading || user) {
+    return <MainLoader text="Wait a min..." />;
   }
 
   return (

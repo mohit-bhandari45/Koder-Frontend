@@ -22,7 +22,7 @@ const Hero = () => {
     <section className="relative z-10 px-6 py-20">
       <div className="max-w-7xl mx-auto text-center">
         <div className="mb-8">
-          <Badge className="mb-4 bg-white/10 text-white border-white/20">
+          <Badge className="mb-4 bg-white/10 text-white border-white/20 p-1.5">
             <Unlock className="w-3 h-3 mr-1" />
             Free Code Editor - No Login Required
           </Badge>

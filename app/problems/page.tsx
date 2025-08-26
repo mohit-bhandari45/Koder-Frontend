@@ -5,6 +5,7 @@ import { IProblem } from "@/types/problem.types";
 import MainLoader from "@/components/shared/main-loader";
 import Link from "next/link";
 import { getProblems, searchProblems } from "@/lib/requests.functions.lib";
+import Navbar from "@/components/user-profile/navbar";
 
 const DIFFICULTY_COLORS: Record<IProblem["difficulty"], string> = {
   Easy: "text-green-500 bg-green-100 border-green-400",
@@ -74,8 +75,9 @@ export default function ProblemsPage() {
   if (error) return <div className="text-red-500 text-center mt-10">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-[#18181b] text-white py-12 px-2 md:px-8">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-black/95 text-white ">
+      <Navbar />
+      <div className="max-w-5xl mx-auto py-12 px-2 md:px-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Problems</h1>
         {/* Search Bar */}
         <div className="flex justify-end mb-4">
@@ -87,7 +89,7 @@ export default function ProblemsPage() {
             className="w-full md:w-72 px-4 py-2 rounded border border-gray-700 bg-[#23232a] text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
-        <div className="overflow-x-auto rounded-lg shadow-lg bg-[#23232a] border border-gray-800">
+        <div className="overflow-x-auto rounded-lg shadow-lg bg-black/60 border-1  border-gray-600">
           <table className="min-w-full divide-y divide-gray-700 text-sm">
             <thead className="bg-[#20202a] sticky top-0 z-10">
               <tr>
