@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import MainLoader from "../shared/main-loader";
+import { BsChevronDoubleLeft } from "react-icons/bs";
 
 interface LoginForm {
   email: string;
@@ -83,8 +84,8 @@ export default function LoginComponent() {
         password: formData.password,
       });
       if (res.status === 200) {
-        localStorage.setItem("accessToken",res.data.data.accessToken);
-        localStorage.setItem("refreshToken",res.data.data.refreshToken);
+        localStorage.setItem("accessToken", res.data.data.accessToken);
+        localStorage.setItem("refreshToken", res.data.data.refreshToken);
         if (nextParam && nextParam.startsWith("/")) {
           router.replace(nextParam);
         } else {
@@ -124,6 +125,13 @@ export default function LoginComponent() {
         <div className="absolute top-3/4 left-1/2 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse delay-2000"></div>
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       </div>
+
+      <button
+        onClick={() => router.push("/")}
+        className="absolute top-6 left-6 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+      >
+        <BsChevronDoubleLeft className="w-6 h-6 text-white" />
+      </button>
 
       {/* Login Form Container */}
       <div className="relative z-10 w-2xl mx-auto p-6">

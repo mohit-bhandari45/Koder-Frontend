@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useUser } from "@/context/UserContext";
+import { BsChevronDoubleLeft } from "react-icons/bs";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -154,6 +155,13 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
       </div>
 
+      <button
+        onClick={() => router.push("/")}
+        className="absolute top-6 left-6 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+      >
+        <BsChevronDoubleLeft className="w-6 h-6 text-white" />
+      </button>
+
       {/* Signup Form Container */}
       <div className="relative z-10 w-2xl mx-auto p-6">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
@@ -273,14 +281,14 @@ export default function SignupPage() {
                         <div
                           key={level}
                           className={`h-1 flex-1 rounded-full transition-colors ${level <= passwordStrength
-                              ? passwordStrength <= 2
-                                ? "bg-red-400"
-                                : passwordStrength <= 3
-                                  ? "bg-yellow-400"
-                                  : passwordStrength <= 4
-                                    ? "bg-blue-400"
-                                    : "bg-green-400"
-                              : "bg-gray-600"
+                            ? passwordStrength <= 2
+                              ? "bg-red-400"
+                              : passwordStrength <= 3
+                                ? "bg-yellow-400"
+                                : passwordStrength <= 4
+                                  ? "bg-blue-400"
+                                  : "bg-green-400"
+                            : "bg-gray-600"
                             }`}
                         />
                       ))}

@@ -10,10 +10,10 @@ const Footer = () => {
             <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
               <Code className="w-5 h-5 text-black" />
             </div>
-            <span className="text-xl font-bold text-white">CodeCraft</span>
+            <span className="text-xl font-bold text-white">Koder</span>
           </div>
           <div className="flex items-center space-x-6 text-gray-400">
-            <span>© 2025 CodeCraft. All rights reserved.</span>
+            <span>© 2025 Koder. All rights reserved.</span>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-white transition-colors">
                 Privacy

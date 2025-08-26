@@ -10,9 +10,7 @@ const Navbar = () => {
     <nav className="relative z-10 px-6 py-4 border-b border-white/10 backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
-            <Code className="w-5 h-5 text-black" />
-          </div>
+          <Code className="w-6 h-6 text-white" />
           <span className="text-xl font-bold text-white">Koder</span>
         </div>
         <div className="flex items-center space-x-4">
