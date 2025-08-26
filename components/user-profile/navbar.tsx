@@ -1,14 +1,12 @@
 "use client"
+import { useUser } from "@/context/UserContext";
 import {
-  Bell,
   Code,
-  Menu,
-  Search
+  Menu
 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import AvatarDropdown from "./AvatarDropdown";
-import Link from "next/link";
-import { useUser } from "@/context/UserContext";
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

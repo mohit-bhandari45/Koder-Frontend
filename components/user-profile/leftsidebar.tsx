@@ -39,7 +39,7 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
 
   const [expanded, setExpanded] = useState(false);
   const topLanguages = dashboard.languages.slice(0, 3);
-  const remainingLanguages = dashboard.languages.slice(3);
+  // const remainingLanguages = dashboard.languages.slice(3);
 
   const visibleLanguages = expanded ? dashboard.languages : topLanguages;
 

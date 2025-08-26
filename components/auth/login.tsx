@@ -6,7 +6,7 @@ import api, { LOGIN_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import MainLoader from "../shared/main-loader";
 
@@ -23,7 +23,7 @@ interface LoginErrors {
 export default function LoginComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { mainLoading,setMainLoading } = useMainLoader();
+  const { mainLoading } = useMainLoader();
 
   const nextParam = searchParams.get("next") || null;
 
