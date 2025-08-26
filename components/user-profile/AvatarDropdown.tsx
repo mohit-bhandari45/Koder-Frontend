@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
-import toast from "react-hot-toast";
 import Link from "next/link";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 
 type Props = {
   profilepicture?: string;
@@ -13,7 +12,6 @@ type Props = {
 };
 
 export default function AvatarDropdown({ profilepicture, username }: Props) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
