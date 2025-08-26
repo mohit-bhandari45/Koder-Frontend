@@ -16,7 +16,7 @@ function Navbar() {
   if (!user) return null;
 
   return (
-    <nav className="bg-gray-900 border-b border-gray-800 sticky top-0 z-50">
+    <nav className="bg-black border-b border-gray-600 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -37,12 +37,9 @@ function Navbar() {
 
           {/* Right Side */}
           <div className="flex items-center gap-4">
-            <Search className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
-            <Bell className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors" />
-            <div className="text-orange-500 font-semibold">0</div>
+
             <AvatarDropdown profilepicture={user.profilepicture} username={user.username} />
 
-            <span className="text-yellow-400 font-semibold">Premium</span>
 
             {/* Mobile menu button */}
             <button

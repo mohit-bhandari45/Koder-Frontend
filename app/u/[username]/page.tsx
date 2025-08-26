@@ -4,7 +4,7 @@ import Navbar from "@/components/user-profile/navbar";
 import LeftSidebar from "@/components/user-profile/leftsidebar";
 import MainContent from "@/components/user-profile/maincontent";
 import { useEffect, useState } from "react";
-import api2, {
+import dashboardAPI, {
   GET_LANGUAGE_STATS,
   GET_PROGRESS_SUMMARY,
   GET_RECENT_SUBMISSIONS,
@@ -54,10 +54,10 @@ export default function UserProfilePage() {
     try {
       const [progressRes, languageRes, skillRes, submissionRes] =
         await Promise.all([
-          api2.get(GET_PROGRESS_SUMMARY),
-          api2.get(GET_LANGUAGE_STATS),
-          api2.get(GET_SKILL_STATS),
-          api2.get(GET_RECENT_SUBMISSIONS),
+          dashboardAPI.get(GET_PROGRESS_SUMMARY),
+          dashboardAPI.get(GET_LANGUAGE_STATS),
+          dashboardAPI.get(GET_SKILL_STATS),
+          dashboardAPI.get(GET_RECENT_SUBMISSIONS),
         ]);
       setDashboard({
         progress: progressRes.data.data,
@@ -71,7 +71,6 @@ export default function UserProfilePage() {
       setError(error as AxiosError);
     } finally {
       setLoading(false);
-      setMainLoading(false);
     }
   };
 
@@ -85,7 +84,7 @@ export default function UserProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-black scrollbar-track">
+    <div className="min-h-screen bg-gray-950 scrollbar-track">
       {!loading && !error ? (
         <>
           {user && dashboard && (

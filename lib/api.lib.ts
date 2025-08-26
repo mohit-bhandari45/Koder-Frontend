@@ -51,8 +51,12 @@ api.interceptors.response.use(
                 // Redirect to login with next param
                 if (typeof window !== "undefined") {
                     const currentPath = window.location.pathname + window.location.search;
+                    
                     if (!UNPROTECTED_PATHS.includes(window.location.pathname)) {
-                        window.location.href = `/auth/login?next=${encodeURIComponent(currentPath)}`;
+                        if(window.location.pathname !== "/code-editor"){
+                            window.location.href = `/auth/login?next=${encodeURIComponent(currentPath)}`;
+                        }
+                        
                     }
                 }
 

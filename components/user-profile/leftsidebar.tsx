@@ -47,7 +47,7 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
   return (
     <div className="w-full lg:w-80 space-y-6 ">
       {/* Profile Card */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
+      <div className="bg-black border-[0.5px] border-gray-600 rounded-lg p-6 min-h-[200px]">
         <div className="flex items-start gap-4">
           <div className="relative">
             {user.profilepicture ? (
@@ -104,7 +104,7 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
       </div> */}
 
       {/* Languages */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
+      <div className="bg-black border-[0.5px] border-gray-600 rounded-lg p-6 min-h-[200px]">
         <h3 className="text-lg font-semibold text-white mb-4">Languages</h3>
         <div className="space-y-3">
           {dashboard.languages.length > 0 ? (
@@ -147,7 +147,7 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
       </div>
 
       {/* Skills */}
-      <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 min-h-[200px]">
+      <div className="bg-black border-[0.5px] border-gray-600 rounded-lg p-6 min-h-[200px]">
         <h3 className="text-lg font-semibold text-white mb-4">Skills</h3>
         <div className="space-y-4">
           {Object.entries(dashboard.skills).map(([level, skills]) => (

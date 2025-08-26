@@ -5,7 +5,7 @@ import { UNPROTECTED_PATHS } from "@/utils/unprotectedpaths.util";
 export const DASHBOARD_URL = "https://koder-dashboard-main.onrender.com";
 // export const DASHBOARD_URL = "http://localhost:8000";
 
-export const api2 = axios.create({
+export const dashboardAPI = axios.create({
     baseURL: DASHBOARD_URL,
     headers: {
         "Content-Type": "application/json",
@@ -13,7 +13,7 @@ export const api2 = axios.create({
 });
 
 // Attach JWT token if present
-api2.interceptors.request.use(
+dashboardAPI.interceptors.request.use(
     (config) => {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
@@ -26,7 +26,7 @@ api2.interceptors.request.use(
 
 
 // Add response interceptor for refresh token logic
-api2.interceptors.response.use(
+dashboardAPI.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
@@ -44,7 +44,7 @@ api2.interceptors.response.use(
                 const res = await api.post("/auth/refresh", { refreshToken });
                 const accessToken = res.data.data;
                 localStorage.setItem("accessToken", accessToken);
-                return api2(originalRequest);
+                return dashboardAPI(originalRequest);
             } catch (refreshError) {
                 console.log("Refresh token failed");
 
@@ -73,4 +73,4 @@ const GET_RECENT_SUBMISSIONS = `${DASHBOARD_BASE}/recent-submissions`;
 
 export { GET_PROGRESS_SUMMARY, GET_LANGUAGE_STATS, GET_SKILL_STATS, GET_RECENT_SUBMISSIONS };
 
-export default api2;
+export default dashboardAPI;

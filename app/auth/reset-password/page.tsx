@@ -8,6 +8,7 @@ import { getPasswordStrength, getPasswordStrengthText } from "@/components/signu
 import { AxiosError } from "axios";
 import { useMainLoader } from "@/context/MainLoaderContext";
 import MainLoader from "@/components/shared/main-loader";
+import { useUser } from "@/context/UserContext";
 
 export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,21 +21,26 @@ export default function ResetPasswordPage() {
     password: "",
     confirmPassword: "",
   });
-  const [email,setEmail] = useState<string |null>(null);
-  const {mainLoading} = useMainLoader();
+  const [email, setEmail] = useState<string | null>(null);
+  const { mainLoading, setMainLoading } = useMainLoader();
+  const { user } = useUser();
 
   const router = useRouter();
   const passwordStrength = getPasswordStrength(formData.password);
   const strengthInfo = getPasswordStrengthText(passwordStrength);
 
-  useEffect(()=>{
+  useEffect(() => {
+    setMainLoading(true)
+  }, [])
+
+  useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-      if (!storedEmail) {
-        router.replace("/auth/forgot-password"); 
-      } else {
-        setEmail(storedEmail);
-      }
-  },[router]);
+    if (!storedEmail) {
+      router.replace("/auth/forgot-password");
+    } else {
+      setEmail(storedEmail);
+    }
+  }, [router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
@@ -85,8 +91,8 @@ export default function ResetPasswordPage() {
     }
   };
 
-  if(mainLoading){
-    return <MainLoader text="Wait a min..."/>
+  if (mainLoading || user) {
+    return <MainLoader text="Wait a min..." />
   }
 
   return (
@@ -147,17 +153,16 @@ export default function ResetPasswordPage() {
                       {[1, 2, 3, 4, 5].map((level) => (
                         <div
                           key={level}
-                          className={`h-1 flex-1 rounded-full transition-colors ${
-                            level <= passwordStrength
+                          className={`h-1 flex-1 rounded-full transition-colors ${level <= passwordStrength
                               ? passwordStrength <= 2
                                 ? "bg-red-400"
                                 : passwordStrength <= 3
-                                ? "bg-yellow-400"
-                                : passwordStrength <= 4
-                                ? "bg-blue-400"
-                                : "bg-green-400"
+                                  ? "bg-yellow-400"
+                                  : passwordStrength <= 4
+                                    ? "bg-blue-400"
+                                    : "bg-green-400"
                               : "bg-gray-600"
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>

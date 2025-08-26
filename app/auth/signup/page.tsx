@@ -22,12 +22,13 @@ import {
   X,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { useUser } from "@/context/UserContext";
 
 export default function SignupPage() {
   const router = useRouter();
-  const { mainLoading } = useMainLoader();
+  const { mainLoading, setMainLoading } = useMainLoader();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
@@ -39,6 +40,12 @@ export default function SignupPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [acceptTerms, setAcceptTerms] = useState<boolean>(false);
+  const { user } = useUser();
+  const [signup, setSignup] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMainLoading(true);
+  }, [])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -102,9 +109,11 @@ export default function SignupPage() {
       });
 
       if (res.status === 201) {
-        localStorage.setItem("accessToken",res.data.data.accessToken);
-        localStorage.setItem("refreshToken",res.data.data.refreshToken);
-        localStorage.setItem("email",formData.email);
+        setSignup(true);
+        setMainLoading(true);
+        localStorage.setItem("accessToken", res.data.data.accessToken);
+        localStorage.setItem("refreshToken", res.data.data.refreshToken);
+        localStorage.setItem("email", formData.email);
         router.push(
           "/auth/verify-email"
         );
@@ -126,8 +135,8 @@ export default function SignupPage() {
     }
   };
 
-  if (mainLoading) {
-    return <MainLoader text="Wait a min..." />;
+  if (mainLoading || user || signup) {
+    return <MainLoader text={signup ? "Signing Up" : "Wait a min..."} />;
   }
 
   const passwordStrength = getPasswordStrength(formData.password);
@@ -263,17 +272,16 @@ export default function SignupPage() {
                       {[1, 2, 3, 4, 5].map((level) => (
                         <div
                           key={level}
-                          className={`h-1 flex-1 rounded-full transition-colors ${
-                            level <= passwordStrength
+                          className={`h-1 flex-1 rounded-full transition-colors ${level <= passwordStrength
                               ? passwordStrength <= 2
                                 ? "bg-red-400"
                                 : passwordStrength <= 3
-                                ? "bg-yellow-400"
-                                : passwordStrength <= 4
-                                ? "bg-blue-400"
-                                : "bg-green-400"
+                                  ? "bg-yellow-400"
+                                  : passwordStrength <= 4
+                                    ? "bg-blue-400"
+                                    : "bg-green-400"
                               : "bg-gray-600"
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>
