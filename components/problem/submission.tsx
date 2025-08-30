@@ -72,24 +72,6 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
     );
   }
 
-  function timeAgo(dateString: string): string {
-    const createdAt = new Date(dateString);
-    const now = new Date();
-    const diffMs = now.getTime() - createdAt.getTime(); // difference in milliseconds
-
-    const diffSeconds = Math.floor(diffMs / 1000);
-    const diffMinutes = Math.floor(diffSeconds / 60);
-    const diffHours = Math.floor(diffMinutes / 60);
-    const diffDays = Math.floor(diffHours / 24);
-
-    if (diffDays > 0) return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-    if (diffHours > 0)
-      return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-    if (diffMinutes > 0)
-      return `${diffMinutes} minute${diffMinutes > 1 ? "s" : ""} ago`;
-    return "just now";
-  }
-
   return (
     <div className="space-y-4">
       {/* Submissions List */}
