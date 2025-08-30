@@ -6,10 +6,11 @@ import api, { LOGIN_ENDPOINT } from "@/lib/api.lib";
 import { AxiosError } from "axios";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import MainLoader from "../shared/main-loader";
 import { BsChevronDoubleLeft } from "react-icons/bs";
+import { useUser } from "@/context/UserContext";
 
 interface LoginForm {
   email: string;
@@ -24,10 +25,8 @@ interface LoginErrors {
 export default function LoginComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { mainLoading } = useMainLoader();
-
+  const { mainLoading,setMainLoading } = useMainLoader();
   const nextParam = searchParams.get("next") || null;
-
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
@@ -36,8 +35,12 @@ export default function LoginComponent() {
   const [errors, setErrors] = useState<LoginErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [login, setLogin]= useState<boolean>(false);
+  const {user}=useUser();
 
-
+useEffect(()=>{
+  setMainLoading(true);
+},[]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -84,6 +87,8 @@ export default function LoginComponent() {
         password: formData.password,
       });
       if (res.status === 200) {
+        setLogin(true);
+        setMainLoading(true);
         localStorage.setItem("accessToken", res.data.data.accessToken);
         localStorage.setItem("refreshToken", res.data.data.refreshToken);
         if (nextParam && nextParam.startsWith("/")) {
@@ -112,8 +117,10 @@ export default function LoginComponent() {
     }
   };
 
-  if (mainLoading) {
-    return <MainLoader text="Wait a min..." />;
+  console.log( mainLoading )
+
+  if (mainLoading || user || login) {
+    return <MainLoader text={login ? "Logging In" : "Wait a min..."} />;
   }
 
   return (
