@@ -162,8 +162,8 @@ export default function ProblemDetailPage() {
 
       setExecutionOutput(
         accepted
-          ? `🎉 Accepted!\n\nRuntime: ${result.runtime}ms\nMemory: ${result.memory}mb\n\nYour solution passed all ${totalTests} test cases.`
-          : `❌ ${result.error}\n\n${passedCount}/${totalTests} test cases passed\n\nRuntime: ${result.runtime}ms\nMemory: ${result.memory}MB`
+          ? `🎉 Accepted!\n\nRuntime: ${(result.runtime /1000).toFixed(2)}s\nMemory: ${(result.memory).toFixed(2)}mb\n\nYour solution passed all ${totalTests} test cases.`
+          : `❌ ${result.error}\n\n${passedCount}/${totalTests} test cases passed\n\nRuntime: ${(result.runtime /1000).toFixed(2)}s\nMemory: ${(result.memory).toFixed(2)}mb`
       );
     } catch (err) {
       setExecutionOutput(

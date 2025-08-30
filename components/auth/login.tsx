@@ -25,7 +25,7 @@ interface LoginErrors {
 export default function LoginComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { mainLoading,setMainLoading } = useMainLoader();
+  const { mainLoading, setMainLoading } = useMainLoader();
   const nextParam = searchParams.get("next") || null;
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState<LoginForm>({
@@ -35,12 +35,12 @@ export default function LoginComponent() {
   const [errors, setErrors] = useState<LoginErrors>({});
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
-  const [login, setLogin]= useState<boolean>(false);
-  const {user}=useUser();
+  const [login, setLogin] = useState<boolean>(false);
+  const { user } = useUser();
 
-useEffect(()=>{
-  setMainLoading(true);
-},[]);
+  useEffect(() => {
+    setMainLoading(true);
+  }, []);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -116,8 +116,6 @@ useEffect(()=>{
       setIsLoading(false);
     }
   };
-
-  console.log( mainLoading )
 
   if (mainLoading || user || login) {
     return <MainLoader text={login ? "Logging In" : "Wait a min..."} />;

@@ -111,7 +111,7 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
             {submission.runtime && submission.memory  && (
               <div className="mt-2 flex space-x-4 text-xs text-gray-400">
                 <span>Runtime: {(submission.runtime / 1000).toFixed(2)} s</span>
-                <span>Memory: {submission.memory} MB</span>
+                <span>Memory: {(submission.memory).toFixed(2)} MB</span>
               </div>
             )}
           </div>

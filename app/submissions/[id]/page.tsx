@@ -42,7 +42,6 @@ export default function SubmissionDetailPage() {
       try {
         setLoading(true);
         const res = await api.get(`${SUBMISSION_BASE}/${id}`);
-        console.log(res.data.data);
         setSubmission(res.data.data);
       } catch {
         setError("Failed to fetch submission details.");

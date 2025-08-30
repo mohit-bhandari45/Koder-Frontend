@@ -32,7 +32,7 @@ const CTA = () => {
               variant="outline"
               className="bg-white text-black cursor-pointer hover:bg-gray-200 border-none px-8 py-6 text-lg"
               onClick={()=>{
-                router.push("/signup")
+                router.push("/auth/signup")
               }}
             >
               Get Started

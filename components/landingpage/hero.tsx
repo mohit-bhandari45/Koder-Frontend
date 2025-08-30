@@ -79,7 +79,7 @@ const Hero = () => {
             data-nprogress
             className="border-white/20 cursor-pointer text-black hover:bg-white/10 hover:text-white px-8 py-6 text-lg"
             onClick={() => {
-              router.push("/signup");
+              router.push("/auth/signup");
             }}
           >
             Browse Challenges
