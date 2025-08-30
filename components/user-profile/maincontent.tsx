@@ -3,6 +3,7 @@
 import DashboardState from "@/types/dashboard.types";
 import { formatRelativeTime } from "@/utils/helper.utils";
 import ProblemsSolvedCard from "./ProblemSolvedCard";
+import Link from "next/link";
 
 export default function MainContent({
   dashboard,
@@ -17,18 +18,35 @@ export default function MainContent({
           <h3 className="text-lg font-semibold text-center text-white mb-4">
             Total Problems Solved
           </h3>
-          <ProblemsSolvedCard progress={dashboard.progress}/>
+          <ProblemsSolvedCard progress={dashboard.progress} />
           <div className="mt-6 space-y-3">
-              <DifficultyBar label="Easy" solved={dashboard.progress.byDifficulty.easy.solved} total={dashboard.progress.byDifficulty.easy.total} color="bg-green-500" />
-              <DifficultyBar label="Med." solved={dashboard.progress.byDifficulty.medium.solved} total={dashboard.progress.byDifficulty.medium.total} color="bg-yellow-500" />
-              <DifficultyBar label="Hard" solved={dashboard.progress.byDifficulty.hard.solved} total={dashboard.progress.byDifficulty.hard.total} color="bg-red-500" />
-            </div>
+            <DifficultyBar
+              label="Easy"
+              solved={dashboard.progress.byDifficulty.easy.solved}
+              total={dashboard.progress.byDifficulty.easy.total}
+              color="bg-green-500"
+            />
+            <DifficultyBar
+              label="Med."
+              solved={dashboard.progress.byDifficulty.medium.solved}
+              total={dashboard.progress.byDifficulty.medium.total}
+              color="bg-yellow-500"
+            />
+            <DifficultyBar
+              label="Hard"
+              solved={dashboard.progress.byDifficulty.hard.solved}
+              total={dashboard.progress.byDifficulty.hard.total}
+              color="bg-red-500"
+            />
+          </div>
         </div>
 
         {/* Rank & Achievements */}
         <div className="w-1/2 bg-black border-[0.5px] border-gray-600 rounded-lg p-6">
-             <h3 className="text-lg font-semibold text-center text-white mb-4">Rank & Achievements</h3>
-            {/*<div className="flex items-center justify-between mb-2">
+          <h3 className="text-lg font-semibold text-center text-white mb-4">
+            Rank & Achievements
+          </h3>
+          {/*<div className="flex items-center justify-between mb-2">
               <span className="text-gray-300 text-sm">Badges Earned</span>
               <span className="text-white font-bold"></span>
             </div>
@@ -39,9 +57,11 @@ export default function MainContent({
               <div className="w-16 h-16 bg-gray-800 rounded-lg flex items-center justify-center"><span className="text-2xl">🥉</span></div>
             </div> */}
 
-            <div className="text-xl text-center text-gray-400 mb-2">Solve problems to unlock badges</div>
-            {/* <div className="text-white font-semibold">50-day challenge</div> */}
+          <div className="text-xl text-center text-gray-400 mb-2">
+            Solve problems to unlock badges
           </div>
+          {/* <div className="text-white font-semibold">50-day challenge</div> */}
+        </div>
       </div>
 
       {/* Submission Heatmap */}
@@ -82,18 +102,23 @@ export default function MainContent({
         <h3 className="text-lg font-semibold text-white mb-4">
           Recent Submissions
         </h3>
-        {
-        dashboard.submissions.length > 0 ? (
+        {dashboard.submissions.length > 0 ? (
           <div className="space-y-4 max-h-64 overflow-y-auto pr-2 scroll-hide">
             {dashboard.submissions.map((sub) => (
               <div
                 key={sub._id}
-                className="flex justify-between items-center text-sm text-gray-300 bg-black/60 border-[5px] border-gray-800 p-3 rounded-md"
+                className="flex justify-between items-center text-sm text-gray-300 bg-black/60 border-[3px] border-gray-800 p-3 rounded-md"
               >
                 <div>
-                  <div className="font-medium text-white">{sub.problemId.title}</div>
+                  <Link
+                    className="font-medium text-white"
+                    href={`/submissions/${sub._id}`}
+                  >
+                    {sub.problemId.title}
+                  </Link>
                   <div className="text-xs text-gray-400">
-                    {sub.language} • {formatRelativeTime(sub.createdAt)} • {sub.problemId.difficulty}
+                    {sub.language} • {formatRelativeTime(sub.createdAt)} •{" "}
+                    {sub.problemId.difficulty}
                   </div>
                 </div>
               </div>
@@ -138,4 +163,3 @@ function DifficultyBar({
     </div>
   );
 }
-

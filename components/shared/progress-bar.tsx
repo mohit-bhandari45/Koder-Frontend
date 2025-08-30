@@ -21,7 +21,16 @@ const ProgressBar = () => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
 
-      if (target.closest("a[href]") || target.closest("[data-nprogress]")) {
+      const link = target.closest("a[href]") as HTMLAnchorElement | null;
+      if (link) {
+        NProgress.start();
+        // If the clicked link points to the current page, finish immediately
+        if (link.pathname === window.location.pathname) {
+          NProgress.done();
+        }
+      }
+
+      if (target.closest("[data-nprogress]")) {
         NProgress.start();
       }
     };

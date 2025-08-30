@@ -18,9 +18,9 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
   const handleLogout = async () => {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("accessToken");
-    toast.success("Logged out successfully")
+    toast.success("Logged out successfully");
     window.location.reload();
-  }
+  };
 
   // Close on outside click
   useClickOutside(dropdownRef, () => setOpen(false));
@@ -59,19 +59,31 @@ export default function AvatarDropdown({ profilepicture, username }: Props) {
             )}
             <div className="flex-1">
               <div className="text-white font-medium">{username}</div>
-              <div className="text-sm text-gray-400 cursor-pointer hover:underline">
+              <Link
+                className="text-sm text-gray-400 cursor-pointer hover:underline"
+                href={`/u/${username}`}
+              >
                 View profile
-              </div>
+              </Link>
             </div>
           </div>
-          <Link className=" block text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" href={"/settings"}>
+          <Link
+            className=" block text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer"
+            href={"/settings"}
+          >
             Settings
           </Link>
 
-          <Link className=" block text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" href={"/submissions"}>
+          <Link
+            className=" block text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer"
+            href={"/submissions"}
+          >
             View Submissions
           </Link>
-          <button className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer" onClick={handleLogout}>
+          <button
+            className="w-full text-left px-4 py-2 text-gray-300 hover:bg-neutral-800 hover:text-white transition cursor-pointer"
+            onClick={handleLogout}
+          >
             Logout
           </button>
         </div>

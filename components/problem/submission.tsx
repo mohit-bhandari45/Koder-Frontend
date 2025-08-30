@@ -1,5 +1,6 @@
 "use client";
 import { getSubmissionsByProblem } from "@/lib/requests.functions.lib";
+import { formatRelativeTime } from "@/utils/helper.utils";
 import { useEffect, useState, useRef } from "react";
 
 // Submission interface
@@ -9,9 +10,9 @@ interface ISubmission {
   code: string;
   language: string;
   status: "Accepted" | "Rejected";
-  createdAt: string;
-  runtime?: string;
-  memory?: string;
+  createdAt: Date;
+  runtime?: number;
+  memory?: number;
 }
 
 // Submissions component
@@ -122,13 +123,13 @@ const SubmissionsTab = ({ problemId }: { problemId: string }) => {
                 </div>
               </div>
               <div className="text-sm text-gray-400">
-                {timeAgo(submission.createdAt)}
+                {formatRelativeTime(submission.createdAt)}
               </div>
             </div>
-            {submission.runtime && submission.memory && (
+            {submission.runtime && submission.memory  && (
               <div className="mt-2 flex space-x-4 text-xs text-gray-400">
-                <span>Runtime: {submission.runtime}</span>
-                <span>Memory: {submission.memory}</span>
+                <span>Runtime: {(submission.runtime / 1000).toFixed(2)} s</span>
+                <span>Memory: {submission.memory} MB</span>
               </div>
             )}
           </div>
