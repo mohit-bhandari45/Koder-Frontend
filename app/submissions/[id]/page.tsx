@@ -123,7 +123,7 @@ export default function SubmissionDetailPage() {
 
           <div>
             <p className="text-gray-400 text-xs uppercase">Memory</p>
-            <p className="font-semibold">{submission.memory ?? "-"} MB</p>
+            <p className="font-semibold">{(submission.memory)?.toFixed(2) ?? "-"} MB</p>
           </div>
           <div>
             <p className="text-gray-400 text-xs uppercase">Submitted At</p>
