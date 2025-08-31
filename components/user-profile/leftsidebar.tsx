@@ -77,22 +77,36 @@ export default function LeftSidebar({
           </div>
         </div>
 
-        <div className="mt-4 space-y-3">
+        <div className="mt-4 space-y-3 px-3">
           <div className="flex items-center gap-2 text-gray-300 text-sm">
             <MapPin className="w-4 h-4" />
-            <span>{user.location}</span>
+            <span
+              className={
+                user.location ? "text-gray-300" : "text-gray-500 italic"
+              }
+            >
+              {user.location || "Add location"}
+            </span>
           </div>
           <div className="flex items-center gap-2 text-gray-300 text-sm">
             <GraduationCap className="w-4 h-4" />
-            <span>{user.institute}</span>
+            <span
+              className={
+                user.institute ? "text-gray-300" : "text-gray-500 italic"
+              }
+            >
+              {user.institute || "Add institute"}
+            </span>
           </div>
         </div>
 
-        <div className="mt-4 flex gap-5">
-          <SocialLink href={user.githubId} icon={Github} />
-          {/* <SocialLink href={user.social.linkedin} icon={Linkedin} />
+        {user.githubId && (
+          <div className="mt-4 flex gap-5">
+            <SocialLink href={user.githubId} icon={Github} />
+            {/* <SocialLink href={user.social.linkedin} icon={Linkedin} />
           <SocialLink href={user.social.twitter} icon={Twitter} /> */}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Community Stats
