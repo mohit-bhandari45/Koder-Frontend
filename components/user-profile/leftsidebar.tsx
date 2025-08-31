@@ -1,6 +1,6 @@
 import User from "@/types/user.types";
 import DashboardState from "@/types/dashboard.types";
-import { User2 } from "lucide-react";
+import { Github, GraduationCap, MapPin, User2 } from "lucide-react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
@@ -16,33 +16,36 @@ import { useState } from "react";
 //   );
 // }
 
-// type SocialLinkProps = {
-//   href: string;
-//   icon: React.ElementType;
-// };
+type SocialLinkProps = {
+  href: string;
+  icon: React.ElementType;
+};
 
-// function SocialLink({ href, icon: Icon }: SocialLinkProps) {
-//   return (
-//     <a
-//       href={href}
-//       target="_blank"
-//       rel="noopener noreferrer"
-//       className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors border border-gray-700 hover:border-gray-600"
-//     >
-//       <Icon className="w-4 h-4 text-gray-300" />
-//     </a>
-//   );
-// }
+function SocialLink({ href, icon: Icon }: SocialLinkProps) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors border border-gray-700 hover:border-gray-600"
+    >
+      <Icon className="w-4 h-4 text-gray-300" />
+    </a>
+  );
+}
 
-
-export default function LeftSidebar({ user, dashboard }: { user: User, dashboard: DashboardState }) {
-
+export default function LeftSidebar({
+  user,
+  dashboard,
+}: {
+  user: User;
+  dashboard: DashboardState;
+}) {
   const [expanded, setExpanded] = useState(false);
   const topLanguages = dashboard.languages.slice(0, 3);
   // const remainingLanguages = dashboard.languages.slice(3);
 
   const visibleLanguages = expanded ? dashboard.languages : topLanguages;
-
 
   return (
     <div className="w-full lg:w-80 space-y-6 ">
@@ -57,16 +60,16 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
                 className="w-16 h-16 rounded-full border-2 border-gray-700 object-cover"
               />
             ) : (
-              <User2
-                className="w-16 h-16 rounded-full border-2 border-gray-700 text-white p-2 bg-gray-800"
-              />
+              <User2 className="w-16 h-16 rounded-full border-2 border-gray-700 text-white p-2 bg-gray-800" />
             )}
             <div className="absolute -bottom-1 -right-1 bg-blue-500 w-5 h-5 rounded-full border-2 border-gray-900 flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full"></div>
             </div>
           </div>
           <div className="flex-1">
-            <h1 className="text-xl font-bold text-white mb-1">{user.fullName}</h1>
+            <h1 className="text-xl font-bold text-white mb-1">
+              {user.fullName}
+            </h1>
             <p className="text-gray-400 text-sm mb-2">{user.username}</p>
             {/* <div className="text-sm text-gray-300 mb-3">
               Rank <span className="font-semibold text-white">{user.stats.ranking.toLocaleString()}</span>
@@ -74,22 +77,22 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
           </div>
         </div>
 
-        {/* <div className="mt-4 space-y-3">
+        <div className="mt-4 space-y-3">
           <div className="flex items-center gap-2 text-gray-300 text-sm">
-            <span>📍</span>
+            <MapPin className="w-4 h-4" />
             <span>{user.location}</span>
           </div>
           <div className="flex items-center gap-2 text-gray-300 text-sm">
-            <span>🎓</span>
+            <GraduationCap className="w-4 h-4" />
             <span>{user.institute}</span>
           </div>
-        </div> */}
+        </div>
 
-        {/* <div className="mt-4 flex gap-5">
-          <SocialLink href={user.social.github} icon={Github} />
-          <SocialLink href={user.social.linkedin} icon={Linkedin} />
-          <SocialLink href={user.social.twitter} icon={Twitter} />
-        </div> */}
+        <div className="mt-4 flex gap-5">
+          <SocialLink href={user.githubId} icon={Github} />
+          {/* <SocialLink href={user.social.linkedin} icon={Linkedin} />
+          <SocialLink href={user.social.twitter} icon={Twitter} /> */}
+        </div>
       </div>
 
       {/* Community Stats
@@ -141,7 +144,9 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
               )}
             </>
           ) : (
-            <p className="text-gray-500 italic">No language stats available yet</p>
+            <p className="text-gray-500 italic">
+              No language stats available yet
+            </p>
           )}
         </div>
       </div>
@@ -174,4 +179,3 @@ export default function LeftSidebar({ user, dashboard }: { user: User, dashboard
     </div>
   );
 }
-

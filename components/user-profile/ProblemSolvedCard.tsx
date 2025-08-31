@@ -80,15 +80,12 @@ export default function ProblemsSolvedCard({ progress }: { progress?: ProgressTy
               hover ? "opacity-100 scale-100" : "opacity-0 scale-90"
             }`}
           >
-            <div className="text-2xl font-bold text-blue-400">
-              {percentage.toFixed(1)}%
-            </div>
-            <div className="text-gray-400 text-sm">Submission Rate</div>
             {progress.acceptanceRate !== undefined && (
-              <div className="text-sm text-green-500 mt-1">
+              <div className="text-2xl text-green-500 mt-1">
                 Acc: {progress.acceptanceRate}%
               </div>
             )}
+            <div className="text-gray-400 text-sm">Submission Rate</div>
           </div>
         </div>
       </div>

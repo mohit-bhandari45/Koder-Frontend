@@ -6,6 +6,7 @@ import api, { SUBMISSION_BASE } from "@/lib/api.lib";
 import Link from "next/link";
 import { IProblem } from "@/types/problem.types";
 import MainLoader from "@/components/shared/main-loader";
+import Navbar from "@/components/user-profile/navbar";
 
 
 const STATUS_COLORS: Record<"Accepted" | "Pending" | "Rejected", string> = {
@@ -64,8 +65,9 @@ export default function SubmissionDetailPage() {
   if (!submission) return null;
 
   return (
-    <div className="min-h-screen bg-[#18181b] text-white py-10 px-4 md:px-10">
-      <div className="max-w-6xl mx-auto space-y-6">
+    <div className="min-h-screen bg-[#18181b] text-white ">
+      <Navbar/>
+      <div className="max-w-6xl mx-auto space-y-6 py-10">
         {/* Problem Title & Difficulty */}
         <div className="flex items-center justify-between bg-[#23232a] rounded-xl p-6 border border-gray-800 shadow-md">
           <div>

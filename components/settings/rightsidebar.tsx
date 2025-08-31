@@ -14,8 +14,11 @@ import {
   Lock,
   Trash2,
   Camera,
+  LocationEditIcon,
+  Building2,
+  Github,
 } from "lucide-react";
-import {DeleteAccountModal} from "./confirmDelete";
+import { DeleteAccountModal } from "./confirmDelete";
 
 interface RightSidebarProps {
   content: string;
@@ -25,11 +28,14 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
   // Form states
   const [username, setUsername] = useState("");
   const [fullName, setFullName] = useState("");
-  const [profilePicture, setProfilePicture] = useState("");
+  const [profilepicture, setProfilePicture] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [location, setLocation] = useState("");
+  const [github, setGithub] = useState("");
+  const [institute, setInstitute] = useState("");
 
   // UI states
   const [hasPassword, setHasPassword] = useState<boolean>(true);
@@ -65,6 +71,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
           setFullName(user.fullName);
           setProfilePicture(user.profilepicture ?? "");
           setHasPassword(!!user.password);
+          setGithub(user.githubId ?? "");
+          setLocation(user.location ?? "");
+          setInstitute(user.institute ?? "");
         }
       } catch (error: unknown) {
         const err = error as AxiosError<{ message: string }>;
@@ -78,7 +87,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
     fetchProfile();
   }, []);
 
-  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
     // Validate image
@@ -160,7 +171,48 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
     handleSubmit(
       e,
       () =>
-        api.patch("/api/user/me", { fullName, profilepicture: profilePicture }),
+        api.patch("/api/user/me", { fullName, profilepicture: profilepicture }),
+      "Profile updated successfully!"
+    );
+  };
+
+  const handleLocation = (e: React.FormEvent) => {
+    handleSubmit(
+      e,
+      () =>
+        api.patch("/api/user/me", {
+          fullName,
+          profilepicture,
+          location: location,
+        }),
+      "Profile updated successfully!"
+    );
+  };
+
+  const handleInstitute = (e: React.FormEvent) => {
+    handleSubmit(
+      e,
+      () =>
+        api.patch("/api/user/me", {
+          fullName,
+          profilepicture,
+          location,
+          institute: institute,
+        }),
+      "Profile updated successfully!"
+    );
+  };
+
+  const handleGithub = (e: React.FormEvent) => {
+    handleSubmit(
+      e,
+      () =>
+        api.patch("/api/user/me", {
+          fullName,
+          profilepicture,
+          location,
+          githubId: github,
+        }),
       "Profile updated successfully!"
     );
   };
@@ -212,7 +264,8 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
       router.push("/auth/signup");
     } catch (error: unknown) {
       const err = error as AxiosError<{ message: string }>;
-      const errorMessage = err.response?.data?.message || "Error deleting account";
+      const errorMessage =
+        err.response?.data?.message || "Error deleting account";
       setMessage(errorMessage);
       setMessageType("error");
     } finally {
@@ -233,10 +286,11 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
         {/* Message Display */}
         {message && (
           <div
-            className={`flex items-center gap-2 p-3 rounded-lg text-sm mb-6 ${messageType === "success"
+            className={`flex items-center gap-2 p-3 rounded-lg text-sm mb-6 ${
+              messageType === "success"
                 ? "bg-green-900/30 border border-green-700/30 text-green-300"
                 : "bg-red-900/30 border border-red-700/30 text-red-300"
-              }`}
+            }`}
           >
             {messageType === "success" ? (
               <CheckCircle className="w-4 h-4 flex-shrink-0" />
@@ -291,9 +345,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 {/* Profile Picture with overlay icon */}
                 <div className="flex items-center gap-6">
                   <div className="relative">
-                    {profilePicture?.trim() ? (
+                    {profilepicture?.trim() ? (
                       <img
-                        src={profilePicture}
+                        src={profilepicture}
                         alt="Profile"
                         className="w-32 h-32 rounded-full border border-gray-700 object-cover"
                       />
@@ -345,6 +399,94 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
               </form>
             </div>
 
+            {/*Location and Institute*/}
+            <div className="bg-gray-800/50 p-6 rounded-lg">
+              <h3 className="text-lg font-medium text-white mb-4">
+                Update Location and Institute
+              </h3>
+              <form onSubmit={handleLocation} className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Location <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <LocationEditIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                      type="text"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                      className="w-full pl-10 p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      placeholder="Enter location"
+                      required
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
+                >
+                  Update Location
+                </button>
+              </form>
+              <br></br>
+              <form onSubmit={handleInstitute} className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Institute <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                      type="text"
+                      value={institute}
+                      onChange={(e) => setInstitute(e.target.value)}
+                      className="w-full pl-10 p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      placeholder="Enter institute name"
+                      required
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
+                >
+                  Add Institute name
+                </button>
+              </form>
+            </div>
+            {/* socials */}
+            <div className="bg-gray-800/50 p-6 rounded-lg">
+              <h3 className="text-lg font-medium text-white mb-4">
+                Social Handles
+              </h3>
+              <form onSubmit={handleGithub} className="space-y-4">
+                <div>
+                  <label className="block text-gray-300 text-sm font-medium mb-2">
+                    Github <span className="text-red-400">*</span>
+                  </label>
+                  <div className="relative">
+                    <Github className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                    <input
+                      type="text"
+                      value={github}
+                      onChange={(e) => setGithub(e.target.value)}
+                      className="w-full pl-10 p-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      placeholder="Enter Github url"
+                      required
+                    />
+                  </div>
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
+                >
+                  Add Github url
+                </button>
+              </form>
+            </div>
             );
           </div>
         )}
@@ -514,7 +656,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
                 certain.
               </p>
               <button
-                onClick={()=>setShowDeleteModal(true)}
+                onClick={() => setShowDeleteModal(true)}
                 disabled={loading}
                 className="bg-red-600 hover:bg-red-700 disabled:bg-gray-600 disabled:cursor-not-allowed px-6 py-3 rounded-lg text-white font-medium transition-colors flex items-center gap-2"
               >
@@ -527,7 +669,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({ content }) => {
               </button>
               <DeleteAccountModal
                 isOpen={showDeleteModal}
-                onClose={()=>setShowDeleteModal(false)}
+                onClose={() => setShowDeleteModal(false)}
                 onConfirm={handleDeleteAccount}
                 loading={loading}
               />

@@ -9,5 +9,8 @@ type User = {
   profilepicture?: string;
   createdAt: Date;
   updatedAt: Date;
+  location: string;
+  institute: string;
+  githubId: string;
 };
 export default User;

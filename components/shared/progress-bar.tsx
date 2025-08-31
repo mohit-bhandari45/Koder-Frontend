@@ -22,12 +22,15 @@ const ProgressBar = () => {
       const target = e.target as HTMLElement;
 
       const link = target.closest("a[href]") as HTMLAnchorElement | null;
-      if (link) {
-        NProgress.start();
-        // If the clicked link points to the current page, finish immediately
-        if (link.pathname === window.location.pathname) {
-          NProgress.done();
-        }
+      if (!link) return;
+
+      const isExternal = link.hostname !== window.location.hostname;
+      if (isExternal) return; // ignore external links
+
+      NProgress.start();
+      // If the clicked link points to the current page, finish immediately
+      if (link.pathname === window.location.pathname) {
+        NProgress.done();
       }
 
       if (target.closest("[data-nprogress]")) {
