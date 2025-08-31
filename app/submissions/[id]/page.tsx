@@ -7,6 +7,7 @@ import Link from "next/link";
 import { IProblem } from "@/types/problem.types";
 import MainLoader from "@/components/shared/main-loader";
 
+
 const STATUS_COLORS: Record<"Accepted" | "Pending" | "Rejected", string> = {
   Accepted: "text-green-500 bg-green-100 border-green-400",
   Pending: "text-yellow-600 bg-yellow-100 border-yellow-400",
@@ -136,9 +137,11 @@ export default function SubmissionDetailPage() {
             <h2 className="text-lg font-semibold">Submitted Code</h2>
             <span className="text-xs text-gray-400">{submission.language}</span>
           </div>
-          <div className="p-4 overflow-x-auto">
-            <code>{submission.code}</code>
-          </div>
+          
+            <pre className="p-4 overflow-x-auto">
+                <code>{submission.code}</code>
+            </pre>
+  
         </div>
       </div>
     </div>
