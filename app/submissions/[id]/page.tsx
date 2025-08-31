@@ -136,7 +136,9 @@ export default function SubmissionDetailPage() {
             <h2 className="text-lg font-semibold">Submitted Code</h2>
             <span className="text-xs text-gray-400">{submission.language}</span>
           </div>
-          <div className="p-4 overflow-x-auto">{submission.code}</div>
+          <div className="p-4 overflow-x-auto">
+            <code>{submission.code}</code>
+          </div>
         </div>
       </div>
     </div>
