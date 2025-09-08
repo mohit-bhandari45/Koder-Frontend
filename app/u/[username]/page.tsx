@@ -21,7 +21,7 @@ export default function UserProfilePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<AxiosError | null>(null);
   const [dashboard, setDashboard] = useState<DashboardState | null>(null);
-  const {user} = useUser();
+  const { user } = useUser();
   const { mainLoading, setMainLoading } = useMainLoader();
 
   const router = useRouter();
@@ -31,6 +31,19 @@ export default function UserProfilePage() {
     setLoading(true);
     setMainLoading(true);
   }, []);
+
+  useEffect(() => {
+    const searchParams = new URL(window.location.href).searchParams;
+    const accessToken = searchParams.get("accessToken");
+    const refreshToken = searchParams.get("refreshToken");
+
+    if (accessToken && refreshToken) {
+      setMainLoading(true);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      router.replace('/')
+    }
+  }, [router]);
 
   useEffect(() => {
     if (user?.username && params.username !== user.username) {

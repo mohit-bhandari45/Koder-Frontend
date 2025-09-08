@@ -17,6 +17,17 @@ const UsernameSelection = () => {
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
+    const searchParams = new URL(window.location.href).searchParams;
+    const accessToken = searchParams.get("accessToken");
+    const refreshToken = searchParams.get("refreshToken");
+    if (accessToken && refreshToken) {
+      setMainLoading(true);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+    }
+  }, [router]);
+
+  useEffect(() => {
     setMainLoading(true);
     if (!loading) {
       if (!error && !!user && !!user.username) {
